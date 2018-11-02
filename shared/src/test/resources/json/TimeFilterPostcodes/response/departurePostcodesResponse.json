@@ -1,0 +1,27 @@
+{
+    "results": [
+        {
+            "search_id": "public transport from Trafalgar Square",
+            "postcodes": [
+                {
+                    "code": "WC2N 5DS",
+                    "properties": [
+                        {
+                            "travel_time": 67,
+                            "distance": 51
+                        }
+                    ]
+                },
+                {
+                    "code": "WC2N 5DU",
+                    "properties": [
+                        {
+                            "travel_time": 51,
+                            "distance": 40
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

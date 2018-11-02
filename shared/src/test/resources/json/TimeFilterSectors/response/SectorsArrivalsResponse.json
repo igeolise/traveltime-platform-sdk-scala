@@ -1,0 +1,27 @@
+{
+    "results": [
+        {
+            "search_id": "public transport to Trafalgar Square",
+            "sectors": [
+                {
+                    "code": "wc2n5",
+                    "properties": {
+                        "travel_time_all": {
+                            "min": 10,
+                            "max": 113,
+                            "mean": 78,
+                            "median": 81
+                        },
+                        "travel_time_reachable": {
+                            "min": 10,
+                            "max": 113,
+                            "mean": 78,
+                            "median": 81
+                        },
+                        "coverage": 15.217391304347828
+                    }
+                }
+            ]
+        }
+    ]
+}
