@@ -10,6 +10,7 @@ Add the following to your `build.sbt`:
 
 ```scala
 libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % 1.1.0
+resolvers += Resolver.jcenterRepo
 ```
 
 ### Usage
