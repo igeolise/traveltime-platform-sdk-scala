@@ -5,8 +5,12 @@ import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapPr
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
+import scala.concurrent.duration.{Duration, FiniteDuration, SECONDS}
 
 object CommonReads {
+
+  implicit val finiteDurationSecondsReads: Reads[FiniteDuration] =
+    Reads.IntReads.map(time => Duration(time, SECONDS))
 
   implicit val timeMapResponsePropertiesReads: Reads[TimeMapResponseProperties] =
     (__ \ "is_only_walking").readNullable[Boolean].map(TimeMapResponseProperties.apply)

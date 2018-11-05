@@ -1,5 +1,7 @@
 package com.igeolise.traveltimesdk.dto.requests
 
+import java.time.ZonedDateTime
+
 import cats.Monad
 import com.igeolise.traveltimesdk.json.reads.TimeMapReads._
 import com.igeolise.traveltimesdk.json.writes.TimeMapWrites._
@@ -12,6 +14,8 @@ import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.responses.{TimeMapResponse, TravelTimeSdkError}
 import com.softwaremill.sttp._
 import play.api.libs.json._
+
+import scala.concurrent.duration.FiniteDuration
 
 case class TimeMapRequest(
   departureSearches:    Seq[TimeMapRequest.DepartureSearch],
@@ -51,8 +55,8 @@ object TimeMapRequest {
     id: String,
     coordinates: Coords,
     transportation: CommonTransportation,
-    departureTime: String,
-    travelTime: Int,
+    departureTime: ZonedDateTime,
+    travelTime: FiniteDuration,
     range: Option[RangeParams] = None,
     properties: Option[Seq[TimeMapRequestProperty]] = None
   ) extends SearchType
@@ -61,8 +65,8 @@ object TimeMapRequest {
     id: String,
     coordinates: Coords,
     transportation: CommonTransportation,
-    arrivalTime: String,
-    travelTime: Int,
+    arrivalTime: ZonedDateTime,
+    travelTime: FiniteDuration,
     range: Option[RangeParams] = None,
     properties: Option[Seq[TimeMapRequestProperty]] = None
   ) extends SearchType

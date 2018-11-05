@@ -1,5 +1,6 @@
 package com.igeolise.traveltimesdk.json.writes
 
+import java.time.ZonedDateTime
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.RoutesRequestProperty
@@ -16,7 +17,7 @@ object RoutesWrites {
     (__ \ "departure_location_ids").write[Seq[String]] and
     (__ \ "arrival_location_id").write[String] and
     (__ \ "transportation").write[Transportation] and
-    (__ \ "arrival_time").write[String] and
+    (__ \ "arrival_time").write[ZonedDateTime] and
     (__ \ "properties").write[Seq[RoutesRequestProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]
   )(unlift(ArrivalSearch.unapply))
@@ -26,7 +27,7 @@ object RoutesWrites {
     (__ \ "departure_location_id").write[String] and
     (__ \ "arrival_location_ids").write[Seq[String]] and
     (__ \ "transportation").write[Transportation] and
-    (__ \ "departure_time").write[String] and
+    (__ \ "departure_time").write[ZonedDateTime] and
     (__ \ "properties").write[Seq[RoutesRequestProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]
   )(unlift(DepartureSearch.unapply))

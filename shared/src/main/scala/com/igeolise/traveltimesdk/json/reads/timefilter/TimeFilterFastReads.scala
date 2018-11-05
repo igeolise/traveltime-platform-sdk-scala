@@ -4,6 +4,8 @@ import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterFastRespons
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterFastResponse._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
+import com.igeolise.traveltimesdk.json.reads.CommonReads._
+import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterFastReads {
 
@@ -17,7 +19,7 @@ object TimeFilterFastReads {
     (__ \ "tickets_total").read[Seq[Ticket]].map(Fares.apply)
 
   implicit val timeFilterPropertiesReads: Reads[Properties] = (
-    (__ \ "travel_time").readNullable[Int] and
+    (__ \ "travel_time").readNullable[FiniteDuration] and
     (__ \ "fares").read[Fares]
   ) (Properties.apply _)
 

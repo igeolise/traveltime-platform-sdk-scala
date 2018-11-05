@@ -5,10 +5,11 @@ import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
 import play.api.libs.functional.syntax._
 import com.igeolise.traveltimesdk.json.reads.CommonReads._
 import play.api.libs.json.{JsValue, Reads, __}
+import scala.concurrent.duration.FiniteDuration
 
 object RoutesReads {
   implicit val routePropertiesReads: Reads[RoutesResponse.Properties] = (
-    (__ \ "travel_time").readNullable[Int] and
+    (__ \ "travel_time").readNullable[FiniteDuration] and
     (__ \ "distance").readNullable[Int] and
     (__ \ "route").readNullable[Route] and
     (__ \ "fares").readNullable[Fares]

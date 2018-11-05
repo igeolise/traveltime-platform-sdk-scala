@@ -6,6 +6,8 @@ import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesRe
 import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterPostcodesReads._
 import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.{JsSuccess, Json}
+import scala.concurrent.duration.Duration
+import scala.concurrent.duration.SECONDS
 
 class TimeFilterPostcodesReadsTest extends FunSpec with Matchers {
 
@@ -25,7 +27,7 @@ class TimeFilterPostcodesReadsTest extends FunSpec with Matchers {
               "WC2N 5DS",
               Seq(
                 PostcodesProperties(
-                  Some(67),
+                  Some(Duration(67, SECONDS)),
                   Some(51)
                 )
               )
@@ -34,7 +36,7 @@ class TimeFilterPostcodesReadsTest extends FunSpec with Matchers {
               "WC2N 5DU",
               Seq(
                 PostcodesProperties(
-                  Some(51),
+                  Some(Duration(51, SECONDS)),
                   Some(40)
                 )
               )

@@ -1,7 +1,9 @@
 package com.igeolise.traveltimesdk.dto.requests.common
 
 import enumeratum.{Enum, EnumEntry}
+
 import scala.collection.immutable
+import scala.concurrent.duration.FiniteDuration
 
 sealed trait Transportation extends EnumEntry { val transportType: String }
 sealed trait CommonTransportation         extends Transportation
@@ -14,17 +16,18 @@ sealed trait PublicTransportation         extends Transportation with CommonTran
   {val parameters: PublicTransportationParams}
 
 case class PublicTransportationParams(
-  ptChangeDelay: Option[Int] = None,
-  walkingTime: Option[Int] = None
+  ptChangeDelay: Option[FiniteDuration] = None,
+  walkingTime: Option[FiniteDuration] = None
 )
 
-case class FerryParams(boardingTime: Option[Int] = None)
+case class FerryParams(boardingTime: Option[FiniteDuration] = None){
+}
 
 case class DrivingTrainParams(
-  drivingTimeToStation: Option[Int] = None,
-  parkingTime: Option[Int] = None,
-  ptChangeDelay: Option[Int] = None,
-  walkingTimeFromStation: Option[Int] = None
+  drivingTimeToStation: Option[FiniteDuration] = None,
+  parkingTime: Option[FiniteDuration] = None,
+  ptChangeDelay: Option[FiniteDuration] = None,
+  walkingTimeFromStation: Option[FiniteDuration] = None
 )
 
 object Transportation extends Enum[Transportation] {

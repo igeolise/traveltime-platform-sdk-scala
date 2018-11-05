@@ -1,6 +1,6 @@
 package com.igeolise.traveltimesdk.writes
 
-import com.igeolise.traveltimesdk.json.reads.TimeMapReads._
+import java.time.{ZoneId, ZonedDateTime}
 import com.igeolise.traveltimesdk.json.writes.TimeMapWrites._
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.ArrivalSearch
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest
@@ -11,19 +11,21 @@ import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransport
 import org.scalatest._
 import play.api.libs.json.Json
+import scala.concurrent.duration._
 
 class TimeMapWritesTest extends FunSpec with Matchers{
 
   it("departure_searches and arrival_searches json request") {
-    val trans = PublicTransport(PublicTransportationParams(None, None))
+    val trans = PublicTransport(PublicTransportationParams(Some(Duration(1, MINUTES)), None))
+    val time = ZonedDateTime.of(2018,9,27,8,0,0,0,ZoneId.systemDefault())
 
     val departure =
       TimeMapRequest.DepartureSearch(
         "public transport from Trafalgar Square",
         Coords(51.507609, -0.128315),
         trans,
-        "2018-09-27T08:00:00Z",
-        900
+        time,
+        Duration(900, SECONDS)
       )
 
     val arrival =
@@ -31,8 +33,8 @@ class TimeMapWritesTest extends FunSpec with Matchers{
         "public transport to Trafalgar Square",
         Coords(51.507609, -0.128315),
         trans,
-        "2018-09-27T08:00:00Z",
-        900,
+        time,
+        Duration(900, SECONDS),
         Some(RangeParams(
           enabled = true,
           3600

@@ -1,5 +1,7 @@
 package com.igeolise.traveltimesdk.json.writes
 
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.common.ZoneSearches.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{PropertyType, TimeFilterZonesProperty}
@@ -7,12 +9,27 @@ import com.igeolise.traveltimesdk.dto.requests.common.{FerryTransportation, Loca
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.{FullRangeParams, RangeParams}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+import scala.concurrent.duration.FiniteDuration
 
 object CommonWrites {
 
   implicit val timeMapPropertiesWrites: Writes[Seq[PropertyType]] = new Writes[Seq[PropertyType]] {
     override def writes(props: Seq[PropertyType]): JsValue = Json.arr(props.map(_.propertyType)).value.head
   }
+
+  implicit class extractTime(self: Option[FiniteDuration]) {
+    def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
+  }
+
+  implicit class formatDate(self: ZonedDateTime) {
+    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+    def formatDate: String = self.format(dateFormatter)
+  }
+
+  implicit val formattedDateWrites: Writes[ZonedDateTime] = Writes.StringWrites.contramap(_.formatDate)
+
+  implicit val finiteDurationToSecondsWrites: Writes[FiniteDuration] =
+    Writes.IntWrites.contramap(_.toSeconds.toInt)
 
   implicit val fullRangeParamsWrites: Writes[FullRangeParams] = (
     (__ \ "enabled").write[Boolean] and
@@ -29,8 +46,12 @@ object CommonWrites {
     (__ \ "type").write[String] and
     (__ \ "walking_time").writeNullable[Int] and
     (__ \ "pt_change_delay").writeNullable[Int]
-  ) ((m: PublicTransportation) =>
-    (m.transportType, m.parameters.walkingTime, m.parameters.ptChangeDelay))
+  ) ((m: PublicTransportation) => (
+      m.transportType,
+      m.parameters.walkingTime.toSeconds,
+      m.parameters.ptChangeDelay.toSeconds
+    )
+  )
 
   implicit val drivingTrainWrites: Writes[Transportation.DrivingTrain] = (
     (__ \ "type").write[String] and
@@ -38,15 +59,19 @@ object CommonWrites {
     (__ \ "driving_time_to_station").writeNullable[Int] and
     (__ \ "parking_time").writeNullable[Int] and
     (__ \ "walking_time_from_station").writeNullable[Int]
-  ) ((m: Transportation.DrivingTrain) =>
-    (m.transportType, m.params.ptChangeDelay, m.params.drivingTimeToStation,
-      m.params.parkingTime, m.params.walkingTimeFromStation)
+  ) ((m: Transportation.DrivingTrain) => (
+    m.transportType,
+    m.params.ptChangeDelay.toSeconds,
+    m.params.drivingTimeToStation.toSeconds,
+    m.params.parkingTime.toSeconds,
+    m.params.walkingTimeFromStation.toSeconds
+  )
   )
 
   implicit val ferryWrites: Writes[FerryTransportation] = (
     (__ \ "type").write[String] and
     (__ \ "boarding_time").writeNullable[Int]
-  ) ((m: FerryTransportation) => (m.transportType, m.parameters.boardingTime))
+  ) ((m: FerryTransportation) => (m.transportType, m.parameters.boardingTime.toSeconds))
 
   implicit val transportationWrites: Writes[Transportation] = Writes[Transportation] {
     case m: PublicTransportation => publicTransportWrites.writes(m)

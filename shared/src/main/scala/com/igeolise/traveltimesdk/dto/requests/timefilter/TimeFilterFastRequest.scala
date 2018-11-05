@@ -13,6 +13,8 @@ import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterFastRespons
 import com.softwaremill.sttp._
 import play.api.libs.json.Json
 
+import scala.concurrent.duration.FiniteDuration
+
 case class TimeFilterFastRequest(
   locations: Seq[Location],
   arrivalSearches: ArrivalSearch
@@ -54,7 +56,7 @@ object TimeFilterFastRequest {
     arrivalLocationId: String,
     departureLocationIds: Seq[String],
     transportation: TimeFilterFastTransportation,
-    travelTime: Int,
+    travelTime: FiniteDuration,
     arrivalTimePeriod: ArrivalTimePeriod,
     properties: Seq[TimeFilterFastProperty]
   ) extends SearchType
@@ -64,7 +66,7 @@ object TimeFilterFastRequest {
     departureLocationId: String,
     arrivalLocationIds: Seq[String],
     transportation: TimeFilterFastTransportation,
-    travelTime: Int,
+    travelTime: FiniteDuration,
     arrivalTimePeriod: ArrivalTimePeriod,
     properties: Seq[TimeFilterFastProperty]
   ) extends SearchType

@@ -3,6 +3,7 @@ package com.igeolise.traveltimesdk.dto.responses
 import com.igeolise.traveltimesdk.dto.responses.RoutesResponse.SingleSearchResult
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
 import play.api.libs.json.JsValue
+import scala.concurrent.duration.FiniteDuration
 
 case class RoutesResponse(results: Seq[SingleSearchResult], raw: JsValue)
 
@@ -19,7 +20,7 @@ object RoutesResponse {
   )
 
   case class Properties(
-    travelTimeSeconds: Option[Int],
+    travelTimeSeconds: Option[FiniteDuration],
     distanceMeters: Option[Int],
     route: Option[Route],
     fares: Option[Fares]
