@@ -9,7 +9,7 @@ This open-source library allows you to access [TravelTime platform API](http://d
 Add the following to your `build.sbt`:
 
 ```scala
-libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % 1.0.0
+libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % 1.1.0
 ```
 
 ### Usage
@@ -21,7 +21,10 @@ In order to do that we need to specify which searches we want to perform. Here w
 We can specify additional transport parameters by passing certain parameters to `PublicTransportationParams` case class (if not specified API will use default values):
 
 ```scala
-val ptParams = PublicTransportationParams(ptChangeDelay = Some(10), walkingTime = Some(15))
+val ptParams = PublicTransportationParams(
+  ptChangeDelay = Some(Duration(10, MINUTES)),
+  walkingTime = Some(Duration(15, MINUTES))
+)
 val publicTransport = PublicTransport(ptParams)
 ```
 We pass required arguments:
@@ -31,8 +34,8 @@ val timeMapArrivalSearch =
     id = "Public transport to Trafalgar Square",
     coordinates = Coords(51.507609, -0.128315),
     transportation = publicTransport,
-    arrivalTime = "2018-10-29T08:00:00Z",
-    travelTime = 900,
+    arrivalTime = ZonedDateTime.now(),
+    travelTime = Duration(900, SECONDS),
     range = Some(
       RangeParams(
         enabled = true,
@@ -45,7 +48,12 @@ val timeMapArrivalSearch =
 Now we can instantiate `TimeMapRequest`, since we are only interested in arrival searches we pass `Seq()` to parameters we are not interested:
 
 ```scala
-val timeMapRequest = TimeMapRequest(Seq(), Seq(timeMapArrivalSearch), Seq(), Seq())
+val timeMapRequest = TimeMapRequest(
+  departureSearches = Seq(),
+  arrivalSearches = Seq(timeMapArrivalSearch),
+  unionSearches = Seq(),
+  intersectionSearches = Seq()
+)
 ```
 
 To send this request `TravelTimeSDK` object is required, we provide required information such as `ApiCredentials` and desired backend (in the example `DefaultBackend` is being used). Since [Cats monad](https://typelevel.org/cats/typeclasses/monad.html) is required - we import it along with the execution context:

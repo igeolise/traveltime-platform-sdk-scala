@@ -21,15 +21,15 @@ object CommonWrites {
     def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
   }
 
+  implicit val finiteDurationToSecondsWrites: Writes[FiniteDuration] =
+    Writes.IntWrites.contramap(_.toSeconds.toInt)
+
   implicit class formatDate(self: ZonedDateTime) {
     val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
     def formatDate: String = self.format(dateFormatter)
   }
 
   implicit val formattedDateWrites: Writes[ZonedDateTime] = Writes.StringWrites.contramap(_.formatDate)
-
-  implicit val finiteDurationToSecondsWrites: Writes[FiniteDuration] =
-    Writes.IntWrites.contramap(_.toSeconds.toInt)
 
   implicit val fullRangeParamsWrites: Writes[FullRangeParams] = (
     (__ \ "enabled").write[Boolean] and
@@ -65,8 +65,7 @@ object CommonWrites {
     m.params.drivingTimeToStation.toSeconds,
     m.params.parkingTime.toSeconds,
     m.params.walkingTimeFromStation.toSeconds
-  )
-  )
+  ))
 
   implicit val ferryWrites: Writes[FerryTransportation] = (
     (__ \ "type").write[String] and

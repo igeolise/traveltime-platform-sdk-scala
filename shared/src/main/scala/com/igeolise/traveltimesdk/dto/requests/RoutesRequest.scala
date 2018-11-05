@@ -1,7 +1,6 @@
 package com.igeolise.traveltimesdk.dto.requests
 
 import java.time.ZonedDateTime
-
 import cats.Monad
 import com.igeolise.traveltimesdk.json.reads.RoutesReads._
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._

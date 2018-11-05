@@ -13,7 +13,6 @@ import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse
 import com.softwaremill.sttp._
 import play.api.libs.json.Json
-
 import scala.concurrent.duration.FiniteDuration
 
 case class TimeFilterPostcodesRequest(

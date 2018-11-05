@@ -12,7 +12,6 @@ import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterFastResponse
 import com.softwaremill.sttp._
 import play.api.libs.json.Json
-
 import scala.concurrent.duration.FiniteDuration
 
 case class TimeFilterFastRequest(
