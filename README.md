@@ -9,6 +9,7 @@ This open-source library allows you to access [TravelTime platform API](http://d
 Add the following to your `build.sbt`:
 
 ```scala
+resolvers += Resolver.jcenterRepo
 libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % 1.0.0
 ```
 
