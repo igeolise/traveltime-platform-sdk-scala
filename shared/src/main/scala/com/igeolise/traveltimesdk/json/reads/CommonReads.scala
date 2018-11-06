@@ -1,13 +1,19 @@
 package com.igeolise.traveltimesdk.json.reads
 
+import java.time.ZonedDateTime
+
 import com.igeolise.traveltimesdk.dto.common.{Coords, TravelTime, Zone, ZoneSearchProperties}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
+
 import scala.concurrent.duration.{Duration, FiniteDuration, SECONDS}
 
 object CommonReads {
+
+  implicit val zonedTimeReads: Reads[ZonedDateTime] =
+    Reads.StringReads.map(date => ZonedDateTime.parse(date))
 
   val secondsToFiniteDurationReads: Reads[FiniteDuration] =
     Reads.IntReads.map(time => Duration(time, SECONDS))
@@ -43,7 +49,7 @@ object CommonReads {
     (__ \ "mode").read[String] and
     (__ \ "directions").read[String] and
     (__ \ "distance").read[Int] and
-    (__ \ "travel_time").read[Int] and
+    (__ \ "travel_time").read[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "coords").read[Seq[Coords]](Reads.seq(coordsReads))
   ) (Route.RoutePart.BasicRoutePart.apply _)
 

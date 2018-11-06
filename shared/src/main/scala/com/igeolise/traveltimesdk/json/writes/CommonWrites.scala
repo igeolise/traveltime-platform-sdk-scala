@@ -93,7 +93,7 @@ object CommonWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "arrival_time").write[String] and
-    (__ \ "travel_time").write[Int] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]
@@ -104,7 +104,7 @@ object CommonWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "departure_time").write[String] and
-    (__ \ "travel_time").write[Int] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]

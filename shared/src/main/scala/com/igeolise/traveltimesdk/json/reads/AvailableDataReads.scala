@@ -4,6 +4,7 @@ import java.time.ZonedDateTime
 import com.igeolise.traveltimesdk.dto.responses.{MapInfoResponse, SupportedLocationsResponse}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
+import CommonReads._
 
 object AvailableDataReads {
   implicit val supportedLocationsLocationReadsV4: Reads[SupportedLocationsResponse.Location] = (

@@ -4,6 +4,8 @@ import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilte
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation
 
+import scala.concurrent.duration.FiniteDuration
+
 case class Zone(
   code: String,
   properties: ZoneSearchProperties
@@ -28,7 +30,7 @@ object ZoneSearches{
     coords: Coords,
     transportation: Transportation,
     departureTime: String,
-    travelTime: Int,
+    travelTime: FiniteDuration,
     reachablePostcodesThreshold: Double,
     properties: Seq[TimeFilterZonesProperty],
     range: Option[FullRangeParams] = None
@@ -39,7 +41,7 @@ object ZoneSearches{
     coords: Coords,
     transportation: Transportation,
     arrivalTime: String,
-    travelTime: Int,
+    travelTime: FiniteDuration,
     reachablePostcodesThreshold: Double,
     properties: Seq[TimeFilterZonesProperty],
     range: Option[FullRangeParams] = None
