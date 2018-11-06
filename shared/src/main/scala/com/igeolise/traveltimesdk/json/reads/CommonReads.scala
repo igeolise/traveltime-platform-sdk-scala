@@ -9,7 +9,7 @@ import scala.concurrent.duration.{Duration, FiniteDuration, SECONDS}
 
 object CommonReads {
 
-  implicit val finiteDurationSecondsReads: Reads[FiniteDuration] =
+  val secondsToFiniteDurationReads: Reads[FiniteDuration] =
     Reads.IntReads.map(time => Duration(time, SECONDS))
 
   implicit val timeMapResponsePropertiesReads: Reads[TimeMapResponseProperties] =
@@ -52,7 +52,7 @@ object CommonReads {
     (__ \ "direction").read[String]
   ) ((basic: Route.RoutePart.BasicRoutePart, direction: String) =>
     Route.RoutePart.StartEndRoutePart(
-      basic.id, basic.`type`, basic.mode, basic.directions, basic.distanceMeters, basic.travelTimeSeconds, basic.coords,
+      basic.id, basic.`type`, basic.mode, basic.directions, basic.distanceMeters, basic.travelTime, basic.coords,
       direction
     )
   )
@@ -63,7 +63,7 @@ object CommonReads {
     (__ \ "turn").readNullable[String]
   ) ((basic: Route.RoutePart.BasicRoutePart, road: Option[String], turn: Option[String]) =>
       Route.RoutePart.RoadRoutePart(
-        basic.id, basic.`type`, basic.mode, basic.directions, basic.distanceMeters, basic.travelTimeSeconds, basic.coords,
+        basic.id, basic.`type`, basic.mode, basic.directions, basic.distanceMeters, basic.travelTime, basic.coords,
         road, turn
       )
   )
@@ -78,7 +78,7 @@ object CommonReads {
     (__ \ "num_stops").read[Int]
   ) ((basic: Route.RoutePart.BasicRoutePart, line: String, departureStation: String, arrivalStation: String, departsAt: String, arrivesAt: String, numStops: Int) =>
     Route.RoutePart.PublicTransportRoutePart(
-      basic.id, basic.`type`, basic.mode, basic.directions, basic.distanceMeters, basic.travelTimeSeconds, basic.coords,
+      basic.id, basic.`type`, basic.mode, basic.directions, basic.distanceMeters, basic.travelTime, basic.coords,
       line, departureStation, arrivalStation, departsAt, arrivesAt, numStops
     )
   )

@@ -18,7 +18,7 @@ object TimeFilterWrites{
     (__ \ "departure_location_ids").write[Seq[String]] and
     (__ \ "arrival_location_id").write[String] and
     (__ \ "transportation").write[Transportation] and
-    (__ \ "travel_time").write[FiniteDuration] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "arrival_time").write[ZonedDateTime] and
     (__ \ "range").writeNullable[FullRangeParams] and
     (__ \ "properties").write[Seq[TimeFilterRequestProperty]]
@@ -29,7 +29,7 @@ object TimeFilterWrites{
     (__ \ "departure_location_id").write[String] and
     (__ \ "arrival_location_ids").write[Seq[String]] and
     (__ \ "transportation").write[Transportation] and
-    (__ \ "travel_time").write[FiniteDuration] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "departure_time").write[ZonedDateTime] and
     (__ \ "range").writeNullable[FullRangeParams] and
     (__ \ "properties").write[Seq[TimeFilterRequestProperty]]

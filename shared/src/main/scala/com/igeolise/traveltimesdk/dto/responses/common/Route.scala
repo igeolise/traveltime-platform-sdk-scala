@@ -15,7 +15,7 @@ object Route {
     val mode: String
     val directions: String
     val distanceMeters: Int
-    val travelTimeSeconds: Int
+    val travelTime: Int
     val coords: Seq[Coords]
   }
 
@@ -26,7 +26,7 @@ object Route {
       mode: String,
       directions: String,
       distanceMeters: Int,
-      travelTimeSeconds: Int,
+      travelTime: Int,
       coords: Seq[Coords]
     ) extends RoutePart
 
@@ -36,7 +36,7 @@ object Route {
       mode: String,
       directions: String,
       distanceMeters: Int,
-      travelTimeSeconds: Int,
+      travelTime: Int,
       coords: Seq[Coords],
       direction: String
     ) extends RoutePart
@@ -47,7 +47,7 @@ object Route {
       mode: String,
       directions: String,
       distanceMeters: Int,
-      travelTimeSeconds: Int,
+      travelTime: Int,
       coords: Seq[Coords],
       road: Option[String],
       turn: Option[String]
@@ -59,7 +59,7 @@ object Route {
       mode: String,
       directions: String,
       distanceMeters: Int,
-      travelTimeSeconds: Int,
+      travelTime: Int,
       coords: Seq[Coords],
       line: String,
       departureStation: String,

@@ -9,7 +9,7 @@ import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterPostcodesReads  {
   implicit val postcodesPropertiesReads: Reads[PostcodesProperties] = (
-    (__ \ "travel_time").readNullable[FiniteDuration] and
+    (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int]
   )(PostcodesProperties.apply _)
 

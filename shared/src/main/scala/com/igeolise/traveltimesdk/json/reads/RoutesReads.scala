@@ -9,7 +9,7 @@ import scala.concurrent.duration.FiniteDuration
 
 object RoutesReads {
   implicit val routePropertiesReads: Reads[RoutesResponse.Properties] = (
-    (__ \ "travel_time").readNullable[FiniteDuration] and
+    (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int] and
     (__ \ "route").readNullable[Route] and
     (__ \ "fares").readNullable[Fares]

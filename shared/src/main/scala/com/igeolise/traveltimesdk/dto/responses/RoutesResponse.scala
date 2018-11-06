@@ -20,7 +20,7 @@ object RoutesResponse {
   )
 
   case class Properties(
-    travelTimeSeconds: Option[FiniteDuration],
+    travelTime: Option[FiniteDuration],
     distanceMeters: Option[Int],
     route: Option[Route],
     fares: Option[Fares]

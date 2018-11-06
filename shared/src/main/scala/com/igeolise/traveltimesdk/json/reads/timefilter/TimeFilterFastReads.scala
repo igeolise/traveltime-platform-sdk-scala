@@ -19,7 +19,7 @@ object TimeFilterFastReads {
     (__ \ "tickets_total").read[Seq[Ticket]].map(Fares.apply)
 
   implicit val timeFilterPropertiesReads: Reads[Properties] = (
-    (__ \ "travel_time").readNullable[FiniteDuration] and
+    (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "fares").read[Fares]
   ) (Properties.apply _)
 

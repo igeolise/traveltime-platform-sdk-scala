@@ -20,7 +20,7 @@ object TimeFilterResponse {
   )
 
   sealed case class Properties(
-    travelTimeSeconds: Option[FiniteDuration] = None,
+    travelTime: Option[FiniteDuration] = None,
     distanceMeters: Option[Int] = None,
     fares: Option[Fares] = None,
     route: Option[Route] = None

@@ -18,7 +18,7 @@ object TimeFilterPostcodesWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "departure_time").write[String] and
-    (__ \ "travel_time").write[FiniteDuration] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "range").writeNullable[FullRangeParams] and
     (__ \ "properties").write[Seq[TimeFilterPostcodesProperty]]
   )(unlift(DepartureSearch.unapply))
@@ -28,7 +28,7 @@ object TimeFilterPostcodesWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "arrival_time").write[String] and
-    (__ \ "travel_time").write[FiniteDuration] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "range").writeNullable[FullRangeParams] and
     (__ \ "properties").write[Seq[TimeFilterPostcodesProperty]]
   )(unlift(ArrivalSearch.unapply))

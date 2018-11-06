@@ -10,7 +10,7 @@ import scala.concurrent.duration.FiniteDuration
 object TimeFilterReads {
 
   implicit val timeFilterPropertiesReads: Reads[TimeFilterResponse.Properties] = (
-    (__ \ "travel_time").readNullable[FiniteDuration] and
+    (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int] and
     (__ \ "fares").readNullable[Fares] and
     (__ \ "route").readNullable[Route]

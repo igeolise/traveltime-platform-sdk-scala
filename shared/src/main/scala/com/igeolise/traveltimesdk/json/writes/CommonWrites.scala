@@ -21,8 +21,7 @@ object CommonWrites {
     def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
   }
 
-  implicit val finiteDurationToSecondsWrites: Writes[FiniteDuration] =
-    Writes.IntWrites.contramap(_.toSeconds.toInt)
+  val secondsToFiniteDurationWrites: Writes[FiniteDuration] = Writes.IntWrites.contramap(_.toSeconds.toInt)
 
   implicit class formatDate(self: ZonedDateTime) {
     val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")

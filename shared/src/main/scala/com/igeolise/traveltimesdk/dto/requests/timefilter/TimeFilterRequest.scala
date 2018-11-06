@@ -44,7 +44,7 @@ object TimeFilterRequest {
     departureLocationId: String,
     arrivalLocationIds: Seq[String],
     transportation: CommonTransportation,
-    travelTimeSeconds: FiniteDuration,
+    travelTime: FiniteDuration,
     departureTime: ZonedDateTime,
     range: Option[FullRangeParams],
     properties: Seq[TimeFilterRequestProperty]
@@ -55,7 +55,7 @@ object TimeFilterRequest {
     departureLocationIds: Seq[String],
     arrivalLocationId: String,
     transportation: CommonTransportation,
-    travelTimeSeconds: FiniteDuration,
+    travelTime: FiniteDuration,
     arrivalTime: ZonedDateTime,
     range: Option[FullRangeParams],
     properties: Seq[TimeFilterRequestProperty]
