@@ -4,10 +4,12 @@ import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesRe
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse.{Postcode, PostcodesProperties}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
+import com.igeolise.traveltimesdk.json.reads.CommonReads._
+import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterPostcodesReads  {
   implicit val postcodesPropertiesReads: Reads[PostcodesProperties] = (
-    (__ \ "travel_time").readNullable[Int] and
+    (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int]
   )(PostcodesProperties.apply _)
 

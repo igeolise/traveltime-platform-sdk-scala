@@ -1,5 +1,6 @@
 package com.igeolise.traveltimesdk.json.writes
 
+import java.time.ZonedDateTime
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest._
 import com.igeolise.traveltimesdk.dto.requests._
@@ -9,6 +10,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.Transportation
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, __}
+import scala.concurrent.duration.FiniteDuration
 
 object TimeMapWrites {
 
@@ -16,8 +18,8 @@ object TimeMapWrites {
     (__ \ "id").write[String] and
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
-    (__ \ "departure_time").write[String] and
-    (__ \ "travel_time").write[Int] and
+    (__ \ "departure_time").write[ZonedDateTime] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "range").writeNullable[RangeParams] and
     (__ \ "properties").writeNullable[Seq[TimeMapRequestProperty]]
   ) (unlift(DepartureSearch.unapply))
@@ -26,8 +28,8 @@ object TimeMapWrites {
     (__ \ "id").write[String] and
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
-    (__ \ "arrival_time").write[String] and
-    (__ \ "travel_time").write[Int] and
+    (__ \ "arrival_time").write[ZonedDateTime] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "range").writeNullable[RangeParams] and
     (__ \ "properties").writeNullable[Seq[TimeMapRequestProperty]]
   ) (unlift(ArrivalSearch.unapply))
@@ -62,5 +64,4 @@ object TimeMapWrites {
     (__ \ "unions").write[Seq[Union]] and
     (__ \ "intersections").write[Seq[Intersection]]
   ) (unlift(TimeMapBoxesRequest.unapply))
-
 }

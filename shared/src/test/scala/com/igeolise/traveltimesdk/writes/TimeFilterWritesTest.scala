@@ -1,6 +1,6 @@
 package com.igeolise.traveltimesdk.writes
 
-import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterReads._
+import java.time.{ZoneId, ZonedDateTime}
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterWrites._
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest.DepartureSearch
@@ -11,6 +11,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParam
 import com.igeolise.traveltimesdk.dto.requests.common.{CommonProperties, Location, PublicTransportationParams, Transportation}
 import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.Json
+import scala.concurrent.duration.{Duration, SECONDS}
 
 class TimeFilterWritesTest extends FunSpec with Matchers {
   it("TimeFilterWritesTest: locations, departure_searches and arrival_searches json request") {
@@ -20,13 +21,15 @@ class TimeFilterWritesTest extends FunSpec with Matchers {
       Location("ZSL London Zoo", Coords(51.536067, -0.153596))
     )
 
+    val time = ZonedDateTime.of(2018,9,27,8,0,0,0,ZoneId.systemDefault())
+
     val timeFilterDepartures = DepartureSearch(
       "forward search example",
       "London center",
       Seq("Hyde Park", "ZSL London Zoo" ),
       Transportation.Bus(PublicTransportationParams(None, None)),
-      1800,
-      "2018-09-27T08:00:00Z",
+      Duration(1800, SECONDS),
+      time,
       Some(FullRangeParams(enabled = true, 3, 600)),
       Seq(CommonProperties.PropertyType.travelTime)
     )
@@ -36,8 +39,8 @@ class TimeFilterWritesTest extends FunSpec with Matchers {
       Seq("Hyde Park", "ZSL London Zoo"),
       "London center",
       Transportation.PublicTransport(PublicTransportationParams(None, None)),
-      1900,
-      "2018-09-27T08:00:00Z",
+      Duration(1900, SECONDS),
+      time,
       None,
       Seq(travelTime, distance, distanceBreakdown, fares)
     )
@@ -47,6 +50,5 @@ class TimeFilterWritesTest extends FunSpec with Matchers {
     val timeFilterJson = Json.toJson(timeFilterRequest)
 
     timeFilterJson should equal (Json.parse(jsonResource))
-
   }
 }

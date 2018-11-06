@@ -1,6 +1,5 @@
 package com.igeolise.traveltimesdk.writes
 
-import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterPostcodesReads._
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterPostcodesWrites._
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterPostcodesRequest
 import com.igeolise.traveltimesdk.TestUtils
@@ -10,6 +9,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransport
 import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.Json
+import scala.concurrent.duration._
 
 class TimeFilterPostcodesWritesTest
   extends FunSpec with Matchers  {
@@ -22,7 +22,7 @@ class TimeFilterPostcodesWritesTest
         Coords(51.507609, -0.128315),
         transport,
         "2018-09-27T08:00:00Z",
-        1800,
+        Duration(1800, SECONDS),
         None,
         Seq(travelTime, distance)
       )
@@ -32,7 +32,7 @@ class TimeFilterPostcodesWritesTest
         Coords(51.507609, -0.128315),
         transport,
         "2018-09-27T08:00:00Z",
-        1800,
+        Duration(1800, SECONDS),
         None,
         Seq(travelTime, distance)
       )

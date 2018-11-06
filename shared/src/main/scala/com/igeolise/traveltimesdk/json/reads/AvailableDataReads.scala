@@ -1,8 +1,10 @@
 package com.igeolise.traveltimesdk.json.reads
 
+import java.time.ZonedDateTime
 import com.igeolise.traveltimesdk.dto.responses.{MapInfoResponse, SupportedLocationsResponse}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
+import CommonReads._
 
 object AvailableDataReads {
   implicit val supportedLocationsLocationReadsV4: Reads[SupportedLocationsResponse.Location] = (
@@ -17,8 +19,8 @@ object AvailableDataReads {
   )(SupportedLocationsResponse.apply _)
 
   implicit val mapInfoPTReadsV4: Reads[MapInfoResponse.PublicTransportData] = (
-    (__ \ "date_start").read[String] and
-    (__ \ "date_end").read[String]
+    (__ \ "date_start").read[ZonedDateTime] and
+    (__ \ "date_end").read[ZonedDateTime]
   )(MapInfoResponse.PublicTransportData.apply _)
 
   implicit val mapInfoFeaturesReadsV4: Reads[MapInfoResponse.Features] = (

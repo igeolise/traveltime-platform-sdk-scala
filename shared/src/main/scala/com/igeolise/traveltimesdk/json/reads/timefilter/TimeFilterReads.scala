@@ -5,10 +5,12 @@ import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse
 import com.igeolise.traveltimesdk.json.reads.CommonReads._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
+import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterReads {
+
   implicit val timeFilterPropertiesReads: Reads[TimeFilterResponse.Properties] = (
-    (__ \ "travel_time").readNullable[Int] and
+    (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int] and
     (__ \ "fares").readNullable[Fares] and
     (__ \ "route").readNullable[Route]

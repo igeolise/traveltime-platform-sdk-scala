@@ -1,5 +1,6 @@
 package com.igeolise.traveltimesdk.dto.requests
 
+import java.time.ZonedDateTime
 import cats.Monad
 import com.igeolise.traveltimesdk.json.reads.RoutesReads._
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
@@ -43,7 +44,7 @@ object RoutesRequest {
     departureLocationId: String,
     arrivalLocationIds: Seq[String],
     transportation: CommonTransportation,
-    departureTime: String,
+    departureTime: ZonedDateTime,
     properties: Seq[RoutesRequestProperty],
     range: Option[FullRangeParams] = None
   ) extends SearchType
@@ -53,7 +54,7 @@ object RoutesRequest {
     departureLocationIds: Seq[String],
     arrivalLocationId: String,
     transportation: CommonTransportation,
-    arrivalTime: String,
+    arrivalTime: ZonedDateTime,
     properties: Seq[RoutesRequestProperty],
     range: Option[FullRangeParams] = None
   ) extends SearchType

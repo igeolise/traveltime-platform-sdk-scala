@@ -7,6 +7,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.{Location, TimeFilterFastT
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, __}
+import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterFastWrites {
 
@@ -17,7 +18,7 @@ object TimeFilterFastWrites {
     (__ \ "departure_location_id").write[String] and
     (__ \ "arrival_location_ids").write[Seq[String]] and
     (__ \ "transportation").write[TimeFilterFastTransportation] and
-    (__ \ "travel_time").write[Int] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "arrival_time_period").write[ArrivalTimePeriod] and
     (__ \ "properties").write[Seq[TimeFilterFastProperty]]
   )(unlift(OneToMany.unapply))
@@ -27,7 +28,7 @@ object TimeFilterFastWrites {
     (__ \ "arrival_location_id").write[String] and
     (__ \ "departure_location_ids").write[Seq[String]] and
     (__ \ "transportation").write[TimeFilterFastTransportation] and
-    (__ \ "travel_time").write[Int] and
+    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
     (__ \ "arrival_time_period").write[ArrivalTimePeriod] and
     (__ \ "properties").write[Seq[TimeFilterFastProperty]]
   )(unlift(ManyToOne.unapply))

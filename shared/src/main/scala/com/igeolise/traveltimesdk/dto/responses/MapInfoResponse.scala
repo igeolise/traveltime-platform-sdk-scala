@@ -1,5 +1,6 @@
 package com.igeolise.traveltimesdk.dto.responses
 
+import java.time.ZonedDateTime
 import com.igeolise.traveltimesdk.dto.responses.MapInfoResponse.Map
 import play.api.libs.json.JsValue
 
@@ -18,8 +19,8 @@ object MapInfoResponse {
   )
 
   case class PublicTransportData(
-    dateStart: String,
-    dateEnd: String
+    dateStart: ZonedDateTime,
+    dateEnd: ZonedDateTime
   )
 
 }

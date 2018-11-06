@@ -1,6 +1,7 @@
 package com.igeolise.traveltimesdk.writes
 
-import com.igeolise.traveltimesdk.json.reads.RoutesReads._
+import java.time.{ZoneId, ZonedDateTime}
+
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
@@ -20,13 +21,14 @@ class RoutesWritesTest extends FunSpec with Matchers {
       Location("Hyde Park", Coords(51.508824, -0.167093)),
       Location("ZSL London Zoo", Coords(51.536067, -0.153596))
     )
+    val time = ZonedDateTime.of(2018,10,2,8,0,0,0,ZoneId.systemDefault())
 
     val routesDepartures = DepartureSearch(
       "departure search example",
       "London center",
       Seq("Hyde Park", "ZSL London Zoo"),
       Transportation.Driving,
-      "2018-10-02T08:00:00Z",
+      time,
       Seq(PropertyType.travelTime, distance, route),
       None
     )
@@ -36,7 +38,7 @@ class RoutesWritesTest extends FunSpec with Matchers {
       Seq("Hyde Park", "ZSL London Zoo"),
       "London center",
       Transportation.PublicTransport(PublicTransportationParams()),
-      "2018-10-02T08:00:00Z",
+      time,
       Seq(travelTime, distance, route, fares),
       Some(FullRangeParams(enabled = true, 1, 1800))
     )

@@ -12,6 +12,8 @@ import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse
 import com.softwaremill.sttp._
 import play.api.libs.json.Json
+import scala.concurrent.duration.FiniteDuration
+import java.time.ZonedDateTime
 
 case class TimeFilterRequest(
   locations: Seq[Location],
@@ -42,8 +44,8 @@ object TimeFilterRequest {
     departureLocationId: String,
     arrivalLocationIds: Seq[String],
     transportation: CommonTransportation,
-    travelTimeSeconds: Int,
-    departureTime: String,
+    travelTime: FiniteDuration,
+    departureTime: ZonedDateTime,
     range: Option[FullRangeParams],
     properties: Seq[TimeFilterRequestProperty]
   ) extends SearchType
@@ -53,8 +55,8 @@ object TimeFilterRequest {
     departureLocationIds: Seq[String],
     arrivalLocationId: String,
     transportation: CommonTransportation,
-    travelTimeSeconds: Int,
-    arrivalTime: String,
+    travelTime: FiniteDuration,
+    arrivalTime: ZonedDateTime,
     range: Option[FullRangeParams],
     properties: Seq[TimeFilterRequestProperty]
   ) extends SearchType

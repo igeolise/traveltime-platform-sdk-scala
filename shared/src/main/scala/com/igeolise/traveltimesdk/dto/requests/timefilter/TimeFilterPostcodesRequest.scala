@@ -13,6 +13,7 @@ import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse
 import com.softwaremill.sttp._
 import play.api.libs.json.Json
+import scala.concurrent.duration.FiniteDuration
 
 case class TimeFilterPostcodesRequest(
   departureSearches: Seq[TimeFilterPostcodesRequest.DepartureSearch],
@@ -41,7 +42,7 @@ object TimeFilterPostcodesRequest {
     coords: Coords,
     transportation: CommonTransportation,
     departureTime: String,
-    travelTime: Int,
+    travelTime: FiniteDuration,
     rangeParams: Option[FullRangeParams],
     properties: Seq[TimeFilterPostcodesProperty]
   ) extends SearchType
@@ -51,7 +52,7 @@ object TimeFilterPostcodesRequest {
     coords: Coords,
     transportation: CommonTransportation,
     arrivalTime: String,
-    travelTime: Int,
+    travelTime: FiniteDuration,
     rangeParams: Option[FullRangeParams],
     properties: Seq[TimeFilterPostcodesProperty]
   ) extends SearchType

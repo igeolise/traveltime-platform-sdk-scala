@@ -9,6 +9,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyT
 import com.igeolise.traveltimesdk.dto.requests.common.{PublicTransportationParams, Transportation}
 import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.Json
+import scala.concurrent.duration._
 
 class TimeFilterZonesWritesTest
   extends FunSpec with Matchers  {
@@ -17,7 +18,7 @@ class TimeFilterZonesWritesTest
     Coords(51.507609, -0.128315),
     Transportation.PublicTransport(PublicTransportationParams(None, None)),
     "2018-10-01T08:00:00Z",
-    1800,
+    Duration(1800, SECONDS),
     0.1,
     Seq(
       coverage, travelTimeReachable, travelTimeAll
@@ -29,7 +30,7 @@ class TimeFilterZonesWritesTest
     Coords(51.507609, -0.128315),
     Transportation.PublicTransport(PublicTransportationParams(None, None)),
     "2018-10-01T08:00:00Z",
-    1800,
+    Duration(1800, SECONDS),
     0.1,
     Seq(
       coverage, travelTimeReachable, travelTimeAll
@@ -51,5 +52,4 @@ class TimeFilterZonesWritesTest
 
     timeFilterJson should equal (Json.parse(jsonResource))
   }
-
 }

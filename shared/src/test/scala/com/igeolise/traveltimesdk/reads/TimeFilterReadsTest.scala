@@ -6,6 +6,7 @@ import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse.{L
 import com.igeolise.traveltimesdk.TestUtils
 import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.{JsSuccess, Json}
+import scala.concurrent.duration._
 
 class TimeFilterReadsTest extends FunSpec with Matchers {
 
@@ -23,9 +24,9 @@ class TimeFilterReadsTest extends FunSpec with Matchers {
             Location(
               "Hyde Park",
               Seq(
-                Properties(Some(1753)),
-                Properties(Some(1804)),
-                Properties(Some(1815))
+                Properties(Some(Duration(1753, SECONDS))),
+                Properties(Some(Duration(1804, SECONDS))),
+                Properties(Some(Duration(1815, SECONDS)))
               )
             )
           ),
