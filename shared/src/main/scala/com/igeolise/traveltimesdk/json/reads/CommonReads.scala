@@ -1,13 +1,11 @@
 package com.igeolise.traveltimesdk.json.reads
 
 import java.time.ZonedDateTime
-
 import com.igeolise.traveltimesdk.dto.common.{Coords, TravelTime, Zone, ZoneSearchProperties}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
-
 import scala.concurrent.duration.{Duration, FiniteDuration, SECONDS}
 
 object CommonReads {

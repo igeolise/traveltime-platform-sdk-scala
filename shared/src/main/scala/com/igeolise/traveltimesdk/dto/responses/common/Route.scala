@@ -1,7 +1,6 @@
 package com.igeolise.traveltimesdk.dto.responses.common
 
 import com.igeolise.traveltimesdk.dto.common.Coords
-
 import scala.concurrent.duration.FiniteDuration
 
 case class Route(

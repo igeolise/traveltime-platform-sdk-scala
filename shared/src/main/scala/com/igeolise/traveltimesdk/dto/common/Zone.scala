@@ -3,7 +3,6 @@ package com.igeolise.traveltimesdk.dto.common
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterZonesProperty
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation
-
 import scala.concurrent.duration.FiniteDuration
 
 case class Zone(
