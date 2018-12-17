@@ -5,7 +5,7 @@ import java.time.ZonedDateTime
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.responses.MapInfoResponse
 import com.igeolise.traveltimesdk.dto.responses.MapInfoResponse._
-import com.igeolise.traveltimesdk.shared.json.reads.AvailableDataReads._
+import com.igeolise.traveltimesdk.json.reads.AvailableDataReads._
 import org.scalatest.{FunSpec, Matchers}
 import play.api.libs.json.{JsSuccess, Json}
 
