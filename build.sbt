@@ -4,7 +4,7 @@ val commonSettings = Seq(
   organization := "com.igeolise",
   bintrayOrganization := Some("igeolise"),
   name := "traveltime-platform-sdk",
-  version := "1.1.0",
+  version := "1.1.1-SNAPSHOT",
   crossScalaVersions := Seq("2.12.7", "2.11.12"),
   scalacOptions ++= Seq(
     "-deprecation",
@@ -23,7 +23,6 @@ val commonSettings = Seq(
     "com.softwaremill.sttp" %%% "core" % "1.3.9",
     "com.typesafe.play" %%% "play-json" % "2.6.10",
     "com.beachape" %%% "enumeratum" % "1.5.13",
-
     "org.scalatest" %%% "scalatest" % "3.0.5" % "test",
     "org.scalactic" %%% "scalactic" % "3.0.5" % "test",
   ),
@@ -36,6 +35,12 @@ lazy val sdk =
     .jvmSettings(
       libraryDependencies ++= Seq(
         "com.softwaremill.sttp" %% "async-http-client-backend-future" % "1.3.6"
+      )
+    )
+    .jsSettings(
+      libraryDependencies ++= Seq(
+        "io.github.cquiroz" %%% "scala-java-time" % "2.0.0-RC1",
+        "io.github.cquiroz" %%% "scala-java-time-tzdb" % "2.0.0-RC1_2018f"
       )
     )
 
