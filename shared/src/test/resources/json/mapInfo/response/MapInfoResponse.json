@@ -1,0 +1,33 @@
+{
+  "maps": [
+    {
+      "name": "th",
+      "features": {
+        "fares": false,
+        "postcodes": false
+      }
+    },
+    {
+      "name": "fi",
+      "features": {
+        "public_transport": {
+          "date_start": "2018-12-01T23:00:00+01:00",
+          "date_end": "2019-02-03T23:00:00+01:00"
+        },
+        "fares": false,
+        "postcodes": false
+      }
+    },
+    {
+      "name": "au_qld",
+      "features": {
+        "public_transport": {
+          "date_start": "2018-11-11T15:00:00+01:00",
+          "date_end": "2019-01-14T15:00:00+01:00"
+        },
+        "fares": false,
+        "postcodes": false
+      }
+    }
+  ]
+}
