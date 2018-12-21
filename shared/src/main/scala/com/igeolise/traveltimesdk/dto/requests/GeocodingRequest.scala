@@ -1,11 +1,11 @@
 package com.igeolise.traveltimesdk.dto.requests
 
 import cats.Monad
-import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, TravelTimeSdkError}
 import com.igeolise.traveltimesdk.dto.responses.common.GeocodingResponseProperties
+import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, TravelTimeSdkError}
+import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
 import com.softwaremill.sttp.{Uri, _}
 
 case class GeocodingRequest(
@@ -23,13 +23,17 @@ case class GeocodingRequest(
     def request(
       query: String, host: Uri, focusCoords: Option[Coords], countryCode: Option[String]
     ): Request[String, Nothing] = {
-      val lat = focusCoords.map(_.lat)
-      val lng = focusCoords.map(_.lng)
 
       sttp
-        .get(uri"$host/v4/geocoding/search?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode")
+        .get(queryUri(host))
         .contentType(MediaTypes.Json)
     }
     request(query, host, focusCoords, countryCode)
+  }
+
+  def queryUri(host: Uri, resourceType: String = "search"): Uri = {
+    val lat = focusCoords.map(_.lat)
+    val lng = focusCoords.map(_.lng)
+    uri"$host/v4/geocoding/$resourceType?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
   }
 }
