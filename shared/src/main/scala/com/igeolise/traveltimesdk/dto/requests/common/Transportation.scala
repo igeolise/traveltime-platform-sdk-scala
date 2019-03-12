@@ -42,7 +42,7 @@ object Transportation extends Enum[Transportation] {
     override val parameters: FerryParams = params
   }
 
-  case object PublicTransport extends Transportation {
+  case object PublicTransport extends TimeFilterFastTransportation with CommonTransportation {
     override val transportType: String = "public_transport"
   }
 
