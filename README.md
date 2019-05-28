@@ -58,16 +58,13 @@ val timeMapRequest = TimeMapRequest(
 )
 ```
 
-To send this request `TravelTimeSDK` object is required, we provide required information such as `ApiCredentials` and desired backend (in the example `DefaultBackend` is being used). Since [Cats monad](https://typelevel.org/cats/typeclasses/monad.html) is required - we import it along with the execution context:
+To send this request `TravelTimeSDK` object is required, we provide required information such as `ApiCredentials` and desired backend (in the example `DefaultBackend` is being used). In the example we use `TravelTimeSDK.default()` method, which returns `Future` type backend SDK instance.
 
 ```scala
-import scala.concurrent.ExecutionContext.Implicits.global
-import cats.instances.future._
-
 val credentials = ApiCredentials("AppId", "ApiKey")
 val backend = DefaultBackend.backend
 
-val sdk = TravelTimeSDK(credentials, backend)
+val sdk = TravelTimeSDK.defaultSdk(credentials, backend)
 ```
 Now we are able to send the request:
 ```scala
