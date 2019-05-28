@@ -58,7 +58,7 @@ val timeMapRequest = TimeMapRequest(
 )
 ```
 
-To send this request `TravelTimeSDK` object is required, we provide required information such as `ApiCredentials` and desired backend (in the example `DefaultBackend` is being used). In the example we use `TravelTimeSDK.default()` method, which returns `Future` type backend SDK instance.
+To send this request `TravelTimeSDK` object is required, we provide required information such as `ApiCredentials` and desired backend (in the example `DefaultBackend` is being used). In the example we use `TravelTimeSDK.defaultSdk()` method, which returns `Future` type backend SDK instance.
 
 ```scala
 val credentials = ApiCredentials("AppId", "ApiKey")
