@@ -4,8 +4,8 @@ val commonSettings = Seq(
   organization := "com.igeolise",
   bintrayOrganization := Some("igeolise"),
   name := "traveltime-platform-sdk",
-  version := "1.2.1",
-  crossScalaVersions := Seq("2.12.7", "2.11.12"),
+  version := "1.3.0",
+  crossScalaVersions := Seq("2.12.8", "2.11.12"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "utf-8",
@@ -15,8 +15,7 @@ val commonSettings = Seq(
     "-language:higherKinds",
     "-language:implicitConversions",    
     "-Xfatal-warnings",
-    
-    "-Ywarn-dead-code",
+    "-Ywarn-dead-code"
   ),
   libraryDependencies ++= Seq(
     "org.typelevel" %%% "cats-core" % "1.1.0",

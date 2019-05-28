@@ -26,7 +26,6 @@ case class GeoJsonResponse[A](feature: GeoJsonResponse.Feature[A]) {
   def nonEmpty: Boolean = !isEmpty
 }
 
-
 object GeoJsonResponse {
   sealed trait Feature[A]
 
