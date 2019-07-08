@@ -1,0 +1,37 @@
+{
+  "results": [
+    {
+      "search_id": "backward search example",
+      "locations": [
+        {
+          "id": "Hyde Park",
+          "properties": [
+            {
+              "distance_breakdown": [
+                {
+                  "mode": "bus",
+                  "distance": 1786
+                },
+                {
+                  "mode": "walk",
+                  "distance": 1256
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "unreachable": [
+        "ZSL London Zoo"
+      ]
+    },
+    {
+      "search_id": "forward search example",
+      "locations": [],
+      "unreachable": [
+        "Hyde Park",
+        "ZSL London Zoo"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "locations": [
+    {
+      "id": "Musee Du Cannabis",
+      "coords": {
+        "lat": 52.37213452952525,
+        "lng": 4.897260664233954
+      }
+    },
+    {
+      "id": "Amsterdam center",
+      "coords": {
+        "lat": 52.3680,
+        "lng": 4.9036
+      }
+    },
+    {
+      "id": "Science Museum",
+      "coords": {
+        "lat": 52.37421715421411,
+        "lng": 4.912337064743042
+      }
+    }
+  ],
+  "departure_searches": [
+    {
+      "id": "forward search example",
+      "departure_location_id": "Amsterdam center",
+      "arrival_location_ids": [
+        "Musee Du Cannabis",
+        "Science Museum"
+      ],
+      "transportation": {
+        "type": "cycling+public_transport",
+        "cycling_time_to_station": 300,
+        "parking_time": 600,
+        "boarding_time": 900
+      },
+      "travel_time": 1800,
+      "departure_time": "2019-07-08T08:00:00Z",
+      "range": {
+        "enabled": true,
+        "max_results": 3,
+        "width": 600
+      },
+      "properties": [
+        "travel_time"
+      ]
+    }
+  ],
+  "arrival_searches": [
+    {
+      "id": "backward search example",
+      "departure_location_ids": [
+        "Musee Du Cannabis",
+        "Science Museum"
+      ],
+      "arrival_location_id": "Amsterdam center",
+      "transportation": {
+        "type": "cycling+public_transport",
+        "cycling_time_to_station": 300,
+        "parking_time": 600,
+        "boarding_time": 900
+      },
+      "arrival_time": "2019-07-08T08:00:00Z",
+      "travel_time": 1900,
+      "properties": [
+        "travel_time",
+        "distance",
+        "distance_breakdown",
+        "fares"
+      ]
+    }
+  ]
+}

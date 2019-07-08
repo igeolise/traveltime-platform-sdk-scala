@@ -4,12 +4,13 @@ import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse.{Postcode, PostcodesProperties, SingleSearchResult}
 import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterPostcodesReads._
-import org.scalatest.{FunSpec, Matchers}
+import org.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
-import scala.concurrent.duration.Duration
-import scala.concurrent.duration.SECONDS
 
-class TimeFilterPostcodesReadsTest extends FunSpec with Matchers {
+import scala.concurrent.duration.{Duration, SECONDS}
+
+class TimeFilterPostcodesReadsTest extends AnyFunSpec with Matchers {
 
   it("parse departurePostcodesResponse response") {
     val json =

@@ -1,17 +1,21 @@
 package com.igeolise.traveltimesdk.reads
 
-import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterReads._
+import com.igeolise.traveltimesdk.TestUtils._
+import com.igeolise.traveltimesdk.dto.responses.common.DistanceBreakdown
+import com.igeolise.traveltimesdk.dto.responses.common.DistanceBreakdown.BreakdownPart
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse.{Location, Properties, SingleSearchResult}
-import com.igeolise.traveltimesdk.TestUtils
-import org.scalatest.{FunSpec, Matchers}
+import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterReads._
+import org.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
+
 import scala.concurrent.duration._
 
-class TimeFilterReadsTest extends FunSpec with Matchers {
+class TimeFilterReadsTest extends AnyFunSpec with Matchers {
 
   it("parse forward_search response") {
-    val json = TestUtils.resource("shared/src/test/resources/json/TimeFilter/response/timeFilterResponse.json")
+    val json = resource("shared/src/test/resources/json/TimeFilter/response/timeFilterResponse.json")
     val result = Json.parse(json).validate[TimeFilterResponse]
 
     result shouldBe a [JsSuccess[_]]
@@ -39,4 +43,42 @@ class TimeFilterReadsTest extends FunSpec with Matchers {
     )
   }
 
+  it("parse response with a distance_breakdown parameter set") {
+    val jsonSource = resource("shared/src/test/resources/json/TimeFilter/response/timeFilterResponse-distance-breakdown.json")
+    val parseResult = Json.parse(jsonSource).validate[TimeFilterResponse]
+    val expectedResult = TimeFilterResponse(
+      Seq(
+        SingleSearchResult(
+          "backward search example",
+          Seq(
+            Location(
+              "Hyde Park",
+              Seq(
+                Properties(
+                  None,
+                  None,
+                  Some( DistanceBreakdown(Seq(BreakdownPart("bus", 1786), BreakdownPart("walk", 1256))) )
+                )
+              )
+            )
+          ),
+          Seq("ZSL London Zoo")
+        ),
+        SingleSearchResult(
+          "forward search example",
+          Seq.empty[Location],
+          Seq("Hyde Park", "ZSL London Zoo")
+        )
+      ),
+
+      Json.parse(jsonSource)
+    )
+
+    parseResult shouldBe a [JsSuccess[_]]
+
+    println(expectedResult)
+    println(parseResult.get)
+
+    expectedResult shouldBe parseResult.get
+  }
 }

@@ -7,13 +7,13 @@ import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
 import org.scalatest._
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
 
-class TimeMapReadsTest extends FunSpec with Matchers {
+class TimeMapReadsTest extends AnyFunSpec with Matchers {
 
   it("parse departure_searches response") {
     val json = TestUtils.resource("shared/src/test/resources/json/TimeMap/response/timeMapResponse-NoJoints.json")
-//    val emptyjson = resource("src/test/resources/json/TimeMap/response/emptyResponse.json")
     val result = Json.parse(json).validate[TimeMapResponse]
 
     result shouldBe a [JsSuccess[_]]

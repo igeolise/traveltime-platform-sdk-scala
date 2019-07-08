@@ -27,13 +27,12 @@ case class RoutesRequest(
       _.validate[RoutesResponse]
     )
 
-  override def sttpRequest(host: Uri): Request[String, Nothing] = {
+  override def sttpRequest(host: Uri): Request[String, Nothing] =
     RequestUtils.makePostRequest(
       Json.toJson(this),
       "v4/routes",
       host
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
-  }
 }
 
 object RoutesRequest {

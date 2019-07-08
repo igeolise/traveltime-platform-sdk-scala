@@ -6,46 +6,46 @@ import scala.collection.immutable
 
 object CommonProperties {
   sealed trait PropertyType extends EnumEntry { val propertyType: String }
-  sealed trait TimeFilterZonesProperty extends PropertyType
-  sealed trait RoutesRequestProperty extends PropertyType
-  sealed trait TimeFilterFastProperty extends PropertyType
-  sealed trait TimeFilterPostcodesProperty extends PropertyType
-  sealed trait TimeMapRequestProperty extends PropertyType
-  sealed trait TimeFilterRequestProperty extends PropertyType
+  sealed trait RoutesRequestProperty        extends PropertyType
+  sealed trait TimeFilterFastProperty       extends PropertyType
+  sealed trait TimeMapRequestProperty       extends PropertyType
+  sealed trait TimeFilterZonesProperty      extends PropertyType
+  sealed trait TimeFilterRequestProperty    extends PropertyType
+  sealed trait TimeFilterPostcodesProperty  extends PropertyType
 
   object PropertyType extends Enum[PropertyType] {
     val values: immutable.IndexedSeq[PropertyType] = findValues
 
-    case object travelTime extends TimeFilterRequestProperty
+    case object TravelTime extends TimeFilterRequestProperty
       with TimeFilterPostcodesProperty with RoutesRequestProperty with TimeFilterFastProperty {
       override val propertyType: String = "travel_time"
     }
 
-    case object distance extends TimeFilterRequestProperty with TimeFilterPostcodesProperty with RoutesRequestProperty{
+    case object Distance extends TimeFilterRequestProperty with TimeFilterPostcodesProperty with RoutesRequestProperty{
       override val propertyType: String = "distance"
     }
 
-    case object travelTimeReachable extends TimeFilterZonesProperty  {
+    case object TravelTimeReachable extends TimeFilterZonesProperty  {
       override val propertyType = "travel_time_reachable"
     }
 
-    case object travelTimeAll extends TimeFilterZonesProperty {
+    case object TravelTimeAll extends TimeFilterZonesProperty {
       override val propertyType = "travel_time_all"
     }
 
-    case object coverage extends TimeFilterZonesProperty  {
+    case object Coverage extends TimeFilterZonesProperty  {
       override val propertyType = "coverage"
     }
 
-    case object fares extends TimeFilterRequestProperty with RoutesRequestProperty with TimeFilterFastProperty{
+    case object Fares extends TimeFilterRequestProperty with RoutesRequestProperty with TimeFilterFastProperty{
       override val propertyType: String = "fares"
     }
 
-    case object route extends TimeFilterRequestProperty with RoutesRequestProperty {
+    case object Route extends TimeFilterRequestProperty with RoutesRequestProperty {
       override val propertyType: String = "route"
     }
 
-    case object distanceBreakdown extends TimeFilterRequestProperty {
+    case object DistanceBreakdown extends TimeFilterRequestProperty {
       override val propertyType: String = "distance_breakdown"
     }
 

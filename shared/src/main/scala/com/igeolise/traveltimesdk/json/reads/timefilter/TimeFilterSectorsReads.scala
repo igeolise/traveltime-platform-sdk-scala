@@ -18,5 +18,4 @@ object TimeFilterSectorsReads  {
     (__ \ "results").read[Seq[TimeFilterSectorsResponse.SingleSearchResult]] and
     __.read[JsValue]
   )(TimeFilterSectorsResponse.apply _)
-
 }

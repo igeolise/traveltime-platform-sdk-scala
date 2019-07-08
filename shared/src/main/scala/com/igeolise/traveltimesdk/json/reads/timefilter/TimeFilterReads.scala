@@ -1,17 +1,30 @@
 package com.igeolise.traveltimesdk.json.reads.timefilter
 
-import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
+import com.igeolise.traveltimesdk.dto.responses.common.DistanceBreakdown.BreakdownPart
+import com.igeolise.traveltimesdk.dto.responses.common.{DistanceBreakdown, Fares, Route}
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse
 import com.igeolise.traveltimesdk.json.reads.CommonReads._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
+
 import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterReads {
 
+  implicit val breakdownPartReads: Reads[BreakdownPart] = (
+    (__ \ "mode").read[String] and
+    (__ \ "distance").read[Int]
+  )(BreakdownPart.apply _)
+
+  val distanceBreakdownReads: Reads[Option[DistanceBreakdown]] =
+    (__ \ "distance_breakdown").readNullable[Seq[BreakdownPart]].map { maybeBreakdownParts =>
+      maybeBreakdownParts.map(DistanceBreakdown.apply)
+    }
+
   implicit val timeFilterPropertiesReads: Reads[TimeFilterResponse.Properties] = (
     (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int] and
+    distanceBreakdownReads and
     (__ \ "fares").readNullable[Fares] and
     (__ \ "route").readNullable[Route]
   )(TimeFilterResponse.Properties.apply _)

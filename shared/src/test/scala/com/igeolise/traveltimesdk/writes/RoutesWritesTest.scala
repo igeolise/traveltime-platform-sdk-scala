@@ -2,19 +2,21 @@ package com.igeolise.traveltimesdk.writes
 
 import java.time.{ZoneId, ZonedDateTime}
 
-import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
-import com.igeolise.traveltimesdk.dto.requests.RoutesRequest
-import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
+import com.igeolise.traveltimesdk.dto.requests.RoutesRequest
+import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{distance, fares, route, travelTime}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, Fares, Route, TravelTime}
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.{Location, PublicTransportationParams, Transportation}
-import org.scalatest.{FunSpec, Matchers}
+import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
+import org.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 
-class RoutesWritesTest extends FunSpec with Matchers {
+class RoutesWritesTest extends AnyFunSpec with Matchers {
+
   it("departure and arrival searches for Routes") {
     val locations: Seq[Location] = Seq(
       Location("London center", Coords(51.508930, -0.131387)),
@@ -29,7 +31,7 @@ class RoutesWritesTest extends FunSpec with Matchers {
       Seq("Hyde Park", "ZSL London Zoo"),
       Transportation.Driving,
       time,
-      Seq(PropertyType.travelTime, distance, route),
+      Seq(PropertyType.TravelTime, Distance, Route),
       None
     )
 
@@ -39,7 +41,7 @@ class RoutesWritesTest extends FunSpec with Matchers {
       "London center",
       Transportation.PublicTransport(PublicTransportationParams()),
       time,
-      Seq(travelTime, distance, route, fares),
+      Seq(TravelTime, Distance, Route, Fares),
       Some(FullRangeParams(enabled = true, 1, 1800))
     )
 

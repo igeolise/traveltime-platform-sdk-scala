@@ -1,8 +1,9 @@
 package com.igeolise.traveltimesdk.dto.responses
 
+import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformResponse
 import play.api.libs.json.JsValue
 
-case class GeoJsonResponse[A](feature: GeoJsonResponse.Feature[A]) {
+case class GeoJsonResponse[A](feature: GeoJsonResponse.Feature[A]) extends TravelTimePlatformResponse {
   def inMap[B](fun: GeoJsonResponse.SingleFeature[A] => B): GeoJsonResponse[B] = feature match {
     case f: GeoJsonResponse.SingleFeature[A] =>
       GeoJsonResponse(f.copy(properties = fun(f)))

@@ -1,27 +1,30 @@
 package com.igeolise.traveltimesdk.dto.responses.timefilter
 
-import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
+import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformResponse
+import com.igeolise.traveltimesdk.dto.responses.common.{DistanceBreakdown, Fares, Route}
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse.SingleSearchResult
 import play.api.libs.json.JsValue
+
 import scala.concurrent.duration.FiniteDuration
 
-case class TimeFilterResponse(results: Seq[SingleSearchResult], raw: JsValue)
+case class TimeFilterResponse(results: Seq[SingleSearchResult], raw: JsValue) extends TravelTimePlatformResponse
 
 object TimeFilterResponse {
-  sealed case class SingleSearchResult(
+  case class SingleSearchResult(
     searchId: String,
     locations: Seq[Location],
     unreachable: Seq[String]
   )
 
-  sealed case class Location(
+  case class Location(
     id: String,
     properties: Seq[Properties]
   )
 
-  sealed case class Properties(
+  case class Properties(
     travelTime: Option[FiniteDuration] = None,
     distanceMeters: Option[Int] = None,
+    distanceBreakdown: Option[DistanceBreakdown] = None,
     fares: Option[Fares] = None,
     route: Option[Route] = None
   )

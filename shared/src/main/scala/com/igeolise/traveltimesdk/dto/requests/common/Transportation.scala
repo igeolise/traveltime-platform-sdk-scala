@@ -5,23 +5,28 @@ import enumeratum.{Enum, EnumEntry}
 import scala.collection.immutable
 import scala.concurrent.duration.FiniteDuration
 
-sealed trait Transportation extends EnumEntry { val transportType: String }
+sealed trait Transportation               extends EnumEntry { val transportType: String }
 sealed trait CommonTransportation         extends Transportation
 sealed trait TimeFilterFastTransportation extends Transportation
-
-sealed trait FerryTransportation          extends Transportation with CommonTransportation
-  {val parameters: FerryParams}
-
-sealed trait PublicTransportation         extends Transportation with CommonTransportation
-  {val parameters: PublicTransportationParams}
+sealed trait FerryTransportation          extends Transportation with CommonTransportation{
+  val parameters: FerryParams
+}
+sealed trait PublicTransportation         extends Transportation with CommonTransportation{
+  val parameters: PublicTransportationParams
+}
 
 case class PublicTransportationParams(
   ptChangeDelay: Option[FiniteDuration] = None,
   walkingTime: Option[FiniteDuration] = None
 )
 
-case class FerryParams(boardingTime: Option[FiniteDuration] = None){
-}
+case class CyclingPublicTransportParams(
+  cyclingToStationTime: Option[FiniteDuration],
+  parkingTime: Option[FiniteDuration],
+  boardingTime: Option[FiniteDuration]
+)
+
+case class FerryParams(boardingTime: Option[FiniteDuration] = None)
 
 case class DrivingTrainParams(
   drivingTimeToStation: Option[FiniteDuration] = None,
@@ -33,17 +38,35 @@ case class DrivingTrainParams(
 object Transportation extends Enum[Transportation] {
   val values: immutable.IndexedSeq[Transportation] = findValues
 
-  case object CyclingFerry extends Transportation {
-    override val transportType: String = "cycling+ferry"
-  }
-
-  case class CyclingFerry(params: FerryParams) extends FerryTransportation {
-    override val transportType: String = "cycling+ferry"
-    override val parameters: FerryParams = params
-  }
-
   case object PublicTransport extends TimeFilterFastTransportation with CommonTransportation {
     override val transportType: String = "public_transport"
+
+    case object Bus extends Transportation {
+      override val transportType: String = "bus"
+    }
+
+    case class Bus(params: PublicTransportationParams) extends PublicTransportation {
+      override val transportType = "bus"
+      override val parameters: PublicTransportationParams = params
+    }
+
+    case object Train extends Transportation {
+      override val transportType: String = "train"
+    }
+
+    case class Train(params: PublicTransportationParams) extends PublicTransportation {
+      override val transportType = "train"
+      override val parameters: PublicTransportationParams = params
+    }
+
+    case object Coach extends Transportation {
+      override val transportType: String = "coach"
+    }
+
+    case class Coach(params: PublicTransportationParams) extends PublicTransportation {
+      override val transportType = "coach"
+      override val parameters: PublicTransportationParams = params
+    }
   }
 
   case class PublicTransport(params: PublicTransportationParams) extends PublicTransportation {
@@ -51,39 +74,16 @@ object Transportation extends Enum[Transportation] {
     override val parameters: PublicTransportationParams = params
   }
 
-  case object Coach extends Transportation{
-    override val transportType: String = "coach"
+  case object Driving extends TimeFilterFastTransportation with CommonTransportation {
+    override val transportType = "driving"
   }
 
-  case class Coach(params: PublicTransportationParams) extends PublicTransportation {
-    override val transportType = "coach"
-    override val parameters: PublicTransportationParams = params
+  case object Cycling extends Transportation with CommonTransportation {
+    override val transportType = "cycling"
   }
 
-  case object Bus extends Transportation{
-    override val transportType: String = "bus"
-  }
-
-  case class Bus(params: PublicTransportationParams) extends PublicTransportation {
-    override val transportType = "bus"
-    override val parameters: PublicTransportationParams = params
-  }
-
-  case object Train extends Transportation{
-    override val transportType: String = "train"
-  }
-
-  case class Train(params: PublicTransportationParams) extends PublicTransportation {
-    override val transportType = "train"
-    override val parameters: PublicTransportationParams = params
-  }
-
-  case object DrivingTrain extends Transportation{
-    override val transportType: String = "driving+train"
-  }
-
-  case class DrivingTrain(params: DrivingTrainParams) extends Transportation with CommonTransportation {
-    override val transportType = "driving+train"
+  case object Walking extends Transportation with CommonTransportation {
+    override val transportType = "walking"
   }
 
   case object Ferry extends Transportation {
@@ -95,16 +95,28 @@ object Transportation extends Enum[Transportation] {
     override val parameters: FerryParams = params
   }
 
-  case object Cycling extends Transportation with CommonTransportation {
-    override val transportType = "cycling"
+  case object CyclingPublicTransport extends CommonTransportation {
+    override val transportType: String = "cycling+public_transport"
+  }
+  case class CyclingPublicTransport(params: CyclingPublicTransportParams) extends CommonTransportation {
+    override val transportType: String = "cycling+public_transport"
   }
 
-  case object Driving extends TimeFilterFastTransportation with CommonTransportation {
-    override val transportType = "driving"
+  case object CyclingFerry extends Transportation {
+    override val transportType: String = "cycling+ferry"
   }
 
-  case object Walking extends Transportation with CommonTransportation {
-    override val transportType = "walking"
+  case class CyclingFerry(params: FerryParams) extends FerryTransportation {
+    override val transportType: String = "cycling+ferry"
+    override val parameters: FerryParams = params
+  }
+
+  case object DrivingTrain extends Transportation {
+    override val transportType: String = "driving+train"
+  }
+
+  case class DrivingTrain(params: DrivingTrainParams) extends Transportation with CommonTransportation {
+    override val transportType = "driving+train"
   }
 
   case object DrivingFerry extends Transportation {

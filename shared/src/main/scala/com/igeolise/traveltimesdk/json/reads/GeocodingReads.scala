@@ -7,6 +7,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
 
 object GeocodingReads  {
+
   private val propertyReads: Reads[GeocodingResponseProperties] = (
     (__ \ "name").read[String] and
     (__ \ "label").read[String] and
@@ -23,9 +24,8 @@ object GeocodingReads  {
     (__ \ "country_code").readNullable[String] and
     (__ \ "continent").readNullable[String] and
     (__ \ "postcode").readNullable[String] and
-    (__ \ "features").readNullable(mapInfoFeaturesReadsV4)
+    (__ \ "features").readNullable(mapInfoFeaturesReads)
   )(GeocodingResponseProperties.apply _)
 
   implicit val geocodingReads: Reads[GeoJsonResponse[GeocodingResponseProperties]] = GeoJsonReads.reads(propertyReads)
-
 }

@@ -16,8 +16,9 @@ case class TimeMapBoxesRequest(
   intersectionSearches: Seq[Intersection]
 ) extends TravelTimePlatformRequest[TimeMapBoxesResponse]  {
 
-  override def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S])
-  : R[Either[TravelTimeSdkError, TimeMapBoxesResponse]] =
+  override def send[R[_] : Monad, S](
+    sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, TimeMapBoxesResponse]] =
     RequestUtils.send(
       sttpRequest,
       _.validate[TimeMapBoxesResponse]

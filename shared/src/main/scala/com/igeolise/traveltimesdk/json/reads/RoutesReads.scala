@@ -8,6 +8,7 @@ import play.api.libs.json.{JsValue, Reads, __}
 import scala.concurrent.duration.FiniteDuration
 
 object RoutesReads {
+
   implicit val routePropertiesReads: Reads[RoutesResponse.Properties] = (
     (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int] and

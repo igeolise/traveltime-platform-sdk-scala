@@ -17,10 +17,10 @@ case class ZoneSearchProperties(
 )
 
 case class TravelTime(
-  min: Int,
-  max: Int,
-  mean: Int,
-  median: Int
+  min: FiniteDuration,
+  max: FiniteDuration,
+  mean: FiniteDuration,
+  median: FiniteDuration
 )
 
 object ZoneSearches{

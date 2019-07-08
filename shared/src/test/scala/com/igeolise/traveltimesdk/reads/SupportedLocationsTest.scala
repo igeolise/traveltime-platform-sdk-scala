@@ -1,13 +1,14 @@
 package com.igeolise.traveltimesdk.reads
 
 import com.igeolise.traveltimesdk.TestUtils
-import com.igeolise.traveltimesdk.json.reads.AvailableDataReads._
 import com.igeolise.traveltimesdk.dto.responses.SupportedLocationsResponse
 import com.igeolise.traveltimesdk.dto.responses.SupportedLocationsResponse.Location
-import org.scalatest.{FunSpec, Matchers}
+import com.igeolise.traveltimesdk.json.reads.AvailableDataReads._
+import org.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
 
-class SupportedLocationsTest extends FunSpec with Matchers {
+class SupportedLocationsTest extends AnyFunSpec with Matchers {
 
   it("parse departurePostcodesResponse response") {
     val json =

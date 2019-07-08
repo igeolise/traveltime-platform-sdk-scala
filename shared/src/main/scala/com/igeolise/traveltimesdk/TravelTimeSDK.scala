@@ -1,9 +1,10 @@
 package com.igeolise.traveltimesdk
 
 import cats.Monad
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.{SttpRequest, TravelTimePlatformRequest}
+import com.igeolise.traveltimesdk.dto.requests.RequestUtils.{SttpRequest, TravelTimePlatformRequest, TravelTimePlatformResponse}
 import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
 import com.softwaremill.sttp.{SttpBackend, Uri, _}
+import com.igeolise.traveltimesdk.TravelTimeSDK.DEFAULT_HOST
 
 import scala.concurrent.Future
 import scala.language.higherKinds
@@ -14,10 +15,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
 case class TravelTimeSDK[R[_] : Monad, S](
   credentials: ApiCredentials,
   backend: SttpBackend[R, S],
-  host: Uri = uri"api.traveltimeapp.com"
+  host: Uri = DEFAULT_HOST
 ) {
 
-  def send[A](request: TravelTimePlatformRequest[A]): R[Either[TravelTimeSdkError, A]] = {
+  def send[A <: TravelTimePlatformResponse](
+    request: TravelTimePlatformRequest[A]
+  ): R[Either[TravelTimeSdkError, A]] = {
     val baseRequest = request.sttpRequest(host).headers(credentials.toMap)
     val req = SttpRequest[R, S](backend, baseRequest)
     request.send(req)

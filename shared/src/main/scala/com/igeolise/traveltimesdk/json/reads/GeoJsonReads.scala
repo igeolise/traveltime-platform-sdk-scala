@@ -5,6 +5,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
 
 object GeoJsonReads {
+
   def reads[A](propertyReads: Reads[A]): Reads[GeoJsonResponse[A]] = (__ \ "type").read[String].flatMap({
     case "FeatureCollection" => GeoJsonReads.readFeatureCollection(propertyReads).map(x => GeoJsonResponse(x))
     case "Feature" => GeoJsonReads.readSingleFeature(propertyReads).map(x =>GeoJsonResponse(x))

@@ -24,8 +24,9 @@ case class GeocodingRequest(
   query: String, focusCoords: Option[Coords] = None, countryCode: Option[String] = None
 ) extends TravelTimePlatformRequest[GeoJsonResponse[GeocodingResponseProperties]]  {
 
-  override def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S])
-  : R[Either[TravelTimeSdkError, GeoJsonResponse[GeocodingResponseProperties]]] =
+  override def send[R[_] : Monad, S](
+    sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, GeoJsonResponse[GeocodingResponseProperties]]] =
     RequestUtils.send(
       sttpRequest,
       _.validate[GeoJsonResponse[GeocodingResponseProperties]]

@@ -1,18 +1,18 @@
 package com.igeolise.traveltimesdk.writes
 
-import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterPostcodesWrites._
-import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterPostcodesRequest
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{distance, travelTime}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, TravelTime}
 import com.igeolise.traveltimesdk.dto.requests.common.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransport
-import org.scalatest.{FunSpec, Matchers}
+import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterPostcodesRequest
+import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterPostcodesWrites._
+import org.scalatest.Matchers
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 import scala.concurrent.duration._
 
-class TimeFilterPostcodesWritesTest
-  extends FunSpec with Matchers  {
+class TimeFilterPostcodesWritesTest extends AnyFunSpec with Matchers  {
 
   it("departure_searches for TimeFilter Postcodes") {
     val transport = PublicTransport(PublicTransportationParams(None, None))
@@ -24,7 +24,7 @@ class TimeFilterPostcodesWritesTest
         "2018-09-27T08:00:00Z",
         Duration(1800, SECONDS),
         None,
-        Seq(travelTime, distance)
+        Seq(TravelTime, Distance)
       )
     val postcodesArrival : TimeFilterPostcodesRequest.ArrivalSearch =
       TimeFilterPostcodesRequest.ArrivalSearch(
@@ -34,7 +34,7 @@ class TimeFilterPostcodesWritesTest
         "2018-09-27T08:00:00Z",
         Duration(1800, SECONDS),
         None,
-        Seq(travelTime, distance)
+        Seq(TravelTime, Distance)
       )
     val postcodesRequest = TimeFilterPostcodesRequest(Seq(postcodesDeparture), Seq(postcodesArrival))
 
@@ -43,6 +43,4 @@ class TimeFilterPostcodesWritesTest
 
     timeFilterJson should equal (Json.parse(jsonResource))
   }
-
-
 }
