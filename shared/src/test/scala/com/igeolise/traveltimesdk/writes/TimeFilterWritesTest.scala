@@ -38,7 +38,7 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
       Bus(PublicTransportationParams(None, None)),
       Duration(1800, SECONDS),
       time,
-      Some(FullRangeParams(enabled = true, 3, 600)),
+      Some(FullRangeParams(enabled = true, 3, 10.minutes)),
       Seq(CommonProperties.PropertyType.TravelTime)
     )
 
@@ -76,7 +76,7 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
         CyclingPublicTransport(CyclingPublicTransportParams(5.minutes.some, 10.minutes.some, 15.minutes.some)),
         Duration(1800, SECONDS),
         time,
-        Some(FullRangeParams(enabled = true, 3, 600)),
+        Some(FullRangeParams(enabled = true, 3, 10.minutes)),
         Seq(CommonProperties.PropertyType.TravelTime)
       )
 

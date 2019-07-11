@@ -14,6 +14,7 @@ import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
 import org.scalatest.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
+import scala.concurrent.duration._
 
 class RoutesWritesTest extends AnyFunSpec with Matchers {
 
@@ -42,7 +43,7 @@ class RoutesWritesTest extends AnyFunSpec with Matchers {
       Transportation.PublicTransport(PublicTransportationParams()),
       time,
       Seq(TravelTime, Distance, Route, Fares),
-      Some(FullRangeParams(enabled = true, 1, 1800))
+      Some(FullRangeParams(enabled = true, 1, 30.minutes))
     )
 
     val routesRequest = RoutesRequest(locations, Seq(routesDepartures), Seq(routesArrivals))

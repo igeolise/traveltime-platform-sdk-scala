@@ -24,7 +24,7 @@ object CommonWrites {
     def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
   }
 
-  val secondsToFiniteDurationWrites: Writes[FiniteDuration] = Writes.IntWrites.contramap(_.toSeconds.toInt)
+  val finiteDurationToSecondsWrites: Writes[FiniteDuration] = Writes.IntWrites.contramap(_.toSeconds.toInt)
 
   implicit class formatDate(self: ZonedDateTime) {
     val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
@@ -39,12 +39,12 @@ object CommonWrites {
   implicit val fullRangeParamsWrites: Writes[FullRangeParams] = (
     (__ \ "enabled").write[Boolean] and
     (__ \ "max_results").write[Int] and
-    (__ \ "width").write[Int]
+    (__ \ "width").write[FiniteDuration](finiteDurationToSecondsWrites)
   ) (unlift(FullRangeParams.unapply))
 
   implicit val rangeParamsWrites: Writes[RangeParams] = (
     (__ \ "enabled").write[Boolean] and
-    (__ \ "width").write[Int]
+    (__ \ "width").write[FiniteDuration](finiteDurationToSecondsWrites)
   ) (unlift(RangeParams.unapply))
 
   implicit val publicTransportWrites: Writes[PublicTransportation] = (
@@ -116,7 +116,7 @@ object CommonWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "arrival_time").write[String] and
-    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
+    (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]
@@ -127,7 +127,7 @@ object CommonWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "departure_time").write[String] and
-    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
+    (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]

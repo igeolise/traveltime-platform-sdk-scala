@@ -40,7 +40,7 @@ class TimeMapWritesTest extends AnyFunSpec with Matchers{
         Duration(900, SECONDS),
         Some(RangeParams(
           enabled = true,
-          3600
+          1.hour
         )),
         None,
       )
