@@ -21,8 +21,9 @@ case class TimeFilterRequest(
   arrivalSearches:   Seq[TimeFilterRequest.ArrivalSearch]
 ) extends TravelTimePlatformRequest[TimeFilterResponse] {
 
-  override def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S])
-  : R[Either[TravelTimeSdkError, TimeFilterResponse]] =
+  override def send[R[_] : Monad, S](
+    sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, TimeFilterResponse]] =
     RequestUtils.send(
       sttpRequest,
       _.validate[TimeFilterResponse]

@@ -18,5 +18,4 @@ object TimeMapWktReads {
     (__ \ "results").read[Seq[TimeMapWktResponse.SingleSearchResult]] and
     __.read[JsValue]
   )(TimeMapWktResponse.apply _)
-
 }

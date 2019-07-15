@@ -30,8 +30,9 @@ case class TimeMapRequest(
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
   }
 
-  override def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S])
-  : R[Either[TravelTimeSdkError, TimeMapResponse]] =
+  override def send[R[_] : Monad, S](
+    sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, TimeMapResponse]] =
     RequestUtils.send(
       sttpRequest,
       _.validate[TimeMapResponse]

@@ -13,8 +13,9 @@ case class SupportedLocationsRequest(
   locations: Seq[Location]
 ) extends TravelTimePlatformRequest[SupportedLocationsResponse] {
 
-  override def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S])
-  : R[Either[TravelTimeSdkError, SupportedLocationsResponse]] =
+  override def send[R[_] : Monad, S](
+    sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, SupportedLocationsResponse]] =
     RequestUtils.send(
       sttpRequest,
       _.validate[SupportedLocationsResponse]

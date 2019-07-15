@@ -18,13 +18,13 @@ case class TimeMapWktRequest(
 )(holesSetting: HolesSetting = WithHoles)
   extends TravelTimePlatformRequest[TimeMapWktResponse] {
 
-  override def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S])
-  : R[Either[TravelTimeSdkError, TimeMapWktResponse]] = {
+  override def send[R[_] : Monad, S](
+    sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, TimeMapWktResponse]] =
     RequestUtils.send(
       sttpRequest,
       _.validate[TimeMapWktResponse]
     )
-  }
 
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     def req = RequestUtils.makePostRequest(

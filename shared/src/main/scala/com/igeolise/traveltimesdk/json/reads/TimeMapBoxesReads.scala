@@ -31,5 +31,4 @@ object TimeMapBoxesReads {
     (__ \ "results").read[Seq[TimeMapBoxesResponse.SingleSearchResult]] and
     __.read[JsValue]
   )(TimeMapBoxesResponse.apply _)
-
 }

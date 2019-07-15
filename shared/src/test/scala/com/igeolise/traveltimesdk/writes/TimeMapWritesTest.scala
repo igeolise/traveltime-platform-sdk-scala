@@ -1,6 +1,7 @@
 package com.igeolise.traveltimesdk.writes
 
 import java.time.{ZoneId, ZonedDateTime}
+
 import com.igeolise.traveltimesdk.json.writes.TimeMapWrites._
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.ArrivalSearch
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest
@@ -10,10 +11,12 @@ import com.igeolise.traveltimesdk.dto.requests.common.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransport
 import org.scalatest._
+import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
+
 import scala.concurrent.duration._
 
-class TimeMapWritesTest extends FunSpec with Matchers{
+class TimeMapWritesTest extends AnyFunSpec with Matchers{
 
   it("departure_searches and arrival_searches json request") {
     val trans = PublicTransport(PublicTransportationParams(Some(Duration(1, MINUTES)), None))
@@ -37,7 +40,7 @@ class TimeMapWritesTest extends FunSpec with Matchers{
         Duration(900, SECONDS),
         Some(RangeParams(
           enabled = true,
-          3600
+          1.hour
         )),
         None,
       )

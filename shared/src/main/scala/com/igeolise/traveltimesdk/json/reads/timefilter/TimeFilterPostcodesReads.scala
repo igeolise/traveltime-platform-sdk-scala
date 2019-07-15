@@ -8,6 +8,7 @@ import com.igeolise.traveltimesdk.json.reads.CommonReads._
 import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterPostcodesReads  {
+
   implicit val postcodesPropertiesReads: Reads[PostcodesProperties] = (
     (__ \ "travel_time").readNullable[FiniteDuration](secondsToFiniteDurationReads) and
     (__ \ "distance").readNullable[Int]

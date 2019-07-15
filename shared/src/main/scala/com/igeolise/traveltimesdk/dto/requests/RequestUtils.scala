@@ -8,13 +8,17 @@ import com.igeolise.traveltimesdk.json.reads.ErrorReads._
 import com.softwaremill.sttp.{Request, _}
 import play.api.libs.json._
 
+import scala.concurrent.duration._
+
 object RequestUtils {
 
-  trait TravelTimePlatformRequest[Response] {
+  trait TravelTimePlatformRequest[Response <: TravelTimePlatformResponse] {
     def send[R[_] : Monad, S](sttpRequest: SttpRequest[R, S]): R[Either[TravelTimeSdkError, Response]]
 
     def sttpRequest(host: Uri): Request[String, Nothing]
   }
+
+  trait TravelTimePlatformResponse
 
   case class SttpRequest[R[_] : Monad, S](
     backend: SttpBackend[R, S],
@@ -34,6 +38,7 @@ object RequestUtils {
 
   def makePostRequest(requestBody: JsValue, endPoint: String, host: Uri): Request[String, Nothing] = {
     sttp
+      .readTimeout(5.minutes)
       .body(requestBody.toString)
       .contentType(MediaTypes.Json)
       .post(uri"$host/${endPoint.split('/').map(_.trim).toList}")
@@ -67,10 +72,9 @@ object RequestUtils {
   }
 
   def handleErrorResponse(errString: String): TravelTimeSdkError = {
-    Json.parse(errString).validate[TravelTimeSdkError.ErroResponseDetails] match {
+    Json.parse(errString).validate[TravelTimeSdkError.ErrorResponseDetails] match {
       case JsSuccess(value, _) => TravelTimeSdkError.ErrorResponse(value)
       case a: JsError => ValidationError(a)
     }
   }
-
 }

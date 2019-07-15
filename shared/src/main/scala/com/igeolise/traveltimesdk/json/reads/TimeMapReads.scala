@@ -8,6 +8,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json.{JsValue, Reads, __}
 
 object TimeMapReads {
+
   implicit val timeMapShapeReads: Reads[TimeMapResponse.Shape] = (
     (__ \ "shell").read[Seq[Coords]](Reads.seq(coordsReads)) and
     (__ \ "holes").read[Seq[Seq[Coords]]](Reads.seq(Reads.seq(coordsReads)))

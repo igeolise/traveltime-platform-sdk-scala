@@ -19,7 +19,7 @@ object TimeMapWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "departure_time").write[ZonedDateTime] and
-    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
+    (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "range").writeNullable[RangeParams] and
     (__ \ "properties").writeNullable[Seq[TimeMapRequestProperty]]
   ) (unlift(DepartureSearch.unapply))
@@ -29,7 +29,7 @@ object TimeMapWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "arrival_time").write[ZonedDateTime] and
-    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
+    (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "range").writeNullable[RangeParams] and
     (__ \ "properties").writeNullable[Seq[TimeMapRequestProperty]]
   ) (unlift(ArrivalSearch.unapply))

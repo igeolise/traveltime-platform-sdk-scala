@@ -6,10 +6,10 @@ sealed trait TravelTimeSdkError
 
 object TravelTimeSdkError {
   case class ConnectionError(cause: Throwable) extends TravelTimeSdkError
-  case class ErrorResponse(response: ErroResponseDetails) extends TravelTimeSdkError
+  case class ErrorResponse(response: ErrorResponseDetails) extends TravelTimeSdkError
   case class ValidationError(err: JsError) extends TravelTimeSdkError
 
-  case class ErroResponseDetails(
+  case class ErrorResponseDetails(
     httpStatus: Int,
     code: Int,
     description: String,

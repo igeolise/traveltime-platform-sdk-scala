@@ -2,13 +2,16 @@ package com.igeolise.traveltimesdk.json.writes
 
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.common.ZoneSearches.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{PropertyType, TimeFilterZonesProperty}
-import com.igeolise.traveltimesdk.dto.requests.common.{FerryTransportation, Location, PublicTransportation, Transportation}
+import com.igeolise.traveltimesdk.dto.requests.common._
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.{FullRangeParams, RangeParams}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{CyclingPublicTransport, Driving, DrivingPublicTransport, PublicTransport}
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
+
 import scala.concurrent.duration.FiniteDuration
 
 object CommonWrites {
@@ -21,24 +24,27 @@ object CommonWrites {
     def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
   }
 
-  val secondsToFiniteDurationWrites: Writes[FiniteDuration] = Writes.IntWrites.contramap(_.toSeconds.toInt)
+  val finiteDurationToSecondsWrites: Writes[FiniteDuration] = Writes.IntWrites.contramap(_.toSeconds.toInt)
 
   implicit class formatDate(self: ZonedDateTime) {
     val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
     def formatDate: String = self.format(dateFormatter)
   }
 
+  def parameterlessTransportationJson(transportation: Transportation): JsObject =
+     JsObject(Seq("type" -> Json.toJson(transportation.transportType)))
+
   implicit val formattedDateWrites: Writes[ZonedDateTime] = Writes.StringWrites.contramap(_.formatDate)
 
   implicit val fullRangeParamsWrites: Writes[FullRangeParams] = (
     (__ \ "enabled").write[Boolean] and
     (__ \ "max_results").write[Int] and
-    (__ \ "width").write[Int]
+    (__ \ "width").write[FiniteDuration](finiteDurationToSecondsWrites)
   ) (unlift(FullRangeParams.unapply))
 
   implicit val rangeParamsWrites: Writes[RangeParams] = (
     (__ \ "enabled").write[Boolean] and
-    (__ \ "width").write[Int]
+    (__ \ "width").write[FiniteDuration](finiteDurationToSecondsWrites)
   ) (unlift(RangeParams.unapply))
 
   implicit val publicTransportWrites: Writes[PublicTransportation] = (
@@ -71,11 +77,28 @@ object CommonWrites {
     (__ \ "boarding_time").writeNullable[Int]
   ) ((m: FerryTransportation) => (m.transportType, m.parameters.boardingTime.toSeconds))
 
+  implicit val cyclingPublicTransportWrites: Writes[CyclingPublicTransport] = (
+    (__ \ "type").write[String] and
+    (__ \ "cycling_time_to_station").writeNullable[Int] and
+    (__ \ "parking_time").writeNullable[Int] and
+    (__ \ "boarding_time").writeNullable[Int]
+  ) ((m: CyclingPublicTransport) => (
+      m.transportType,
+      m.params.cyclingToStationTime.toSeconds,
+      m.params.parkingTime.toSeconds,
+      m.params.boardingTime.toSeconds
+    )
+  )
+
+  implicit val commonTransportationWrites: Writes[CommonTransportation] = Writes[CommonTransportation] {
+    case c: CyclingPublicTransport => cyclingPublicTransportWrites.writes(c)
+    case c: CommonTransportation => parameterlessTransportationJson(c)
+  }
+
   implicit val transportationWrites: Writes[Transportation] = Writes[Transportation] {
     case m: PublicTransportation => publicTransportWrites.writes(m)
-    case m: Transportation.DrivingTrain => drivingTrainWrites.writes(m)
-    case m: FerryTransportation => ferryWrites.writes(m)
-    case m: Transportation => JsObject(Seq("type" -> Json.toJson(m.transportType)))
+    case m: CommonTransportation => commonTransportationWrites.writes(m)
+    case m: Transportation => parameterlessTransportationJson(m)
   }
 
   implicit val coordsWrites: Writes[Coords] = (
@@ -93,7 +116,7 @@ object CommonWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "arrival_time").write[String] and
-    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
+    (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]
@@ -104,7 +127,7 @@ object CommonWrites {
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[Transportation] and
     (__ \ "departure_time").write[String] and
-    (__ \ "travel_time").write[FiniteDuration](secondsToFiniteDurationWrites) and
+    (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
     (__ \ "range").writeNullable[FullRangeParams]
