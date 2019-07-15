@@ -23,25 +23,25 @@ In order to do that we need to specify which searches we want to perform. Here w
 We can specify additional transport parameters by passing certain parameters to `PublicTransportationParams` case class (if not specified API will use default values):
 
 ```scala
+import scala.concurrent.duration._
+import cats.syntax.option._
+
 val ptParams = PublicTransportationParams(
   ptChangeDelay = Some(Duration(10, MINUTES)),
   walkingTime = Some(Duration(15, MINUTES))
 )
-val publicTransport = PublicTransport(ptParams)
-```
-We pass required arguments:
-```scala
+
 val timeMapArrivalSearch =
   ArrivalSearch(
     id = "Public transport to Trafalgar Square",
     coordinates = Coords(51.507609, -0.128315),
-    transportation = publicTransport,
+    transportation = PublicTransport(ptParams),
     arrivalTime = ZonedDateTime.now(),
-    travelTime = Duration(900, SECONDS),
+    travelTime = 15.minutes,
     range = Some(
       RangeParams(
         enabled = true,
-        width = 3600
+        width = 1.hour
       )
     )
   )
