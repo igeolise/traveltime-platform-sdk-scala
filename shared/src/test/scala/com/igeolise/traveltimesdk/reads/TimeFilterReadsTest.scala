@@ -76,9 +76,6 @@ class TimeFilterReadsTest extends AnyFunSpec with Matchers {
 
     parseResult shouldBe a [JsSuccess[_]]
 
-    println(expectedResult)
-    println(parseResult.get)
-
     expectedResult shouldBe parseResult.get
   }
 }

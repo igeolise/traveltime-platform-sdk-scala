@@ -9,11 +9,13 @@ import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, Dep
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, Fares, Route, TravelTime}
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
-import com.igeolise.traveltimesdk.dto.requests.common.{Location, PublicTransportationParams, Transportation}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransportationParams
+import com.igeolise.traveltimesdk.dto.requests.common.{Location, Transportation}
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
 import org.scalatest.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
+
 import scala.concurrent.duration._
 
 class RoutesWritesTest extends AnyFunSpec with Matchers {

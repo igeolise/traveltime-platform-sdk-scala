@@ -3,7 +3,8 @@ package com.igeolise.traveltimesdk.writes
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.{Coords, ZoneSearches}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Coverage, TravelTimeAll, TravelTimeReachable}
-import com.igeolise.traveltimesdk.dto.requests.common.{PublicTransportationParams, Transportation}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.timefilter.{TimeFilterDistrictsRequest, TimeFilterSectorsRequest}
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterDistrictsWrites._
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterSectorsWrites._
