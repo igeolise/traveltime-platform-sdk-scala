@@ -1,6 +1,7 @@
 package com.igeolise.traveltimesdk.dto.requests
 
 import java.time.ZonedDateTime
+
 import cats.Monad
 import com.igeolise.traveltimesdk.json.reads.RoutesReads._
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
@@ -8,7 +9,8 @@ import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRe
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.RoutesRequestProperty
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
-import com.igeolise.traveltimesdk.dto.requests.common.{CommonTransportation, Location}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
+import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.dto.responses.{RoutesResponse, TravelTimeSdkError}
 import com.softwaremill.sttp.{HeaderNames, MediaTypes, Request, Uri}
 import play.api.libs.json.Json

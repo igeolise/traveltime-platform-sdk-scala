@@ -3,13 +3,13 @@ package com.igeolise.traveltimesdk.writes
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, TravelTime}
-import com.igeolise.traveltimesdk.dto.requests.common.PublicTransportationParams
-import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransport
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{PublicTransport, PublicTransportationParams}
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterPostcodesRequest
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterPostcodesWrites._
 import org.scalatest.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
+
 import scala.concurrent.duration._
 
 class TimeFilterPostcodesWritesTest extends AnyFunSpec with Matchers  {

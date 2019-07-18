@@ -6,9 +6,8 @@ import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, DistanceBreakdown, Fares, TravelTime}
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
-import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{CyclingPublicTransport, PublicTransport}
-import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransport.Bus
-import com.igeolise.traveltimesdk.dto.requests.common.{CommonProperties, CyclingPublicTransportParams, Location, PublicTransportationParams}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation._
+import com.igeolise.traveltimesdk.dto.requests.common.{CommonProperties, Location}
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest.DepartureSearch
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterWrites._

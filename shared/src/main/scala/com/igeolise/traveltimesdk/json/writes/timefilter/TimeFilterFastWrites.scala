@@ -3,10 +3,12 @@ package com.igeolise.traveltimesdk.json.writes.timefilter
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest._
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterFastProperty
-import com.igeolise.traveltimesdk.dto.requests.common.{Location, TimeFilterFastTransportation}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.TimeFilterFastTransportation
+import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, __}
+
 import scala.concurrent.duration.FiniteDuration
 
 object TimeFilterFastWrites {

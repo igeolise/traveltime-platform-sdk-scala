@@ -7,13 +7,18 @@ import com.igeolise.traveltimesdk.dto.requests.RequestUtils
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterRequestProperty
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
-import com.igeolise.traveltimesdk.dto.requests.common.{CommonTransportation, Location}
+import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse
 import com.softwaremill.sttp._
 import play.api.libs.json.Json
+
 import scala.concurrent.duration.FiniteDuration
 import java.time.ZonedDateTime
+
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
+
+import scala.language.higherKinds
 
 case class TimeFilterRequest(
   locations: Seq[Location],
@@ -40,7 +45,7 @@ case class TimeFilterRequest(
 object TimeFilterRequest {
   sealed trait SearchType
 
-  sealed case class DepartureSearch(
+  case class DepartureSearch(
     id: String,
     departureLocationId: String,
     arrivalLocationIds: Seq[String],
@@ -51,7 +56,7 @@ object TimeFilterRequest {
     properties: Seq[TimeFilterRequestProperty]
   ) extends SearchType
 
-  sealed case class ArrivalSearch(
+  case class ArrivalSearch(
     id: String,
     departureLocationIds: Seq[String],
     arrivalLocationId: String,
