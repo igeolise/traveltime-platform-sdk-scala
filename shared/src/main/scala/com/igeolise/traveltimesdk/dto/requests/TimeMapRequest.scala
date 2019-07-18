@@ -7,13 +7,15 @@ import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.{Intersection, Union}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapRequestProperty
-import com.igeolise.traveltimesdk.dto.requests.common.CommonTransportation
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.responses.{TimeMapResponse, TravelTimeSdkError}
 import com.softwaremill.sttp._
 import play.api.libs.json._
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
+
 import scala.concurrent.duration.FiniteDuration
 import java.time.ZonedDateTime
+
 
 case class TimeMapRequest(
   departureSearches:    Seq[TimeMapRequest.DepartureSearch],

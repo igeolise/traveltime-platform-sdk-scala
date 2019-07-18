@@ -8,7 +8,7 @@ import com.igeolise.traveltimesdk.dto.common.ZoneSearches.{ArrivalSearch, Depart
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{PropertyType, TimeFilterZonesProperty}
 import com.igeolise.traveltimesdk.dto.requests.common._
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.{FullRangeParams, RangeParams}
-import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{CyclingPublicTransport, Driving, DrivingPublicTransport, PublicTransport}
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -66,10 +66,10 @@ object CommonWrites {
     (__ \ "walking_time_from_station").writeNullable[Int]
   ) ((m: Transportation.DrivingTrain) => (
     m.transportType,
-    m.params.ptChangeDelay.toSeconds,
-    m.params.drivingTimeToStation.toSeconds,
-    m.params.parkingTime.toSeconds,
-    m.params.walkingTimeFromStation.toSeconds
+    m.parameters.ptChangeDelay.toSeconds,
+    m.parameters.drivingTimeToStation.toSeconds,
+    m.parameters.parkingTime.toSeconds,
+    m.parameters.walkingTimeFromStation.toSeconds
   ))
 
   implicit val ferryWrites: Writes[FerryTransportation] = (
@@ -84,22 +84,22 @@ object CommonWrites {
     (__ \ "boarding_time").writeNullable[Int]
   ) ((m: CyclingPublicTransport) => (
       m.transportType,
-      m.params.cyclingToStationTime.toSeconds,
-      m.params.parkingTime.toSeconds,
-      m.params.boardingTime.toSeconds
+      m.parameters.cyclingToStationTime.toSeconds,
+      m.parameters.parkingTime.toSeconds,
+      m.parameters.boardingTime.toSeconds
     )
   )
 
   implicit val commonTransportationWrites: Writes[CommonTransportation] = Writes[CommonTransportation] {
+    case c: FerryTransportation    => ferryWrites.writes(c)
+    case c: PublicTransportation   => publicTransportWrites.writes(c)
     case c: CyclingPublicTransport => cyclingPublicTransportWrites.writes(c)
-    case c: CommonTransportation => parameterlessTransportationJson(c)
+    case c: DrivingTrain           => drivingTrainWrites.writes(c)
+    case c: CommonTransportation   => parameterlessTransportationJson(c)
   }
 
-  implicit val transportationWrites: Writes[Transportation] = Writes[Transportation] {
-    case m: PublicTransportation => publicTransportWrites.writes(m)
-    case m: CommonTransportation => commonTransportationWrites.writes(m)
-    case m: Transportation => parameterlessTransportationJson(m)
-  }
+  implicit val timeFilterFastTransportationWrites: Writes[TimeFilterFastTransportation] =
+    Writes[TimeFilterFastTransportation](parameterlessTransportationJson)
 
   implicit val coordsWrites: Writes[Coords] = (
     (__ \ "lat").write[Double] and
@@ -114,7 +114,7 @@ object CommonWrites {
   implicit val timeFilterZonesArrivalWrites: Writes[ArrivalSearch] = (
     (__ \ "id").write[String] and
     (__ \ "coords").write[Coords] and
-    (__ \ "transportation").write[Transportation] and
+    (__ \ "transportation").write[CommonTransportation] and
     (__ \ "arrival_time").write[String] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
@@ -125,7 +125,7 @@ object CommonWrites {
   implicit val timeFilterZonesDepartureWrites: Writes[DepartureSearch] = (
     (__ \ "id").write[String] and
     (__ \ "coords").write[Coords] and
-    (__ \ "transportation").write[Transportation] and
+    (__ \ "transportation").write[CommonTransportation] and
     (__ \ "departure_time").write[String] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and

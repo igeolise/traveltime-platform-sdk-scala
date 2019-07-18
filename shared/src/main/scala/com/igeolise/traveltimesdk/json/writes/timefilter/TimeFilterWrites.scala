@@ -8,8 +8,11 @@ import com.igeolise.traveltimesdk.dto.requests.common.{Location, Transportation}
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, __}
+
 import scala.concurrent.duration.FiniteDuration
 import java.time.ZonedDateTime
+
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
 
 object TimeFilterWrites{
 
@@ -17,7 +20,7 @@ object TimeFilterWrites{
     (__ \ "id").write[String] and
     (__ \ "departure_location_ids").write[Seq[String]] and
     (__ \ "arrival_location_id").write[String] and
-    (__ \ "transportation").write[Transportation] and
+    (__ \ "transportation").write[CommonTransportation] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "arrival_time").write[ZonedDateTime] and
     (__ \ "range").writeNullable[FullRangeParams] and
@@ -28,7 +31,7 @@ object TimeFilterWrites{
     (__ \ "id").write[String] and
     (__ \ "departure_location_id").write[String] and
     (__ \ "arrival_location_ids").write[Seq[String]] and
-    (__ \ "transportation").write[Transportation] and
+    (__ \ "transportation").write[CommonTransportation] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "departure_time").write[ZonedDateTime] and
     (__ \ "range").writeNullable[FullRangeParams] and
