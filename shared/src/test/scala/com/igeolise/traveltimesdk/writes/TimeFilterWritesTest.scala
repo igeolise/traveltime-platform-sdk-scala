@@ -28,7 +28,7 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
       Location("ZSL London Zoo", Coords(51.536067, -0.153596))
     )
 
-    val time = ZonedDateTime.of(2018,9,27,8,0,0,0,ZoneId.systemDefault())
+    val time = ZonedDateTime.parse("2018-09-27T08:00:00Z")
 
     val timeFilterDepartures = DepartureSearch(
       "forward search example",
@@ -56,7 +56,7 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
     val timeFilterRequest = TimeFilterRequest(locations, Seq(timeFilterDepartures), Seq(timeFilterArrivals))
     val timeFilterJson = Json.toJson(timeFilterRequest)
 
-    timeFilterJson should equal (Json.parse(jsonResource))
+    timeFilterJson shouldBe Json.parse(jsonResource)
   }
 
   it("Make json request for time-filter request with cycling+public_transport transportation") {
@@ -66,7 +66,7 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
         Location("Science Museum", Coords(52.37421715421411, 4.912337064743042))
       )
 
-      val time = ZonedDateTime.of(2019,7,8,8,0,0,0,ZoneId.systemDefault())
+      val time = ZonedDateTime.parse("2019-07-08T08:00:00+02:00")
 
       val timeFilterDepartures = DepartureSearch(
         "forward search example",

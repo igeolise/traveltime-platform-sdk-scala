@@ -11,7 +11,7 @@ case class TimeFilterPostcodesResponse(results: Seq[SingleSearchResult], raw: Js
 object TimeFilterPostcodesResponse {
   case class SingleSearchResult(
     id: String,
-    postCodes: Seq[Postcode]
+    postcodes: Seq[Postcode]
   )
 
   case class Postcode(
