@@ -11,7 +11,7 @@ Add the following to your `build.sbt`:
 
 ```scala
 resolvers += Resolver.bintrayRepo("igeolise", "maven")
-libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % "1.5.0"
+libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % "1.6.0"
 ```
 
 ### Usage
