@@ -1,5 +1,7 @@
 package com.igeolise.traveltimesdk.writes
 
+import java.time.ZonedDateTime
+
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.{Coords, ZoneSearches}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Coverage, TravelTimeAll, TravelTimeReachable}
@@ -19,7 +21,7 @@ class TimeFilterZonesWritesTest extends AnyFunSpec with Matchers  {
     "public transport from Trafalgar Square",
     Coords(51.507609, -0.128315),
     Transportation.PublicTransport(PublicTransportationParams(None, None)),
-    "2018-10-01T08:00:00Z",
+    ZonedDateTime.parse("2018-10-01T08:00:00Z"),
     Duration(1800, SECONDS),
     0.1,
     Seq(
@@ -31,7 +33,7 @@ class TimeFilterZonesWritesTest extends AnyFunSpec with Matchers  {
     "public transport to Trafalgar Square",
     Coords(51.507609, -0.128315),
     Transportation.PublicTransport(PublicTransportationParams(None, None)),
-    "2018-10-01T08:00:00Z",
+    ZonedDateTime.parse("2018-10-01T08:00:00Z"),
     Duration(1800, SECONDS),
     0.1,
     Seq(

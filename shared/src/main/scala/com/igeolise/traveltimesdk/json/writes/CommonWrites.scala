@@ -27,8 +27,7 @@ object CommonWrites {
   val finiteDurationToSecondsWrites: Writes[FiniteDuration] = Writes.IntWrites.contramap(_.toSeconds.toInt)
 
   implicit class formatDate(self: ZonedDateTime) {
-    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
-    def formatDate: String = self.format(dateFormatter)
+    def formatDate: String = self.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
   }
 
   def parameterlessTransportationJson(transportation: Transportation): JsObject =
@@ -115,7 +114,7 @@ object CommonWrites {
     (__ \ "id").write[String] and
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[CommonTransportation] and
-    (__ \ "arrival_time").write[String] and
+    (__ \ "arrival_time").write[ZonedDateTime] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
@@ -126,7 +125,7 @@ object CommonWrites {
     (__ \ "id").write[String] and
     (__ \ "coords").write[Coords] and
     (__ \ "transportation").write[CommonTransportation] and
-    (__ \ "departure_time").write[String] and
+    (__ \ "departure_time").write[ZonedDateTime] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
     (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and

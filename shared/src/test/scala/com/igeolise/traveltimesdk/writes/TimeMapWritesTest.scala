@@ -19,7 +19,7 @@ class TimeMapWritesTest extends AnyFunSpec with Matchers{
 
   it("departure_searches and arrival_searches json request") {
     val trans = PublicTransport(PublicTransportationParams(Some(Duration(1, MINUTES)), None))
-    val time = ZonedDateTime.of(2018,9,27,8,0,0,0,ZoneId.systemDefault())
+    val time = ZonedDateTime.parse("2018-09-27T08:00:00+00:00")
 
     val departure =
       TimeMapRequest.DepartureSearch(

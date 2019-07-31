@@ -1,6 +1,6 @@
 package com.igeolise.traveltimesdk.writes
 
-import java.time.{ZoneId, ZonedDateTime}
+import java.time.ZonedDateTime
 
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
@@ -26,7 +26,7 @@ class RoutesWritesTest extends AnyFunSpec with Matchers {
       Location("Hyde Park", Coords(51.508824, -0.167093)),
       Location("ZSL London Zoo", Coords(51.536067, -0.153596))
     )
-    val time = ZonedDateTime.of(2018,10,2,8,0,0,0,ZoneId.systemDefault())
+    val time = ZonedDateTime.parse("2018-10-02T08:00:00+00:00")
 
     val routesDepartures = DepartureSearch(
       "departure search example",

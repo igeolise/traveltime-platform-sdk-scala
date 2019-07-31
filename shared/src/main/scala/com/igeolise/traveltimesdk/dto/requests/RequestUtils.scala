@@ -30,7 +30,8 @@ object RequestUtils {
     validationFn: JsValue => JsResult[Response]
   ): R[Either[TravelTimeSdkError, Response]] = {
 
-    sttpRequest.backend
+    sttpRequest
+      .backend
       .send(sttpRequest.request)
       .map(_.body)
       .map(_.handleJsonResponse(validationFn))

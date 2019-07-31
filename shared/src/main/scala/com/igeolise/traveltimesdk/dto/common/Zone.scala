@@ -1,5 +1,7 @@
 package com.igeolise.traveltimesdk.dto.common
 
+import java.time.ZonedDateTime
+
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterZonesProperty
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation
@@ -30,7 +32,7 @@ object ZoneSearches{
     id: String,
     coords: Coords,
     transportation: CommonTransportation,
-    departureTime: String,
+    departureTime: ZonedDateTime,
     travelTime: FiniteDuration,
     reachablePostcodesThreshold: Double,
     properties: Seq[TimeFilterZonesProperty],
@@ -41,7 +43,7 @@ object ZoneSearches{
     id: String,
     coords: Coords,
     transportation: CommonTransportation,
-    arrivalTime: String,
+    arrivalTime: ZonedDateTime,
     travelTime: FiniteDuration,
     reachablePostcodesThreshold: Double,
     properties: Seq[TimeFilterZonesProperty],
