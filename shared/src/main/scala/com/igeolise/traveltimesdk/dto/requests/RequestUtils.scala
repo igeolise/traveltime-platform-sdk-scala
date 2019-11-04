@@ -2,12 +2,13 @@ package com.igeolise.traveltimesdk.dto.requests
 
 import cats.Monad
 import cats.implicits._
-import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
+import com.igeolise.traveltimesdk.dto.common.BCP47
+import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, GeocodingLanguageResponse, GeocodingResponse, GeocodingResponseProperties, TravelTimeSdkError}
 import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError.ValidationError
 import com.igeolise.traveltimesdk.json.reads.ErrorReads._
+import com.softwaremill.{sttp => STTP}
 import com.softwaremill.sttp.{Request, _}
 import play.api.libs.json._
-
 import scala.concurrent.duration._
 
 object RequestUtils {
@@ -24,6 +25,42 @@ object RequestUtils {
     backend: SttpBackend[R, S],
     request: Request[String, S]
   )
+
+  def sendGeocoding[R[_]: Monad, S](
+    sttpRequest: SttpRequest[R, S],
+    validationFn: JsValue => JsResult[GeoJsonResponse[GeocodingResponseProperties]]
+  ): R[Either[TravelTimeSdkError, GeocodingResponse]] = {
+
+    sttpRequest
+      .backend
+      .send(sttpRequest.request)
+      .map(response => {
+        val geoJsonProperties = response.body.handleJsonResponse(validationFn)
+        addLanguageToResponse(geoJsonProperties, response)
+      })
+  }
+
+  private def addLanguageToResponse(
+    either: Either[TravelTimeSdkError, GeoJsonResponse[GeocodingResponseProperties]],
+    r: STTP.Response[String]
+  ): Either[TravelTimeSdkError, GeocodingResponse] = {
+
+    def findContentLanguageHeader(headers: Seq[(String, String)]): BCP47 = {
+      headers.find(_._1 == "Content-Language") match {
+        case Some(value) => BCP47(value._2)
+        case None => BCP47("en")
+      }
+    }
+
+    either.map(properties => {
+      GeocodingResponse(
+        language = GeocodingLanguageResponse(findContentLanguageHeader(r.headers)),
+        properties = properties
+      )
+    })
+
+  }
+
 
   def send[R[_] : Monad, S, Response](
     sttpRequest: SttpRequest[R, S],
@@ -78,4 +115,6 @@ object RequestUtils {
       case a: JsError => ValidationError(a)
     }
   }
+
+
 }

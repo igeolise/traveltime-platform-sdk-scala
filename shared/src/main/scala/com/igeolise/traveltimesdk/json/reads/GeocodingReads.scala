@@ -1,8 +1,7 @@
 package com.igeolise.traveltimesdk.json.reads
 
 import com.igeolise.traveltimesdk.json.reads.AvailableDataReads._
-import com.igeolise.traveltimesdk.dto.responses.GeoJsonResponse
-import com.igeolise.traveltimesdk.dto.responses.common.GeocodingResponseProperties
+import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, GeocodingResponseProperties}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
 

@@ -1,10 +1,10 @@
-package com.igeolise.traveltimesdk.dto.requests
+package com.igeolise.traveltimesdk.dto.requests.geocoding
 
 import cats.Monad
-import com.igeolise.traveltimesdk.dto.common.Coords
+import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
+import com.igeolise.traveltimesdk.dto.requests.RequestUtils
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.responses.common.GeocodingResponseProperties
-import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, TravelTimeSdkError}
+import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, GeocodingResponse, GeocodingResponseProperties, TravelTimeSdkError}
 import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
 import com.softwaremill.sttp.{Uri, _}
 
@@ -19,18 +19,23 @@ import com.softwaremill.sttp.{Uri, _}
   * @param countryCode Country code in ISO 3166-1 alpha-2 or alpha-3
   *                    [[https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes Country codes]].
   *                    Only return the results that are within the specified country.
+  * @param acceptLanguage BCP47 tag https://tools.ietf.org/html/bcp47 . For example: "en", "fr-FR"
   */
 case class GeocodingRequest(
-  query: String, focusCoords: Option[Coords] = None, countryCode: Option[String] = None
-) extends TravelTimePlatformRequest[GeoJsonResponse[GeocodingResponseProperties]]  {
+  query: String,
+  focusCoords: Option[Coords] = None,
+  countryCode: Option[String] = None,
+  acceptLanguage: Option[BCP47] = None
+) extends GeocodingRequestWithLanguage with TravelTimePlatformRequest[GeocodingResponse]  {
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, GeoJsonResponse[GeocodingResponseProperties]]] =
-    RequestUtils.send(
+  ): R[Either[TravelTimeSdkError, GeocodingResponse]] = {
+    RequestUtils.sendGeocoding(
       sttpRequest,
       _.validate[GeoJsonResponse[GeocodingResponseProperties]]
     )
+  }
 
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     def request(
