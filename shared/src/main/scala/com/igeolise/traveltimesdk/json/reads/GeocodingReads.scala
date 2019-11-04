@@ -22,6 +22,7 @@ object GeocodingReads  {
     (__ \ "city").readNullable[String] and
     (__ \ "country").readNullable[String] and
     (__ \ "country_code").readNullable[String] and
+    (__ \ "local_admin").readNullable[String] and
     (__ \ "continent").readNullable[String] and
     (__ \ "postcode").readNullable[String] and
     (__ \ "features").readNullable(mapInfoFeaturesReads)
