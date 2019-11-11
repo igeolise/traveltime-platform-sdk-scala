@@ -31,9 +31,9 @@ case class GeocodingRequest(
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
   ): R[Either[TravelTimeSdkError, GeocodingResponse]] = {
-    RequestUtils.sendGeocoding(
+    RequestUtils.sendModified(
       sttpRequest,
-      _.validate[GeoJsonResponse[GeocodingResponseProperties]]
+      RequestUtils.addLanguageToResponse(_.validate[GeoJsonResponse[GeocodingResponseProperties]])
     )
   }
 
