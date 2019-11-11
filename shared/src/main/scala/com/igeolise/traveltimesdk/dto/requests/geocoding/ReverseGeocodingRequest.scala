@@ -4,7 +4,12 @@ import cats.Monad
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, GeocodingResponse, GeocodingResponseProperties, TravelTimeSdkError}
+import com.igeolise.traveltimesdk.dto.responses.{
+  GeoJsonResponse,
+  GeocodingResponse,
+  GeocodingResponseProperties,
+  TravelTimeSdkError
+}
 import com.softwaremill.sttp.{Request, _}
 import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
 
@@ -17,17 +22,19 @@ import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
   *                      Useful when performing reverse geocoding requests near a border.
   */
 case class ReverseGeocodingRequest(
-                                    coordinates: Coords,
-                                    withinCountry: Option[String],
-                                    acceptLanguage: Option[BCP47]
-) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+    coordinates: Coords,
+    withinCountry: Option[String],
+    acceptLanguage: Option[BCP47]
+) extends TravelTimePlatformRequest[GeocodingResponse]
+    with GeocodingRequestWithLanguage {
 
-  override def send[R[_] : Monad, S](
-    sttpRequest: RequestUtils.SttpRequest[R, S]
+  override def send[R[_]: Monad, S](
+      sttpRequest: RequestUtils.SttpRequest[R, S]
   ): R[Either[TravelTimeSdkError, GeocodingResponse]] = {
     RequestUtils.sendModified(
       sttpRequest,
-      RequestUtils.addLanguageToResponse(_.validate[GeoJsonResponse[GeocodingResponseProperties]])
+      RequestUtils.addLanguageToResponse(
+        _.validate[GeoJsonResponse[GeocodingResponseProperties]])
     )
   }
 
@@ -40,7 +47,8 @@ case class ReverseGeocodingRequest(
         withinCountry.map(countryCode => "within.country" -> countryCode)
       ).flatten.toMap
 
-    val uri = Uri("https", host.host).path(endpoint.split("/")).params(parameters)
+    val uri =
+      Uri("https", host.host).path(endpoint.split("/")).params(parameters)
 
     sttp.get(uri)
   }
