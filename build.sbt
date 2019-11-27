@@ -18,11 +18,11 @@ val commonSettings = Seq(
     "-Ywarn-dead-code"
   ),
   libraryDependencies ++= Seq(
-    "org.typelevel"         %%% "cats-core"  % "2.0.0-M4",
-    "com.softwaremill.sttp" %%% "core"       % "1.6.0",
+    "org.typelevel"         %%% "cats-core"  % "2.0.0",
+    "com.softwaremill.sttp" %%% "core"       % "1.7.2",
     "com.typesafe.play"     %%% "play-json"  % "2.7.4",
     "com.beachape"          %%% "enumeratum" % "1.5.13",
-    "org.scalatest"         %%  "scalatest"  % "3.1.0-SNAP13" % Test,
+    "org.scalatest"         %%  "scalatest"  % "3.2.0-M1" % Test,
   ),
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
@@ -32,7 +32,7 @@ lazy val sdk =
     .settings(commonSettings)
     .jvmSettings(
       libraryDependencies ++= Seq(
-        "com.softwaremill.sttp" %% "okhttp-backend" % "1.6.0"
+        "com.softwaremill.sttp" %% "okhttp-backend" % "1.7.2"
       )
     )
     .jsSettings(
