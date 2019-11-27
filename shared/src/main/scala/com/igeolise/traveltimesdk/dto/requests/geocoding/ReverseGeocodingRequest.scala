@@ -1,11 +1,16 @@
-package com.igeolise.traveltimesdk.dto.requests
+package com.igeolise.traveltimesdk.dto.requests.geocoding
 
 import cats.Monad
-import com.igeolise.traveltimesdk.dto.common.Coords
+import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
+import com.igeolise.traveltimesdk.dto.requests.RequestUtils
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.responses.common.GeocodingResponseProperties
-import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, TravelTimeSdkError}
-import com.softwaremill.sttp.{sttp, Request, Uri}
+import com.igeolise.traveltimesdk.dto.responses.{
+  GeoJsonResponse,
+  GeocodingResponse,
+  GeocodingResponseProperties,
+  TravelTimeSdkError
+}
+import com.softwaremill.sttp.{Request, _}
 import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
 
 /**
@@ -17,17 +22,21 @@ import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
   *                      Useful when performing reverse geocoding requests near a border.
   */
 case class ReverseGeocodingRequest(
-  coordinates: Coords,
-  withinCountry: Option[String]
-) extends TravelTimePlatformRequest[GeoJsonResponse[GeocodingResponseProperties]] {
+    coordinates: Coords,
+    withinCountry: Option[String],
+    acceptLanguage: Option[BCP47]
+) extends TravelTimePlatformRequest[GeocodingResponse]
+    with GeocodingRequestWithLanguage {
 
-  override def send[R[_] : Monad, S](
-    sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, GeoJsonResponse[GeocodingResponseProperties]]] =
-    RequestUtils.send(
+  override def send[R[_]: Monad, S](
+      sttpRequest: RequestUtils.SttpRequest[R, S]
+  ): R[Either[TravelTimeSdkError, GeocodingResponse]] = {
+    RequestUtils.sendModified(
       sttpRequest,
-      _.validate[GeoJsonResponse[GeocodingResponseProperties]]
-  )
+      RequestUtils.addLanguageToResponse(
+        _.validate[GeoJsonResponse[GeocodingResponseProperties]])
+    )
+  }
 
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     val endpoint = "v4/geocoding/reverse"
@@ -38,7 +47,8 @@ case class ReverseGeocodingRequest(
         withinCountry.map(countryCode => "within.country" -> countryCode)
       ).flatten.toMap
 
-    val uri = Uri("https", host.host).path(endpoint.split("/")).params(parameters)
+    val uri =
+      Uri("https", host.host).path(endpoint.split("/")).params(parameters)
 
     sttp.get(uri)
   }

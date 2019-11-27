@@ -1,8 +1,7 @@
 package com.igeolise.traveltimesdk.json.reads
 
 import com.igeolise.traveltimesdk.json.reads.AvailableDataReads._
-import com.igeolise.traveltimesdk.dto.responses.GeoJsonResponse
-import com.igeolise.traveltimesdk.dto.responses.common.GeocodingResponseProperties
+import com.igeolise.traveltimesdk.dto.responses.{GeoJsonResponse, GeocodingResponseProperties}
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, __}
 
@@ -22,6 +21,7 @@ object GeocodingReads  {
     (__ \ "city").readNullable[String] and
     (__ \ "country").readNullable[String] and
     (__ \ "country_code").readNullable[String] and
+    (__ \ "local_admin").readNullable[String] and
     (__ \ "continent").readNullable[String] and
     (__ \ "postcode").readNullable[String] and
     (__ \ "features").readNullable(mapInfoFeaturesReads)
