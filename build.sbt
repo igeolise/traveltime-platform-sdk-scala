@@ -4,7 +4,7 @@ val commonSettings = Seq(
   organization := "com.igeolise",
   bintrayOrganization := Some("igeolise"),
   name := "traveltime-platform-sdk",
-  version := "1.6.0",
+  version := "1.7.0",
   crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12"),
   scalacOptions ++= Seq(
     "-deprecation",
