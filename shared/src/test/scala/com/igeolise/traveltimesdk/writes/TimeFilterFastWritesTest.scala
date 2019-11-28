@@ -8,7 +8,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.Transportation._
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest.{ArrivalSearch, ManyToOne, OneToMany, WeekdayMorning}
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterWrites._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterFastWrites._

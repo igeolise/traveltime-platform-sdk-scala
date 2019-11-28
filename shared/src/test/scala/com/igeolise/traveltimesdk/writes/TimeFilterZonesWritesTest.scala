@@ -10,7 +10,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTrans
 import com.igeolise.traveltimesdk.dto.requests.timefilter.{TimeFilterDistrictsRequest, TimeFilterSectorsRequest}
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterDistrictsWrites._
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterSectorsWrites._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 

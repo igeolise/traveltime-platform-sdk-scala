@@ -4,7 +4,7 @@ import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterPostcodesResponse.{Postcode, PostcodesProperties, SingleSearchResult}
 import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterPostcodesReads._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
 

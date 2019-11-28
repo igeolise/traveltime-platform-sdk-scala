@@ -9,8 +9,8 @@ import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{PublicTransport, PublicTransportationParams}
-import org.scalatest._
 import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.Json
 
 import scala.concurrent.duration._
