@@ -1,17 +1,9 @@
 package com.igeolise.traveltimesdk.dto.requests.geocoding
 
-import cats.Monad
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.responses.{
-  GeoJsonResponse,
-  GeocodingResponse,
-  GeocodingResponseProperties,
-  TravelTimeSdkError
-}
-import com.softwaremill.sttp.{Request, _}
-import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
+import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
+import com.softwaremill.sttp._
 
 /**
   * Attempt to match a latitude, longitude pair to an address.
@@ -23,33 +15,15 @@ import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
   */
 case class ReverseGeocodingRequest(
     coordinates: Coords,
-    withinCountry: Option[String],
-    acceptLanguage: Option[BCP47]
-) extends TravelTimePlatformRequest[GeocodingResponse]
-    with GeocodingRequestWithLanguage {
+    withinCountry: Option[String] = None,
+    acceptLanguage: Option[BCP47] = None
+) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
 
-  override def send[R[_]: Monad, S](
-      sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, GeocodingResponse]] = {
-    RequestUtils.sendModified(
-      sttpRequest,
-      RequestUtils.addLanguageToResponse(
-        _.validate[GeoJsonResponse[GeocodingResponseProperties]])
-    )
-  }
+  val resourceType: GeocodingResourceType = Reverse
 
-  override def sttpRequest(host: Uri): Request[String, Nothing] = {
-    val endpoint = "v4/geocoding/reverse"
-    val parameters: Map[String, String] =
-      Vector(
-        Some("lat" -> coordinates.lat.toString),
-        Some("lng" -> coordinates.lng.toString),
-        withinCountry.map(countryCode => "within.country" -> countryCode)
-      ).flatten.toMap
-
-    val uri =
-      Uri("https", host.host).path(endpoint.split("/")).params(parameters)
-
-    sttp.get(uri)
+  def queryUri(host: Uri): Uri = {
+    val lat = coordinates.lat
+    val lng = coordinates.lng
+    uri"$host/v4/geocoding/${resourceType.endpoint}?lat=$lat&lng=$lng&within.country=$withinCountry"
   }
 }
