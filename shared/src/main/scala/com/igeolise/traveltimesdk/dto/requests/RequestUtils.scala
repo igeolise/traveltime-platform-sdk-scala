@@ -20,8 +20,7 @@ import scala.concurrent.duration._
 object RequestUtils {
 
   trait TravelTimePlatformRequest[Response <: TravelTimePlatformResponse] {
-    def send[R[_]: Monad, S](
-        sttpRequest: SttpRequest[R, S]): R[Either[TravelTimeSdkError, Response]]
+    def send[R[_]: Monad, S](sttpRequest: SttpRequest[R, S]): R[Either[TravelTimeSdkError, Response]]
 
     def sttpRequest(host: Uri): Request[String, Nothing]
   }

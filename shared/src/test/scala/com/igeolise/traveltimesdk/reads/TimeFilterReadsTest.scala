@@ -6,7 +6,7 @@ import com.igeolise.traveltimesdk.dto.responses.common.DistanceBreakdown.Breakdo
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterResponse.{Location, Properties, SingleSearchResult}
 import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterReads._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
 

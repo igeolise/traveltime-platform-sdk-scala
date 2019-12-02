@@ -11,7 +11,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.{CommonProperties, Locatio
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest.DepartureSearch
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterWrites._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsValue, Json}
 

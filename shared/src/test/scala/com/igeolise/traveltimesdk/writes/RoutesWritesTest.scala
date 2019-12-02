@@ -12,7 +12,7 @@ import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParam
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.common.{Location, Transportation}
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.Json
 

@@ -5,7 +5,7 @@ import com.igeolise.traveltimesdk.dto.common.{TravelTime, Zone, ZoneSearchProper
 import com.igeolise.traveltimesdk.dto.responses.timefilter.{TimeFilterDistrictsResponse, TimeFilterSectorsResponse}
 import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterDistrictsReads._
 import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterSectorsReads._
-import org.scalatest.Matchers
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
 
