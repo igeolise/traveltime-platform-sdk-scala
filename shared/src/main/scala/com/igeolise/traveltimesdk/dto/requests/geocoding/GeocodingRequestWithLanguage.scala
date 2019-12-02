@@ -9,7 +9,6 @@ import com.softwaremill.sttp.{Request, Uri, _}
 
 trait GeocodingRequestWithLanguage {
   val acceptLanguage: Option[BCP47]
-  val resourceType: GeocodingResourceType
 
   def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S]): R[Either[TravelTimeSdkError, GeocodingResponse]] =
     RequestUtils.sendModified(

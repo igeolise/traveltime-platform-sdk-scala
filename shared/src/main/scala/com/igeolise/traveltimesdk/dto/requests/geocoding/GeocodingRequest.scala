@@ -25,11 +25,9 @@ case class GeocodingRequest(
   acceptLanguage: Option[BCP47] = None
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage  {
 
-  val resourceType: GeocodingResourceType = Search
-
   def queryUri(host: Uri): Uri = {
     val lat = focusCoords.map(_.lat)
     val lng = focusCoords.map(_.lng)
-    uri"$host/v4/geocoding/${resourceType.endpoint}?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
+    uri"$host/v4/geocoding/${Search.endpoint}?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
   }
 }
