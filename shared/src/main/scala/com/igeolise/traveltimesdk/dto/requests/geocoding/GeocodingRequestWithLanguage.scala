@@ -8,17 +8,17 @@ import com.igeolise.traveltimesdk.json.reads.GeocodingReads._
 import com.softwaremill.sttp.{Request, Uri, _}
 
 trait GeocodingRequestWithLanguage {
-  val acceptLanguage: Option[BCP47]
+  abstract val acceptLanguage: Option[BCP47]
 
-  def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S]): R[Either[TravelTimeSdkError, GeocodingResponse]] =
+  abstract def queryUri(host: Uri): Uri
+
+  final def send[R[_] : Monad, S](sttpRequest: RequestUtils.SttpRequest[R, S]): R[Either[TravelTimeSdkError, GeocodingResponse]] =
     RequestUtils.sendModified(
       sttpRequest,
       RequestUtils.addLanguageToResponse(
         _.validate[GeoJsonResponse[GeocodingResponseProperties]])
     )
 
-  def queryUri(host: Uri): Uri
-
-  def sttpRequest(host: Uri): Request[String, Nothing] =
+  final def sttpRequest(host: Uri): Request[String, Nothing] =
     sttp.get(queryUri(host))
 }

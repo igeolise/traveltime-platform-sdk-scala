@@ -8,7 +8,7 @@ import com.softwaremill.sttp.{Uri, _}
 /**
   * Match a query string to geographic coordinates.
   * This endpoint is designed to be used in location input with type-ahead support.
-  * The difference from Geocoding [Search] is that his endpoint uses a different query parser,
+  * The difference from Geocoding [[GeocodingRequest]] is that this endpoint uses a different query parser,
   * which takes into account that the user is typing and query may not be complete.
   *
   * @param query       A query to geocode. Set this parameter to whatever the user has typed in the type-ahead input.
