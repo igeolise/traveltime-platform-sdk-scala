@@ -5,7 +5,7 @@ import com.igeolise.traveltimesdk.dto.responses.TimeMapResponse
 import com.igeolise.traveltimesdk.dto.responses.TimeMapResponse._
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.{Agency, TimeMapResponseProperties}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}
@@ -34,7 +34,13 @@ class TimeMapReadsTest extends AnyFunSpec with Matchers {
                 Seq()
               )
             ),
-            TimeMapResponseProperties(None)
+            TimeMapResponseProperties(
+              Some(false),
+              Some(Vector(
+                Agency("Kauno miesto administracija", Vector("bus", "train")),
+                Agency("Kauno miesto administracija 2", Vector("ferry"))
+              ))
+            )
           )
         ),
       Json.parse(json)

@@ -29,7 +29,24 @@
           "holes": []
         }
       ],
-      "properties": {}
+      "properties": {
+        "is_only_walking": false,
+        "agencies": [
+          {
+            "name": "Kauno miesto administracija",
+            "modes": [
+              "bus",
+              "train"
+            ]
+          },
+          {
+            "name": "Kauno miesto administracija 2",
+            "modes": [
+              "ferry"
+            ]
+          }
+        ]
+      }
     }
   ]
 }

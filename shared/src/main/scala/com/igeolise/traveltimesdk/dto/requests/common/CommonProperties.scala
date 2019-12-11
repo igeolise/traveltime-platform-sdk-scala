@@ -21,11 +21,11 @@ object CommonProperties {
       override val propertyType: String = "travel_time"
     }
 
-    case object Distance extends TimeFilterRequestProperty with TimeFilterPostcodesProperty with RoutesRequestProperty{
+    case object Distance extends TimeFilterRequestProperty with TimeFilterPostcodesProperty with RoutesRequestProperty {
       override val propertyType: String = "distance"
     }
 
-    case object TravelTimeReachable extends TimeFilterZonesProperty  {
+    case object TravelTimeReachable extends TimeFilterZonesProperty {
       override val propertyType = "travel_time_reachable"
     }
 
@@ -33,11 +33,11 @@ object CommonProperties {
       override val propertyType = "travel_time_all"
     }
 
-    case object Coverage extends TimeFilterZonesProperty  {
+    case object Coverage extends TimeFilterZonesProperty {
       override val propertyType = "coverage"
     }
 
-    case object Fares extends TimeFilterRequestProperty with RoutesRequestProperty with TimeFilterFastProperty{
+    case object Fares extends TimeFilterRequestProperty with RoutesRequestProperty with TimeFilterFastProperty {
       override val propertyType: String = "fares"
     }
 
@@ -54,9 +54,12 @@ object CommonProperties {
     }
   }
 
-  object TimeMapProps{
+  object TimeMapProps {
+    case class Agency(name: String, modes: Vector[String])
+
     case class TimeMapResponseProperties(
-      isOnlyWalkingProperty: Option[Boolean]
+      isOnlyWalkingProperty: Option[Boolean],
+      agencies: Option[Vector[Agency]]
     )
   }
 }

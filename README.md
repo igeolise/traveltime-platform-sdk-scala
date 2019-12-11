@@ -1,6 +1,5 @@
 # TravelTime platform Scala SDK
 [ ![Download](https://api.bintray.com/packages/igeolise/maven/traveltime-platform-sdk/images/download.svg) ](https://bintray.com/igeolise/maven/traveltime-platform-sdk/_latestVersion)
-![](https://github.com/igeolise/traveltime-platform-sdk-scala/workflows/.github/workflows/scala.yml/badge.svg)
 
 This open-source library allows you to access [TravelTime platform API](http://docs.traveltimeplatform.com/overview/introduction) endpoints. TravelTime platform SDK is published for Scala 2.11.X, 2.12.X, 2.13.X and ScalaJS.
 
