@@ -52,6 +52,10 @@ object CommonProperties {
     case object IsOnlyWalking extends TimeMapRequestProperty {
       override val propertyType: String = "is_only_walking"
     }
+
+    case object Agencies extends TimeMapRequestProperty {
+      override val propertyType: String = "agencies"
+    }
   }
 
   object TimeMapProps {

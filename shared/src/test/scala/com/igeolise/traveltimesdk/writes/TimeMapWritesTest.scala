@@ -7,6 +7,7 @@ import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.ArrivalSearch
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Agencies, IsOnlyWalking}
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{PublicTransport, PublicTransportationParams}
 import org.scalatest.funspec.AnyFunSpec
@@ -41,7 +42,7 @@ class TimeMapWritesTest extends AnyFunSpec with Matchers{
           enabled = true,
           1.hour
         )),
-        None,
+        Some(Seq(IsOnlyWalking, Agencies))
       )
 
     val timeMapRequest: TimeMapRequest = TimeMapRequest(Seq(departure), Seq(arrival), Seq(), Seq())
