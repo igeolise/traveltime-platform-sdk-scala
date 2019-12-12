@@ -53,6 +53,9 @@ object CommonProperties {
       override val propertyType: String = "is_only_walking"
     }
 
+    /**
+     * Usage of this experimental property is permitted only for TravelTime Platform developers.
+     */
     case object Agencies extends TimeMapRequestProperty {
       override val propertyType: String = "agencies"
     }
