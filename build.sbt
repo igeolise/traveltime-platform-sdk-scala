@@ -4,8 +4,8 @@ val commonSettings = Seq(
   organization := "com.igeolise",
   bintrayOrganization := Some("igeolise"),
   name := "traveltime-platform-sdk",
-  version := "1.8.0",
-  crossScalaVersions := Seq("2.13.0", "2.12.8", "2.11.12"),
+  version := "1.9.0",
+  crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "utf-8",
@@ -22,7 +22,7 @@ val commonSettings = Seq(
     "com.softwaremill.sttp" %%% "core"       % "1.7.2",
     "com.typesafe.play"     %%% "play-json"  % "2.7.4",
     "com.beachape"          %%% "enumeratum" % "1.5.13",
-    "org.scalatest"         %%  "scalatest"  % "3.2.0-M1" % Test,
+    "org.scalatest"         %%% "scalatest"  % "3.2.0-M2" % Test,
   ),
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )

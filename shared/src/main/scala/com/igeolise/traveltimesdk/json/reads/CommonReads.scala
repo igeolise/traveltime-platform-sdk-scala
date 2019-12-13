@@ -3,7 +3,7 @@ package com.igeolise.traveltimesdk.json.reads
 import java.time.ZonedDateTime
 
 import com.igeolise.traveltimesdk.dto.common.{Coords, TravelTime, Zone, ZoneSearchProperties}
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.{Agency, TimeMapResponseProperties}
 import com.igeolise.traveltimesdk.dto.responses.common.Route.RoutePart
 import com.igeolise.traveltimesdk.dto.responses.common.Route.RoutePart.{BasicRoutePart, PublicTransportRoutePart}
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
@@ -20,8 +20,15 @@ object CommonReads {
   val secondsToFiniteDurationReads: Reads[FiniteDuration] =
     Reads.IntReads.map(time => Duration(time, SECONDS))
 
-  implicit val timeMapResponsePropertiesReads: Reads[TimeMapResponseProperties] =
-    (__ \ "is_only_walking").readNullable[Boolean].map(TimeMapResponseProperties.apply)
+  implicit val agencyReads: Reads[Agency] = (
+    (__ \ "name").read[String] and
+    (__ \ "modes").read[Vector[String]]
+  ) (Agency)
+
+  implicit val timeMapResponsePropertiesReads: Reads[TimeMapResponseProperties] = (
+    (__ \ "is_only_walking").readNullable[Boolean] and
+    (__ \ "agencies").readNullable[Vector[Agency]]
+  ) (TimeMapResponseProperties)
 
   implicit val coordsReads: Reads[Coords] = (
     (__ \ "lat").read[Double] and
@@ -32,13 +39,13 @@ object CommonReads {
     (__ \ "type").read[String] and
     (__ \ "price").read[Double] and
     (__ \ "currency").read[String]
-  ) (Fares.Ticket.apply _)
+  ) (Fares.Ticket)
 
   implicit val fareBreakdownReads: Reads[Fares.FareBreakdown] = (
     (__ \ "modes").read[Seq[String]] and
     (__ \ "route_part_ids").read[Seq[Int]] and
     (__ \ "tickets").read[Seq[Fares.Ticket]]
-  ) (Fares.FareBreakdown.apply _)
+  ) (Fares.FareBreakdown)
 
   implicit val faresReads: Reads[Fares] = (
     (__ \ "breakdown").read[Seq[Fares.FareBreakdown]] and

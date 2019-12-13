@@ -30,7 +30,8 @@
       "range": {
         "enabled": true,
         "width": 3600
-      }
+      },
+      "properties": [ "is_only_walking", "agencies" ]
     }
   ],
   "unions": [],
