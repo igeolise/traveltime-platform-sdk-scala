@@ -30,7 +30,7 @@ case class GeocodingResponseProperties (
   city: Option[String],
   country: Option[String],
   countryCode: Option[String],
-  local_admin: Option[String],
+  localAdmin: Option[String],
   continent: Option[String],
   postcode: Option[String],
 

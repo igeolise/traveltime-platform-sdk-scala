@@ -39,7 +39,8 @@ case class TimeFilterPostcodesRequest(
 
 object TimeFilterPostcodesRequest {
   sealed trait SearchType
-  sealed case class DepartureSearch(
+
+  case class DepartureSearch(
     id: String,
     coords: Coords,
     transportation: CommonTransportation,
@@ -49,7 +50,7 @@ object TimeFilterPostcodesRequest {
     properties: Seq[TimeFilterPostcodesProperty]
   ) extends SearchType
 
-  sealed case class ArrivalSearch(
+  case class ArrivalSearch(
     id: String,
     coords: Coords,
     transportation: CommonTransportation,

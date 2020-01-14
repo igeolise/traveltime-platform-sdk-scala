@@ -52,7 +52,7 @@ object TimeMapRequest {
   case class Union(override val id: String, override val searchIDs: Seq[String])        extends UnionOrIntersection
   case class Intersection(override val id: String, override val searchIDs: Seq[String]) extends UnionOrIntersection
 
-  sealed case class DepartureSearch(
+  case class DepartureSearch(
     id: String,
     coordinates: Coords,
     transportation: CommonTransportation,
@@ -62,7 +62,7 @@ object TimeMapRequest {
     properties: Option[Seq[TimeMapRequestProperty]] = None
   ) extends SearchType
 
-  sealed case class ArrivalSearch(
+  case class ArrivalSearch(
     id: String,
     coordinates: Coords,
     transportation: CommonTransportation,
