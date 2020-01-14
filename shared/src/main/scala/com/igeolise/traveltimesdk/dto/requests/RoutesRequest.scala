@@ -40,7 +40,7 @@ case class RoutesRequest(
 object RoutesRequest {
   sealed trait SearchType
 
-  sealed case class DepartureSearch(
+  case class DepartureSearch(
     id: String,
     departureLocationId: String,
     arrivalLocationIds: Seq[String],
@@ -50,7 +50,7 @@ object RoutesRequest {
     range: Option[FullRangeParams] = None
   ) extends SearchType
 
-  sealed case class ArrivalSearch(
+  case class ArrivalSearch(
     id: String,
     departureLocationIds: Seq[String],
     arrivalLocationId: String,

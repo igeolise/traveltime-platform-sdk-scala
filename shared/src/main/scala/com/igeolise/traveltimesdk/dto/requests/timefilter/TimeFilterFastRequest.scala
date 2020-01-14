@@ -53,7 +53,7 @@ object TimeFilterFastRequest {
     oneToMany: Seq[OneToMany]
   )
 
-  sealed case class ManyToOne(
+  case class ManyToOne(
     id: String,
     arrivalLocationId: String,
     departureLocationIds: Seq[String],
@@ -63,7 +63,7 @@ object TimeFilterFastRequest {
     properties: Seq[TimeFilterFastProperty]
   ) extends SearchType
 
-  sealed case class OneToMany(
+  case class OneToMany(
     id: String,
     departureLocationId: String,
     arrivalLocationIds: Seq[String],

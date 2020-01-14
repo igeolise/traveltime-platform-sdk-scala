@@ -27,10 +27,7 @@ object RequestUtils {
 
   trait TravelTimePlatformResponse
 
-  case class SttpRequest[R[_]: Monad, S](
-      backend: SttpBackend[R, S],
-      request: Request[String, S]
-  )
+  case class SttpRequest[R[_]: Monad, S](backend: SttpBackend[R, S], request: Request[String, S])
 
   def sendModified[R[_]: Monad, S, Response](
       sttpRequest: SttpRequest[R, S],
@@ -43,8 +40,7 @@ object RequestUtils {
   }
 
   def addLanguageToResponse(
-      validationFn: JsValue => JsResult[
-        GeoJsonResponse[GeocodingResponseProperties]]
+    validationFn: JsValue => JsResult[GeoJsonResponse[GeocodingResponseProperties]]
   ): STTP.Response[String] => Either[TravelTimeSdkError, GeocodingResponse] =
     response => {
 
@@ -77,15 +73,12 @@ object RequestUtils {
     sendModified(sttpRequest, defaultModifyFn)
   }
 
-  def makePostRequest(requestBody: JsValue,
-                      endPoint: String,
-                      host: Uri): Request[String, Nothing] = {
+  def makePostRequest(requestBody: JsValue, endPoint: String, host: Uri): Request[String, Nothing] =
     sttp
       .readTimeout(5.minutes)
       .body(requestBody.toString)
       .contentType(MediaTypes.Json)
       .post(uri"$host/${endPoint.split('/').map(_.trim).toList}")
-  }
 
   implicit class HandleJsonResponse(self: Either[String, String]) {
     def handleJsonResponse[Response](
@@ -114,13 +107,11 @@ object RequestUtils {
       }
   }
 
-  def handleErrorResponse(errString: String): TravelTimeSdkError = {
+  def handleErrorResponse(errString: String): TravelTimeSdkError =
     Json
       .parse(errString)
       .validate[TravelTimeSdkError.ErrorResponseDetails] match {
-      case JsSuccess(value, _) => TravelTimeSdkError.ErrorResponse(value)
-      case a: JsError          => ValidationError(a)
-    }
-  }
-
+        case JsSuccess(value, _) => TravelTimeSdkError.ErrorResponse(value)
+        case a: JsError          => ValidationError(a)
+      }
 }
