@@ -12,6 +12,7 @@ import play.api.libs.json.Json
 case class SupportedLocationsRequest(
   locations: Seq[Location]
 ) extends TravelTimePlatformRequest[SupportedLocationsResponse] {
+  val endpoint = "v4/supported-locations"
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -24,7 +25,7 @@ case class SupportedLocationsRequest(
   override def sttpRequest(host: Uri): RequestT[Id, String, Nothing] = {
     RequestUtils.makePostRequest(
       Json.toJson(this),
-      "v4/supported-locations",
+      endpoint,
       host
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
   }

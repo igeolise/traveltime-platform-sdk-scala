@@ -23,11 +23,12 @@ case class TimeMapRequest(
   unionSearches:        Seq[Union],
   intersectionSearches: Seq[Intersection]
 ) extends TravelTimePlatformRequest[TimeMapResponse] {
+  val endpoint = "v4/time-map"
 
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     RequestUtils.makePostRequest(
       Json.toJson(this),
-      "v4/time-map",
+      endpoint,
       host
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
   }

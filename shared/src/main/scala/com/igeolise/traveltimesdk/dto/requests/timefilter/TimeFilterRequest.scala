@@ -25,6 +25,7 @@ case class TimeFilterRequest(
   departureSearches: Seq[TimeFilterRequest.DepartureSearch],
   arrivalSearches:   Seq[TimeFilterRequest.ArrivalSearch]
 ) extends TravelTimePlatformRequest[TimeFilterResponse] {
+  val endpoint = "v4/time-filter"
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -37,7 +38,7 @@ case class TimeFilterRequest(
   override def sttpRequest(host: Uri): Request[String, Nothing] =
     RequestUtils.makePostRequest(
       Json.toJson(this),
-      "v4/time-filter",
+      endpoint,
       host
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
 }
