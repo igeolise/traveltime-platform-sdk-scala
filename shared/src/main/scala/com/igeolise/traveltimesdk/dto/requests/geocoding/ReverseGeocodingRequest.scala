@@ -23,6 +23,8 @@ case class ReverseGeocodingRequest(
   def queryUri(host: Uri): Uri = {
     val lat = coordinates.lat
     val lng = coordinates.lng
-    uri"$host/$endpoint?lat=$lat&lng=$lng&within.country=$withinCountry"
+
+    /** not using [[endpoint]] because Uri interpolator replaces '/' with %2F in an interpolated string */
+    uri"$host/v4/geocoding/${Reverse.endpoint}?lat=$lat&lng=$lng&within.country=$withinCountry"
   }
 }

@@ -29,6 +29,8 @@ case class GeocodingRequest(
   def queryUri(host: Uri): Uri = {
     val lat = focusCoords.map(_.lat)
     val lng = focusCoords.map(_.lng)
-    uri"$host/$endpoint?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
+
+    /** not using [[endpoint]] because Uri interpolator replaces '/' with %2F in an interpolated string */
+    uri"$host/v4/geocoding/${Search.endpoint}?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
   }
 }
