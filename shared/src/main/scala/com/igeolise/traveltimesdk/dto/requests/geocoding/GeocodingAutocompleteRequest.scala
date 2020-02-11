@@ -3,7 +3,7 @@ package com.igeolise.traveltimesdk.dto.requests.geocoding
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
-import com.softwaremill.sttp.{Uri, _}
+import com.softwaremill.sttp.Uri
 
 /**
   * Match a query string to geographic coordinates.
@@ -24,15 +24,29 @@ case class GeocodingAutocompleteRequest(
   query: String,
   focusCoords: Option[Coords] = None,
   countryCode: Option[String] = None,
-  acceptLanguage: Option[BCP47] = None
+  acceptLanguage: Option[BCP47] = None,
+  endpoint: String = GeocodingAutocompleteRequest.endpoint
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage  {
-  val endpoint = s"v4/geocoding/${Autocomplete.endpoint}"
-
   def queryUri(host: Uri): Uri = {
-    val lat = focusCoords.map(_.lat)
-    val lng = focusCoords.map(_.lng)
+    val latOpt = focusCoords.map(_.lat)
+    val lngOpt = focusCoords.map(_.lng)
 
-    /** not using [[endpoint]] because Uri interpolator replaces '/' with %2F in an interpolated string */
-    uri"$host/v4/geocoding/${Autocomplete.endpoint}?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
+    val queryFragments =
+      ("query", query) +:
+      Seq(
+        ("focus.lat", latOpt.map(_.toString)),
+        ("focus.lng", lngOpt.map(_.toString)),
+        ("within.country", countryCode),
+      ).collect {
+        case t if t._2.isDefined => (t._1, t._2.get)
+      }
+
+    host
+      .path(endpoint)
+      .params(queryFragments: _*)
   }
+}
+
+object GeocodingAutocompleteRequest {
+  val endpoint = s"v4/geocoding/${Autocomplete.endpoint}"
 }

@@ -16,15 +16,25 @@ import com.softwaremill.sttp._
 case class ReverseGeocodingRequest(
     coordinates: Coords,
     withinCountry: Option[String] = None,
-    acceptLanguage: Option[BCP47] = None
+    acceptLanguage: Option[BCP47] = None,
+    endpoint: String = ReverseGeocodingRequest.endpoint
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
-  val endpoint = s"v4/geocoding/${Reverse.endpoint}"
-
   def queryUri(host: Uri): Uri = {
     val lat = coordinates.lat
     val lng = coordinates.lng
 
-    /** not using [[endpoint]] because Uri interpolator replaces '/' with %2F in an interpolated string */
-    uri"$host/v4/geocoding/${Reverse.endpoint}?lat=$lat&lng=$lng&within.country=$withinCountry"
+    val queryFragments =
+      Seq(
+        ("lat", lat.toString),
+        ("lng", lng.toString),
+      ) ++ withinCountry.map(s => ("within.country", s))
+
+    host
+      .path(endpoint)
+      .params(queryFragments: _*)
   }
+}
+
+object ReverseGeocodingRequest {
+  val endpoint = s"v4/geocoding/${Reverse.endpoint}"
 }
