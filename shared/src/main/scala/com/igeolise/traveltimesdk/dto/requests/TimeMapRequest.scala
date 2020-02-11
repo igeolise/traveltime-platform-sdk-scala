@@ -23,7 +23,7 @@ case class TimeMapRequest(
   unionSearches:        Seq[Union],
   intersectionSearches: Seq[Intersection]
 ) extends TravelTimePlatformRequest[TimeMapResponse] {
-  val endpoint = "v4/time-map"
+  val endpoint = TimeMapRequest.endpoint
 
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     RequestUtils.makePostRequest(
@@ -43,6 +43,8 @@ case class TimeMapRequest(
 }
 
 object TimeMapRequest {
+  val endpoint = "v4/time-map"
+
   sealed trait SearchType
 
   trait UnionOrIntersection {

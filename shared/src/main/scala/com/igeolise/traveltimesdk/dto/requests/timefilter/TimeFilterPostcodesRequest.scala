@@ -20,7 +20,7 @@ case class TimeFilterPostcodesRequest(
   departureSearches: Seq[TimeFilterPostcodesRequest.DepartureSearch],
   arrivalSearches:   Seq[TimeFilterPostcodesRequest.ArrivalSearch]
 ) extends TravelTimePlatformRequest[TimeFilterPostcodesResponse] {
-  val endpoint = "v4/time-filter/postcodes"
+  val endpoint = TimeFilterPostcodesRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -39,6 +39,8 @@ case class TimeFilterPostcodesRequest(
 }
 
 object TimeFilterPostcodesRequest {
+  val endpoint = "v4/time-filter/postcodes"
+
   sealed trait SearchType
 
   case class DepartureSearch(

@@ -20,7 +20,7 @@ case class RoutesRequest(
   departureSearches: Seq[DepartureSearch],
   arrivalSearches:   Seq[ArrivalSearch]
 ) extends TravelTimePlatformRequest[RoutesResponse] {
-  val endpoint = "v4/routes"
+  val endpoint = RoutesRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -39,6 +39,8 @@ case class RoutesRequest(
 }
 
 object RoutesRequest {
+  val endpoint = "v4/routes"
+
   sealed trait SearchType
 
   case class DepartureSearch(

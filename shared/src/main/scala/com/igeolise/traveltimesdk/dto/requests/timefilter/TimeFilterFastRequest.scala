@@ -20,7 +20,7 @@ case class TimeFilterFastRequest(
   locations: Seq[Location],
   arrivalSearches: ArrivalSearch
 ) extends TravelTimePlatformRequest[TimeFilterFastResponse] {
-  val endpoint = "v4/time-filter/fast"
+  val endpoint = TimeFilterFastRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -40,6 +40,8 @@ case class TimeFilterFastRequest(
 }
 
 object TimeFilterFastRequest {
+  val endpoint = "v4/time-filter/fast"
+
   sealed trait SearchType
 
   sealed trait ArrivalTimePeriod {

@@ -1,6 +1,7 @@
 package com.igeolise.traveltimesdk.dto.requests.geocoding
 
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
+import com.igeolise.traveltimesdk.dto.requests.geocoding.QueryFragmentsUtils.queryFragments
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
 import com.softwaremill.sttp.Uri
@@ -27,24 +28,10 @@ case class GeocodingAutocompleteRequest(
   acceptLanguage: Option[BCP47] = None,
   endpoint: String = GeocodingAutocompleteRequest.endpoint
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage  {
-  def queryUri(host: Uri): Uri = {
-    val latOpt = focusCoords.map(_.lat)
-    val lngOpt = focusCoords.map(_.lng)
-
-    val queryFragments =
-      ("query", query) +:
-      Seq(
-        ("focus.lat", latOpt.map(_.toString)),
-        ("focus.lng", lngOpt.map(_.toString)),
-        ("within.country", countryCode),
-      ).collect {
-        case t if t._2.isDefined => (t._1, t._2.get)
-      }
-
+  def queryUri(host: Uri): Uri =
     host
       .path(endpoint)
-      .params(queryFragments: _*)
-  }
+      .params(queryFragments(query, focusCoords, countryCode): _*)
 }
 
 object GeocodingAutocompleteRequest {

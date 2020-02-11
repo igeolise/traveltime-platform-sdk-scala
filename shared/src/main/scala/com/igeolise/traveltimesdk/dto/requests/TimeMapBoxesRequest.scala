@@ -15,7 +15,7 @@ case class TimeMapBoxesRequest(
   unionSearches:        Seq[Union],
   intersectionSearches: Seq[Intersection]
 ) extends TravelTimePlatformRequest[TimeMapBoxesResponse]  {
-  val endpoint = "v4/time-map"
+  val endpoint = TimeMapBoxesRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -31,4 +31,8 @@ case class TimeMapBoxesRequest(
       endpoint,
       host
     ).headers(HeaderNames.Accept -> "application/vnd.bounding-boxes+json")
+}
+
+object TimeMapBoxesRequest {
+  val endpoint = "v4/time-map"
 }
