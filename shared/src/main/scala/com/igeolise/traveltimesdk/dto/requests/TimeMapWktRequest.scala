@@ -17,7 +17,7 @@ case class TimeMapWktRequest(
   intersectionSearches: Seq[Intersection]
 )(holesSetting: HolesSetting = WithHoles)
   extends TravelTimePlatformRequest[TimeMapWktResponse] {
-  val endpoint = TimeMapWktRequest.endpoint
+  val endpoint = TimeMapRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -42,8 +42,6 @@ case class TimeMapWktRequest(
 }
 
 object TimeMapWktRequest {
-  val endpoint = "v4/time-map"
-
   sealed abstract class HolesSetting
   case object WithHoles extends HolesSetting
   case object NoHoles extends HolesSetting
