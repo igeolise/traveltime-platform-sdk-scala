@@ -27,7 +27,7 @@ case class ReverseGeocodingRequest(
     val queryFragments =
       Seq(
         ("lat", lat.toString),
-        ("lng", lng.toString),
+        ("lng", lng.toString)
       ) ++ withinCountry.map(s => ("within.country", s))
 
     host
