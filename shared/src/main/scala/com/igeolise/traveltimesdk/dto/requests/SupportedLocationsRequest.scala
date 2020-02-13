@@ -10,9 +10,9 @@ import com.softwaremill.sttp.{HeaderNames, Id, MediaTypes, RequestT, Uri}
 import play.api.libs.json.Json
 
 case class SupportedLocationsRequest(
-  locations: Seq[Location]
+  locations: Seq[Location],
+  endpoint: String = SupportedLocationsRequest.endpoint
 ) extends TravelTimePlatformRequest[SupportedLocationsResponse] {
-
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
   ): R[Either[TravelTimeSdkError, SupportedLocationsResponse]] =
@@ -24,8 +24,12 @@ case class SupportedLocationsRequest(
   override def sttpRequest(host: Uri): RequestT[Id, String, Nothing] = {
     RequestUtils.makePostRequest(
       Json.toJson(this),
-      "v4/supported-locations",
+      endpoint,
       host
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
   }
+}
+
+object SupportedLocationsRequest {
+  val endpoint = "v4/supported-locations"
 }

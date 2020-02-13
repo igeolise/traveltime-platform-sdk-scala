@@ -15,6 +15,7 @@ case class TimeFilterDistrictsRequest (
   departureSearch: Seq[ZoneSearches.DepartureSearch],
   arrivalSearch: Seq[ZoneSearches.ArrivalSearch]
 ) extends TravelTimePlatformRequest[TimeFilterDistrictsResponse]  {
+  val endpoint = TimeFilterDistrictsRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -27,8 +28,12 @@ case class TimeFilterDistrictsRequest (
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     RequestUtils.makePostRequest(
       Json.toJson(this),
-      "v4/time-filter/postcode-districts",
+      endpoint,
       host
     ).headers(HeaderNames.Accept -> MediaTypes.Json)
   }
+}
+
+object TimeFilterDistrictsRequest {
+  val endpoint = "v4/time-filter/postcode-districts"
 }

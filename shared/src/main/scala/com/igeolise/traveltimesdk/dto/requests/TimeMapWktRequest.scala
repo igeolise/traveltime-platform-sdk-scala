@@ -17,6 +17,7 @@ case class TimeMapWktRequest(
   intersectionSearches: Seq[Intersection]
 )(holesSetting: HolesSetting = WithHoles)
   extends TravelTimePlatformRequest[TimeMapWktResponse] {
+  val endpoint = TimeMapRequest.endpoint
 
   override def send[R[_] : Monad, S](
     sttpRequest: RequestUtils.SttpRequest[R, S]
@@ -29,7 +30,7 @@ case class TimeMapWktRequest(
   override def sttpRequest(host: Uri): Request[String, Nothing] = {
     def req = RequestUtils.makePostRequest(
       Json.toJson(this),
-      "v4/time-map",
+      endpoint,
       host
     )
 

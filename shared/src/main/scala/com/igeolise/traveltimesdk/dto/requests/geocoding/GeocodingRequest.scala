@@ -1,9 +1,10 @@
 package com.igeolise.traveltimesdk.dto.requests.geocoding
 
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
+import com.igeolise.traveltimesdk.dto.requests.geocoding.QueryFragmentsUtils.queryFragments
 import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
-import com.softwaremill.sttp.{Uri, _}
+import com.softwaremill.sttp.Uri
 
 /**
   * Match a query string to geographic coordinates.
@@ -23,11 +24,15 @@ case class GeocodingRequest(
   focusCoords: Option[Coords] = None,
   countryCode: Option[String] = None,
   acceptLanguage: Option[BCP47] = None
-) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage  {
+) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+  val endpoint: String = GeocodingRequest.endpoint
 
-  def queryUri(host: Uri): Uri = {
-    val lat = focusCoords.map(_.lat)
-    val lng = focusCoords.map(_.lng)
-    uri"$host/v4/geocoding/${Search.endpoint}?query=$query&focus.lat=$lat&focus.lng=$lng&within.country=$countryCode"
-  }
+  def queryUri(host: Uri): Uri =
+    host
+      .path(endpoint)
+      .params(queryFragments(query, focusCoords, countryCode): _*)
+}
+
+object GeocodingRequest {
+  val endpoint = s"v4/geocoding/${Search.endpoint}"
 }

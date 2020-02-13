@@ -18,10 +18,24 @@ case class ReverseGeocodingRequest(
     withinCountry: Option[String] = None,
     acceptLanguage: Option[BCP47] = None
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+  val endpoint = ReverseGeocodingRequest.endpoint
 
   def queryUri(host: Uri): Uri = {
     val lat = coordinates.lat
     val lng = coordinates.lng
-    uri"$host/v4/geocoding/${Reverse.endpoint}?lat=$lat&lng=$lng&within.country=$withinCountry"
+
+    val queryFragments =
+      Seq(
+        ("lat", lat.toString),
+        ("lng", lng.toString),
+      ) ++ withinCountry.map(s => ("within.country", s))
+
+    host
+      .path(endpoint)
+      .params(queryFragments: _*)
   }
+}
+
+object ReverseGeocodingRequest {
+  val endpoint = s"v4/geocoding/${Reverse.endpoint}"
 }
