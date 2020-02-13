@@ -23,9 +23,10 @@ case class GeocodingRequest(
   query: String,
   focusCoords: Option[Coords] = None,
   countryCode: Option[String] = None,
-  acceptLanguage: Option[BCP47] = None,
-  endpoint: String = GeocodingRequest.endpoint
+  acceptLanguage: Option[BCP47] = None
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+  val endpoint: String = GeocodingRequest.endpoint
+
   def queryUri(host: Uri): Uri =
     host
       .path(endpoint)

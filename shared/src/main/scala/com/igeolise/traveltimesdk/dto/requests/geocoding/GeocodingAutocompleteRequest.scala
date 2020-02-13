@@ -25,9 +25,10 @@ case class GeocodingAutocompleteRequest(
   query: String,
   focusCoords: Option[Coords] = None,
   countryCode: Option[String] = None,
-  acceptLanguage: Option[BCP47] = None,
-  endpoint: String = GeocodingAutocompleteRequest.endpoint
-) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage  {
+  acceptLanguage: Option[BCP47] = None
+) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+  val endpoint = GeocodingAutocompleteRequest.endpoint
+
   def queryUri(host: Uri): Uri =
     host
       .path(endpoint)

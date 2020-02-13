@@ -16,9 +16,10 @@ import com.softwaremill.sttp._
 case class ReverseGeocodingRequest(
     coordinates: Coords,
     withinCountry: Option[String] = None,
-    acceptLanguage: Option[BCP47] = None,
-    endpoint: String = ReverseGeocodingRequest.endpoint
+    acceptLanguage: Option[BCP47] = None
 ) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+  val endpoint = ReverseGeocodingRequest.endpoint
+
   def queryUri(host: Uri): Uri = {
     val lat = coordinates.lat
     val lng = coordinates.lng
