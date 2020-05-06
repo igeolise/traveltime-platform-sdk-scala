@@ -31,7 +31,8 @@
         "enabled": true,
         "width": 3600
       },
-      "properties": [ "is_only_walking", "agencies" ]
+      "properties": [ "is_only_walking", "agencies" ],
+      "level_of_detail": { "scale_type": "simple", "level": "high" }
     }
   ],
   "unions": [],

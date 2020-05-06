@@ -1,9 +1,9 @@
 package com.igeolise.traveltimesdk.writes
 
-import java.time.{ZoneId, ZonedDateTime}
+import java.time.ZonedDateTime
 
 import com.igeolise.traveltimesdk.json.writes.TimeMapWrites._
-import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.ArrivalSearch
+import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.{ArrivalSearch, SimpleLevelOfDetail}
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
@@ -42,7 +42,8 @@ class TimeMapWritesTest extends AnyFunSpec with Matchers{
           enabled = true,
           1.hour
         )),
-        Some(Seq(IsOnlyWalking, Agencies))
+        Some(Seq(IsOnlyWalking, Agencies)),
+        Some(SimpleLevelOfDetail(SimpleLevelOfDetail.High))
       )
 
     val timeMapRequest: TimeMapRequest = TimeMapRequest(Seq(departure), Seq(arrival), Seq(), Seq())

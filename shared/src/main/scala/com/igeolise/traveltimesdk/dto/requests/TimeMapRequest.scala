@@ -45,6 +45,18 @@ case class TimeMapRequest(
 object TimeMapRequest {
   val endpoint = "v4/time-map"
 
+  sealed trait LevelOfDetail
+
+  case class SimpleLevelOfDetail(level: SimpleLevelOfDetail.Level) extends LevelOfDetail
+  object SimpleLevelOfDetail {
+    sealed trait Level
+    case object Lowest  extends Level
+    case object Low     extends Level
+    case object Medium  extends Level
+    case object High    extends Level
+    case object Highest extends Level
+  }
+
   sealed trait SearchType
 
   trait UnionOrIntersection {
@@ -62,7 +74,8 @@ object TimeMapRequest {
     departureTime: ZonedDateTime,
     travelTime: FiniteDuration,
     range: Option[RangeParams] = None,
-    properties: Option[Seq[TimeMapRequestProperty]] = None
+    properties: Option[Seq[TimeMapRequestProperty]] = None,
+    levelOfDetail: Option[LevelOfDetail] = None
   ) extends SearchType
 
   case class ArrivalSearch(
@@ -72,7 +85,8 @@ object TimeMapRequest {
     arrivalTime: ZonedDateTime,
     travelTime: FiniteDuration,
     range: Option[RangeParams] = None,
-    properties: Option[Seq[TimeMapRequestProperty]] = None
+    properties: Option[Seq[TimeMapRequestProperty]] = None,
+    levelOfDetail: Option[LevelOfDetail] = None
   ) extends SearchType
 }
 
