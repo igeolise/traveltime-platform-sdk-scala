@@ -18,10 +18,8 @@ jobs:
         java-version: 1.8
     - name: Run tests
       run: sbt +sdkJVM/test
+    - name: Publish
       env:
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
         BINTRAY_PASS: ${{ secrets.BINTRAY_PASSWORD }}
-    - name: Deploy JVM SDK
-      run: sbt -Dbintray.user=$BINTRAY_USER -Dbintray.pass=$BINTRAY_PASS +sdkJVM/publish
-    - name: Deploy JS SDK
-      run: sbt -Dbintray.user=$BINTRAY_USER -Dbintray.pass=$BINTRAY_PASS +sdkJS/publish
+      run: sbt -Dbintray.user=$BINTRAY_USER -Dbintray.pass=$BINTRAY_PASS +sdkJVM/publish +sdkJS/publish
