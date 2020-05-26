@@ -90,13 +90,7 @@ Shell count: 183
 ```
 
 ### Publishing
-To publish sdk you have to publish `sdkJS` and `sdkJVM` projects separately (don't forget `+` to publish for scala 2.11.X, 2.12.X and 2.13.X):
-```
-project sdkJS
-+publish
-project sdkJVM
-+publish
-```
+Is automated via github actions.
 
 ## Acknowledgments
 
