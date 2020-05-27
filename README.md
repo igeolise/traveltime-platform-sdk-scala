@@ -1,5 +1,6 @@
 # TravelTime platform Scala SDK
 [ ![Download](https://api.bintray.com/packages/igeolise/maven/traveltime-platform-sdk/images/download.svg) ](https://bintray.com/igeolise/maven/traveltime-platform-sdk/_latestVersion)
+![Artifact publish](https://github.com/igeolise/traveltime-platform-sdk-scala/workflows/Artifact%20publish/badge.svg?branch=master)
 
 This open-source library allows you to access [TravelTime platform API](http://docs.traveltimeplatform.com/overview/introduction) endpoints. TravelTime platform SDK is published for Scala 2.11.X, 2.12.X, 2.13.X and ScalaJS.
 
@@ -89,13 +90,7 @@ Shell count: 183
 ```
 
 ### Publishing
-To publish sdk you have to publish `sdkJS` and `sdkJVM` projects separately (don't forget `+` to publish for scala 2.11.X, 2.12.X and 2.13.X):
-```
-project sdkJS
-+publish
-project sdkJVM
-+publish
-```
+Is automated via github actions.
 
 ## Acknowledgments
 
