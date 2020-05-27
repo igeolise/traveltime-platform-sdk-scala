@@ -72,7 +72,14 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
         "forward search example",
         "Amsterdam center",
         Seq("Musee Du Cannabis", "Science Museum"),
-        CyclingPublicTransport(CyclingPublicTransportParams(5.minutes.some, 10.minutes.some, 15.minutes.some)),
+        CyclingPublicTransport(
+          CyclingPublicTransportParams(
+            5.minutes.some,
+            10.minutes.some,
+            15.minutes.some,
+            30.seconds.some,
+            15.minutes.some)
+        ),
         Duration(1800, SECONDS),
         time,
         Some(FullRangeParams(enabled = true, 3, 10.minutes)),
@@ -83,7 +90,14 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
         "backward search example",
         Seq("Musee Du Cannabis", "Science Museum"),
         "Amsterdam center",
-        CyclingPublicTransport(CyclingPublicTransportParams(5.minutes.some, 10.minutes.some, 15.minutes.some)),
+        CyclingPublicTransport(
+          CyclingPublicTransportParams(
+            5.minutes.some,
+            10.minutes.some,
+            15.minutes.some,
+            30.seconds.some,
+            15.minutes.some)
+        ),
         Duration(1900, SECONDS),
         time,
         None,

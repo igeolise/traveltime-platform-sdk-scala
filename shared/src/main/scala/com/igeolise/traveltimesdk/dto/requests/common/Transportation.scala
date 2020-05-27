@@ -23,7 +23,9 @@ object Transportation {
   case class CyclingPublicTransportParams(
     cyclingToStationTime: Option[FiniteDuration] = None,
     parkingTime: Option[FiniteDuration]          = None,
-    boardingTime: Option[FiniteDuration]         = None
+    boardingTime: Option[FiniteDuration]         = None,
+    ptChangeDelay: Option[FiniteDuration]        = None,
+    walkingTime: Option[FiniteDuration]          = None
   )
 
   case class FerryParams(boardingTime: Option[FiniteDuration] = None)
@@ -32,7 +34,7 @@ object Transportation {
     drivingTimeToStation: Option[FiniteDuration]   = None,
     parkingTime: Option[FiniteDuration]            = None,
     ptChangeDelay: Option[FiniteDuration]          = None,
-    walkingTimeFromStation: Option[FiniteDuration] = None
+    walkingTime: Option[FiniteDuration]            = None
   )
 
   case class Bus(parameters: PublicTransportationParams) extends PublicTransportation {

@@ -62,13 +62,13 @@ object CommonWrites {
     (__ \ "pt_change_delay").writeNullable[Int] and
     (__ \ "driving_time_to_station").writeNullable[Int] and
     (__ \ "parking_time").writeNullable[Int] and
-    (__ \ "walking_time_from_station").writeNullable[Int]
+    (__ \ "walking_time").writeNullable[Int]
   ) ((m: Transportation.DrivingTrain) => (
     m.transportType,
     m.parameters.ptChangeDelay.toSeconds,
     m.parameters.drivingTimeToStation.toSeconds,
     m.parameters.parkingTime.toSeconds,
-    m.parameters.walkingTimeFromStation.toSeconds
+    m.parameters.walkingTime.toSeconds
   ))
 
   implicit val ferryWrites: Writes[FerryTransportation] = (
@@ -80,12 +80,16 @@ object CommonWrites {
     (__ \ "type").write[String] and
     (__ \ "cycling_time_to_station").writeNullable[Int] and
     (__ \ "parking_time").writeNullable[Int] and
-    (__ \ "boarding_time").writeNullable[Int]
-  ) ((m: CyclingPublicTransport) => (
+    (__ \ "boarding_time").writeNullable[Int] and
+    (__ \ "pt_change_delay").writeNullable[Int] and
+    (__ \ "walking_time").writeNullable[Int]
+    ) ((m: CyclingPublicTransport) => (
       m.transportType,
       m.parameters.cyclingToStationTime.toSeconds,
       m.parameters.parkingTime.toSeconds,
-      m.parameters.boardingTime.toSeconds
+      m.parameters.boardingTime.toSeconds,
+      m.parameters.ptChangeDelay.toSeconds,
+      m.parameters.walkingTime.toSeconds
     )
   )
 
