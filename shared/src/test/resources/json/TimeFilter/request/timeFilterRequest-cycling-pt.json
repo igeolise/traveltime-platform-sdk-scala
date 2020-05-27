@@ -34,7 +34,9 @@
         "type": "cycling+public_transport",
         "cycling_time_to_station": 300,
         "parking_time": 600,
-        "boarding_time": 900
+        "boarding_time": 900,
+        "pt_change_delay":30,
+        "walking_time":900
       },
       "travel_time": 1800,
       "departure_time": "2019-07-08T08:00:00+02:00",
@@ -60,7 +62,9 @@
         "type": "cycling+public_transport",
         "cycling_time_to_station": 300,
         "parking_time": 600,
-        "boarding_time": 900
+        "boarding_time": 900,
+        "pt_change_delay":30,
+        "walking_time":900
       },
       "arrival_time": "2019-07-08T08:00:00+02:00",
       "travel_time": 1900,
