@@ -34,7 +34,7 @@ object Transportation {
     drivingTimeToStation: Option[FiniteDuration]   = None,
     parkingTime: Option[FiniteDuration]            = None,
     ptChangeDelay: Option[FiniteDuration]          = None,
-    walkingTimeFromStation: Option[FiniteDuration] = None
+    walkingTime: Option[FiniteDuration]            = None
   )
 
   case class Bus(parameters: PublicTransportationParams) extends PublicTransportation {
