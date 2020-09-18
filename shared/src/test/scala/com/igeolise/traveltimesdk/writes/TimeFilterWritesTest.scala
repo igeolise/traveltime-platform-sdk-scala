@@ -1,24 +1,21 @@
 package com.igeolise.traveltimesdk.writes
 
-import java.time.{ZoneId, ZonedDateTime}
+import java.time.ZonedDateTime
 
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, DistanceBreakdown, Fares, TravelTime}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Distance, DistanceBreakdown, Fares, TravelTime}
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation._
 import com.igeolise.traveltimesdk.dto.requests.common.{CommonProperties, Location}
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest.DepartureSearch
 import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterWrites._
-import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.matchers.should.Matchers
 import play.api.libs.json.{JsValue, Json}
 
-import scala.concurrent.duration._
-import cats.syntax.option._
-
-import scala.concurrent.duration.{Duration, SECONDS}
+import scala.concurrent.duration.{Duration, SECONDS, _}
 
 class TimeFilterWritesTest extends AnyFunSpec with Matchers {
   it("TimeFilterWritesTest: locations, departure_searches and arrival_searches json request") {
@@ -38,7 +35,7 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
       Duration(1800, SECONDS),
       time,
       Some(FullRangeParams(enabled = true, 3, 10.minutes)),
-      Seq(CommonProperties.PropertyType.TravelTime)
+      Seq(CommonProperties.TravelTime)
     )
 
     val timeFilterArrivals = TimeFilterRequest.ArrivalSearch(
@@ -74,16 +71,17 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
         Seq("Musee Du Cannabis", "Science Museum"),
         CyclingPublicTransport(
           CyclingPublicTransportParams(
-            5.minutes.some,
-            10.minutes.some,
-            15.minutes.some,
-            30.seconds.some,
-            15.minutes.some)
+            Some(5.minutes),
+            Some(10.minutes),
+            Some(15.minutes),
+            Some(30.seconds),
+            Some(15.minutes)
+          )
         ),
         Duration(1800, SECONDS),
         time,
         Some(FullRangeParams(enabled = true, 3, 10.minutes)),
-        Seq(CommonProperties.PropertyType.TravelTime)
+        Seq(CommonProperties.TravelTime)
       )
 
       val timeFilterArrivals = TimeFilterRequest.ArrivalSearch(
@@ -92,11 +90,12 @@ class TimeFilterWritesTest extends AnyFunSpec with Matchers {
         "Amsterdam center",
         CyclingPublicTransport(
           CyclingPublicTransportParams(
-            5.minutes.some,
-            10.minutes.some,
-            15.minutes.some,
-            30.seconds.some,
-            15.minutes.some)
+            Some(5.minutes),
+            Some(10.minutes),
+            Some(15.minutes),
+            Some(30.seconds),
+            Some(15.minutes)
+          )
         ),
         Duration(1900, SECONDS),
         time,

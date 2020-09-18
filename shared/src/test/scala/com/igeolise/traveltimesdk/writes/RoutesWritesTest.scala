@@ -6,8 +6,7 @@ import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Distance, Fares, Route, TravelTime}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties._
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.common.{Location, Transportation}
@@ -34,7 +33,7 @@ class RoutesWritesTest extends AnyFunSpec with Matchers {
       Seq("Hyde Park", "ZSL London Zoo"),
       Transportation.Driving,
       time,
-      Seq(PropertyType.TravelTime, Distance, Route),
+      Seq(TravelTime, Distance, Route),
       None
     )
 
