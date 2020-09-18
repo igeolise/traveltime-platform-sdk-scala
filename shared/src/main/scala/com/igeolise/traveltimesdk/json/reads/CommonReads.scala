@@ -3,7 +3,7 @@ package com.igeolise.traveltimesdk.json.reads
 import java.time.ZonedDateTime
 
 import com.igeolise.traveltimesdk.dto.common.{Coords, TravelTime, Zone, ZoneSearchProperties}
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.{Agency, TimeMapResponseProperties}
+import com.igeolise.traveltimesdk.dto.requests.common.TimeMapProps.{Agency, TimeMapResponseProperties}
 import com.igeolise.traveltimesdk.dto.responses.common.Route.RoutePart
 import com.igeolise.traveltimesdk.dto.responses.common.Route.RoutePart.{BasicRoutePart, PublicTransportRoutePart}
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}

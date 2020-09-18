@@ -1,20 +1,21 @@
 package com.igeolise.traveltimesdk.dto.requests
 
-import cats.Monad
-import com.igeolise.traveltimesdk.json.reads.TimeMapReads._
-import com.igeolise.traveltimesdk.json.writes.TimeMapWrites._
+import java.time.ZonedDateTime
+
+import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TransformFn, TravelTimeRequest}
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.{Intersection, Union}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapRequestProperty
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
-import com.igeolise.traveltimesdk.dto.responses.{TimeMapResponse, TravelTimeSdkError}
-import com.softwaremill.sttp._
-import play.api.libs.json._
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
+import com.igeolise.traveltimesdk.dto.responses.TimeMapResponse
+import com.igeolise.traveltimesdk.json.reads.TimeMapReads._
+import com.igeolise.traveltimesdk.json.writes.TimeMapWrites._
+import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
+import play.api.libs.json.Json
+import sttp.client.Request
 
 import scala.concurrent.duration.FiniteDuration
-import java.time.ZonedDateTime
 
 
 case class TimeMapRequest(
@@ -22,29 +23,16 @@ case class TimeMapRequest(
   arrivalSearches:      Seq[TimeMapRequest.ArrivalSearch],
   unionSearches:        Seq[Union],
   intersectionSearches: Seq[Intersection]
-) extends TravelTimePlatformRequest[TimeMapResponse] {
-  val endpoint = TimeMapRequest.endpoint
+) extends TravelTimeRequest[TimeMapResponse] {
 
-  override def sttpRequest(host: Uri): Request[String, Nothing] = {
-    RequestUtils.makePostRequest(
-      Json.toJson(this),
-      endpoint,
-      host
-    ).headers(HeaderNames.Accept -> MediaTypes.Json)
-  }
+  final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] =
+    TravelTimeSDK.createPostRequest(Json.toJson(this), host.uri.path("v4", "time-map"))
 
-  override def send[R[_] : Monad, S](
-    sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, TimeMapResponse]] =
-    RequestUtils.send(
-      sttpRequest,
-      _.validate[TimeMapResponse]
-    )
+  final val transform: TransformFn[TimeMapResponse] =
+    response => TravelTimeSDK.handleJsonResponse(response.body, _.validate[TimeMapResponse])
 }
 
 object TimeMapRequest {
-  val endpoint = "v4/time-map"
-
   sealed trait LevelOfDetail
 
   case class SimpleLevelOfDetail(level: SimpleLevelOfDetail.Level) extends LevelOfDetail

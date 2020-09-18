@@ -1,10 +1,11 @@
 package com.igeolise.traveltimesdk.dto.requests.geocoding
 
+import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TravelTimeRequest}
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
 import com.igeolise.traveltimesdk.dto.requests.geocoding.QueryFragmentsUtils.queryFragments
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
-import com.softwaremill.sttp.Uri
+import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
+import sttp.client.Request
 
 /**
   * Match a query string to geographic coordinates.
@@ -26,15 +27,13 @@ case class GeocodingAutocompleteRequest(
   focusCoords: Option[Coords] = None,
   countryCode: Option[String] = None,
   acceptLanguage: Option[BCP47] = None
-) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
-  val endpoint = GeocodingAutocompleteRequest.endpoint
+) extends TravelTimeRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
 
-  def queryUri(host: Uri): Uri =
-    host
-      .path(endpoint)
-      .params(queryFragments(query, focusCoords, countryCode): _*)
-}
-
-object GeocodingAutocompleteRequest {
-  val endpoint = s"v4/geocoding/${Autocomplete.endpoint}"
+  final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] =
+    TravelTimeSDK.createGetRequest(
+      host
+        .uri
+        .path("v4", "geocoding", "autocomplete")
+        .params(queryFragments(query, focusCoords, countryCode): _*)
+    )
 }

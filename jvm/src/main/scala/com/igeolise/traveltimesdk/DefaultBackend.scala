@@ -1,10 +1,10 @@
 package com.igeolise.traveltimesdk
 
-import com.softwaremill.sttp.SttpBackend
-import com.softwaremill.sttp.okhttp.OkHttpFutureBackend
+import sttp.client.SttpBackend
+import sttp.client.okhttp.{OkHttpFutureBackend, WebSocketHandler}
 
 import scala.concurrent.Future
 
 object DefaultBackend {
-  def backend: SttpBackend[Future, Nothing] = OkHttpFutureBackend()
+  def backend: SttpBackend[Future, Nothing, WebSocketHandler] = OkHttpFutureBackend()
 }

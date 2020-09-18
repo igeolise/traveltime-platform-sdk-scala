@@ -1,35 +1,19 @@
 package com.igeolise.traveltimesdk.dto.requests
 
-import cats.Monad
+import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TransformFn, TravelTimeRequest}
+import com.igeolise.traveltimesdk.dto.requests.common.Location
+import com.igeolise.traveltimesdk.dto.responses.SupportedLocationsResponse
 import com.igeolise.traveltimesdk.json.reads.AvailableDataReads._
 import com.igeolise.traveltimesdk.json.writes.SupportedLocationsWrites._
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.requests.common.Location
-import com.igeolise.traveltimesdk.dto.responses.{SupportedLocationsResponse, TravelTimeSdkError}
-import com.softwaremill.sttp.{HeaderNames, Id, MediaTypes, RequestT, Uri}
+import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
 import play.api.libs.json.Json
+import sttp.client.Request
 
-case class SupportedLocationsRequest(
-  locations: Seq[Location],
-  endpoint: String = SupportedLocationsRequest.endpoint
-) extends TravelTimePlatformRequest[SupportedLocationsResponse] {
-  override def send[R[_] : Monad, S](
-    sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, SupportedLocationsResponse]] =
-    RequestUtils.send(
-      sttpRequest,
-      _.validate[SupportedLocationsResponse]
-    )
+case class SupportedLocationsRequest(locations: Seq[Location]) extends TravelTimeRequest[SupportedLocationsResponse] {
 
-  override def sttpRequest(host: Uri): RequestT[Id, String, Nothing] = {
-    RequestUtils.makePostRequest(
-      Json.toJson(this),
-      endpoint,
-      host
-    ).headers(HeaderNames.Accept -> MediaTypes.Json)
-  }
-}
+  final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] =
+    TravelTimeSDK.createPostRequest(Json.toJson(this), host.uri.path("v4", "supported-locations"))
 
-object SupportedLocationsRequest {
-  val endpoint = "v4/supported-locations"
+  final val transform: TransformFn[SupportedLocationsResponse] =
+    response => TravelTimeSDK.handleJsonResponse(response.body, _.validate[SupportedLocationsResponse])
 }

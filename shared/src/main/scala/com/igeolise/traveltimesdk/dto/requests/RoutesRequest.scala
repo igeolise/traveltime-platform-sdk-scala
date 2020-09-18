@@ -2,44 +2,33 @@ package com.igeolise.traveltimesdk.dto.requests
 
 import java.time.ZonedDateTime
 
-import cats.Monad
-import com.igeolise.traveltimesdk.json.reads.RoutesReads._
-import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
+import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TransformFn, TravelTimeRequest}
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.RoutesRequestProperty
+import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
-import com.igeolise.traveltimesdk.dto.requests.common.Location
-import com.igeolise.traveltimesdk.dto.responses.{RoutesResponse, TravelTimeSdkError}
-import com.softwaremill.sttp.{HeaderNames, MediaTypes, Request, Uri}
+import com.igeolise.traveltimesdk.dto.responses.RoutesResponse
+import com.igeolise.traveltimesdk.json.reads.RoutesReads._
+import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
+import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
 import play.api.libs.json.Json
+import sttp.client.Request
 
 case class RoutesRequest(
   locations:         Seq[Location],
   departureSearches: Seq[DepartureSearch],
   arrivalSearches:   Seq[ArrivalSearch]
-) extends TravelTimePlatformRequest[RoutesResponse] {
-  val endpoint = RoutesRequest.endpoint
+) extends TravelTimeRequest[RoutesResponse] {
 
-  override def send[R[_] : Monad, S](
-    sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, RoutesResponse]] =
-    RequestUtils.send(
-      sttpRequest,
-      _.validate[RoutesResponse]
-    )
+  final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] =
+    TravelTimeSDK.createPostRequest(Json.toJson(this), host.uri.path("v4", "routes"))
 
-  override def sttpRequest(host: Uri): Request[String, Nothing] =
-    RequestUtils.makePostRequest(
-      Json.toJson(this),
-      endpoint,
-      host
-    ).headers(HeaderNames.Accept -> MediaTypes.Json)
+  final val transform: TransformFn[RoutesResponse] =
+    response => TravelTimeSDK.handleJsonResponse(response.body, _.validate[RoutesResponse])
 }
 
 object RoutesRequest {
-  val endpoint = "v4/routes"
 
   sealed trait SearchType
 
@@ -62,5 +51,4 @@ object RoutesRequest {
     properties: Seq[RoutesRequestProperty],
     range: Option[FullRangeParams] = None
   ) extends SearchType
-
 }

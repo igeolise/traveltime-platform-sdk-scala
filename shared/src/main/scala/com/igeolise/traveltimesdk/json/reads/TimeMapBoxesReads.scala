@@ -1,6 +1,6 @@
 package com.igeolise.traveltimesdk.json.reads
 
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
+import com.igeolise.traveltimesdk.dto.requests.common.TimeMapProps.TimeMapResponseProperties
 import com.igeolise.traveltimesdk.dto.responses.TimeMapBoxesResponse
 import com.igeolise.traveltimesdk.dto.responses.TimeMapBoxesResponse.{BoundingBox, Container}
 import play.api.libs.functional.syntax._

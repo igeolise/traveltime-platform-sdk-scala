@@ -1,9 +1,10 @@
 package com.igeolise.traveltimesdk.dto.requests.geocoding
 
+import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TravelTimeRequest}
 import com.igeolise.traveltimesdk.dto.common.{BCP47, Coords}
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
 import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
-import com.softwaremill.sttp._
+import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
+import sttp.client.Request
 
 /**
   * Attempt to match a latitude, longitude pair to an address.
@@ -17,25 +18,20 @@ case class ReverseGeocodingRequest(
     coordinates: Coords,
     withinCountry: Option[String] = None,
     acceptLanguage: Option[BCP47] = None
-) extends TravelTimePlatformRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
-  val endpoint = ReverseGeocodingRequest.endpoint
+) extends TravelTimeRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
 
-  def queryUri(host: Uri): Uri = {
-    val lat = coordinates.lat
-    val lng = coordinates.lng
-
-    val queryFragments =
+  final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] = {
+    val params =
       Seq(
-        ("lat", lat.toString),
-        ("lng", lng.toString)
-      ) ++ withinCountry.map(s => ("within.country", s))
+        ("lat", coordinates.lat.toString),
+        ("lng", coordinates.lng.toString),
+      ) ++ withinCountry.map(("within.country", _))
 
-    host
-      .path(endpoint)
-      .params(queryFragments: _*)
+    TravelTimeSDK.createGetRequest(
+      host
+        .uri
+        .path("v4", "geocoding", "reverse")
+        .params(params: _*)
+    )
   }
-}
-
-object ReverseGeocodingRequest {
-  val endpoint = s"v4/geocoding/${Reverse.endpoint}"
 }
