@@ -10,18 +10,18 @@ Add the following to your `build.sbt`:
 
 ```scala
 resolvers += Resolver.bintrayRepo("igeolise", "maven")
-libraryDependencies += "com.igeolise" %% "traveltime-platform-sdk" % "{latest-version}"
+libraryDependencies += "com.igeolise" %%% "traveltime-platform-sdk" % "{latest-version}"
 ```
 
 ### `sttp` backends support
-All of the [sttp](https://sttp.softwaremill.com/en/latest/backends/summary.html) backends are supported.
+All of the [sttp backends](https://sttp.softwaremill.com/en/latest/backends/summary.html) are supported.
 
 ### Usage
 ##### Few backend examples
 
 In the examples we are going to send [TimeMap endpoint](http://docs.traveltimeplatform.com/reference/time-map/) request and calclulate the amount of returned iscochrone shells.
 
-Firstly we instantiate `TimeMapRequest` object.
+We instantiate `TimeMapRequest` that we are going to use in our examples.
 
 ```scala
 object Request {
@@ -108,7 +108,7 @@ val zioTravelTimeApp: UIO[ExitCode] =
       )
 
       sdk
-        .send_(Request.timeMapRequest)
+        .send(Request.timeMapRequest)
         .map(_.results.flatMap(_.shapes.map(_.shell.length)).sum)
     }
     .fold(
