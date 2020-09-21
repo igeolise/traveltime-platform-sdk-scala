@@ -1,8 +1,8 @@
 package com.igeolise.traveltimesdk
 
-import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TransformFn, TravelTimeRequest, TravelTimeResponse}
+import com.igeolise.traveltimesdk.TravelTimeSDK.{TravelTimeRequest, TravelTimeResponse}
 import com.igeolise.traveltimesdk.dto.common.BCP47
-import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError.{JsonParseError, ValidationError}
+import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError.{ExceptionError, JsonParseError, ValidationError}
 import com.igeolise.traveltimesdk.dto.responses._
 import com.igeolise.traveltimesdk.json.reads.ErrorReads._
 import play.api.libs.json._
@@ -24,22 +24,26 @@ case class TravelTimeSDK[F[_], S, WS[_]](
 
   implicit lazy val monadInstance: MonadError[F] = backend.responseMonad
 
-  def send[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[Either[TravelTimeSdkError, A]] =
+  /**
+   * Sends a provided request. On failure puts an exception to error channel.
+   */
+  def send[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[A] =
+    send_(request).flatMap {
+      case Right(value)                => monadInstance.unit(value)
+      case Left(error: ExceptionError) => monadInstance.error(new RuntimeException(error.message, error.cause))
+      case Left(error)                 => monadInstance.error(new RuntimeException(error.message))
+    }
+
+  /**
+   * Sends a provided request and wraps result into an inner Either which has [[TravelTimeSdkError]]
+   * as it's error channel.
+   */
+  def send_[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[Either[TravelTimeSdkError, A]] =
     request
       .sttpRequest(host)
       .headers(credentials.toHeaders:_*)
       .send()
       .map(request.transform)
-
-  def sendModified[Result](
-    sttpRequest: Request[ResponseBody, S],
-    transform: TransformFn[Result]
-  ): F[Either[TravelTimeSdkError, Result]] =
-    sttpRequest
-      .send()
-      .map(transform)
-
-  def close(): Unit = backend.close()
 }
 
 object TravelTimeSDK {

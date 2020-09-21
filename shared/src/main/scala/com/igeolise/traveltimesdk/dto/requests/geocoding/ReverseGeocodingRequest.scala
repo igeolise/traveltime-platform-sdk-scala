@@ -24,7 +24,7 @@ case class ReverseGeocodingRequest(
     val params =
       Seq(
         ("lat", coordinates.lat.toString),
-        ("lng", coordinates.lng.toString),
+        ("lng", coordinates.lng.toString)
       ) ++ withinCountry.map(("within.country", _))
 
     TravelTimeSDK.createGetRequest(
