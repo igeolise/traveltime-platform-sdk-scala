@@ -78,7 +78,7 @@ Total shape shells: 399
 ```scala
 implicit val backend = TryHttpURLConnectionBackend()
 
-TravelTimeSDK[Try, Nothing, NothingT](ApiCredentials("appId", "apiKey"), TravelTimeHost.defaultHost)
+TravelTimeSDK(ApiCredentials("appId", "apiKey"), TravelTimeHost.defaultHost)
   .send(Request.timeMapRequest) match {
     case Failure(exception) => println(s"Failed with: $exception")
     case Success(value) => println(s"Total shape shells: ${value.results.flatMap(_.shapes.map(_.shell.length)).sum}")
@@ -101,16 +101,11 @@ import zio._
 val zioTravelTimeApp: UIO[ExitCode] =
   AsyncHttpClientZioBackend
     .managed()
-    .use{ implicit backend =>
-      val sdk = TravelTimeSDK[Task, Nothing, WebSocketHandler](
-        host = TravelTimeHost.defaultHost,
-        credentials = ApiCredentials("appId", "apiKey")
-      )
-
-      sdk
+    .use( implicit backend =>
+      TravelTimeSDK(ApiCredentials("appId", "apiKey"), TravelTimeHost.defaultHost)
         .send(Request.timeMapRequest)
         .map(_.results.flatMap(_.shapes.map(_.shell.length)).sum)
-    }
+    )
     .fold(
       error => {
         println(s"Failed with: $error")

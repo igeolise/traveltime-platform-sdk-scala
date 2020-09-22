@@ -1,10 +1,11 @@
 package com.igeolise.traveltimesdk
 
-import sttp.client.{FetchBackend, NothingT}
+import com.igeolise.traveltimesdk.TravelTimeSDK.SDK
+import sttp.client.FetchBackend
 
 import scala.concurrent.Future
 
 object TravelTime {
-  def sdk(credentials: ApiCredentials, host: TravelTimeHost = TravelTimeHost.defaultHost): TravelTimeSDK[Future, Nothing, NothingT] =
-    TravelTimeSDK[Future, Nothing, NothingT](credentials, host)(FetchBackend())
+  def sdk(credentials: ApiCredentials, host: TravelTimeHost = TravelTimeHost.defaultHost): SDK[Future] =
+    TravelTimeSDK(credentials, host)(FetchBackend())
 }

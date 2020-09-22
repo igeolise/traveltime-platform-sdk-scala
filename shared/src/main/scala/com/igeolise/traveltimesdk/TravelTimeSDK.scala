@@ -6,20 +6,20 @@ import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError.{ExceptionErr
 import com.igeolise.traveltimesdk.dto.responses._
 import com.igeolise.traveltimesdk.json.reads.ErrorReads._
 import play.api.libs.json._
-import sttp.client.monad.MonadError
-import sttp.client.monad.syntax._
 import sttp.client.{Empty, Request, RequestT, Response, SttpBackend, basicRequest}
 import sttp.model.{Header, MediaType, Uri}
+import sttp.monad.MonadError
+import sttp.monad.syntax._
 
 import scala.concurrent.duration.DurationInt
 import scala.language.higherKinds
 import scala.util.Try
 
-case class TravelTimeSDK[F[_], S, WS[_]](
+case class TravelTimeSDK[F[_], +P](
   credentials: ApiCredentials,
   host: TravelTimeHost
 )(
-  implicit val backend: SttpBackend[F, S, WS]
+  implicit val backend: SttpBackend[F, P]
 ) {
 
   implicit lazy val monadInstance: MonadError[F] = backend.responseMonad
@@ -42,11 +42,13 @@ case class TravelTimeSDK[F[_], S, WS[_]](
     request
       .sttpRequest(host)
       .headers(credentials.toHeaders:_*)
-      .send()
+      .send(backend)
       .map(request.transform)
 }
 
 object TravelTimeSDK {
+
+  type SDK[F[_]] = TravelTimeSDK[F, Any]
 
   /**
   * `FailureBody` is used if the status code is non-2xx and `SuccessBody` otherwise.
@@ -64,15 +66,15 @@ object TravelTimeSDK {
 
   trait TravelTimeResponse
 
-  def createPostRequest(requestBody: JsValue, uri: Uri): Request[ResponseBody, Nothing] =
+  def createPostRequest(requestBody: JsValue, uri: Uri): Request[ResponseBody, Any] =
     requestBase
       .body(requestBody.toString)
       .post(uri)
 
-  def createGetRequest(uri: Uri): Request[ResponseBody, Nothing] =
+  def createGetRequest(uri: Uri): Request[ResponseBody, Any] =
     requestBase.get(uri)
 
-  def requestBase: RequestT[Empty, ResponseBody, Nothing] =
+  def requestBase: RequestT[Empty, ResponseBody, Any] =
     basicRequest
       .readTimeout(5.minutes)
       .contentType(MediaType.ApplicationJson)

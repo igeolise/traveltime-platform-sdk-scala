@@ -1,10 +1,11 @@
 package com.igeolise.traveltimesdk
 
-import sttp.client.okhttp.{OkHttpFutureBackend, WebSocketHandler}
+import com.igeolise.traveltimesdk.TravelTimeSDK.SDK
+import sttp.client.okhttp.OkHttpFutureBackend
 
 import scala.concurrent.Future
 
 object TravelTime {
-  def sdk(credentials: ApiCredentials, host: TravelTimeHost = TravelTimeHost.defaultHost): TravelTimeSDK[Future, Nothing, WebSocketHandler] =
-    TravelTimeSDK[Future, Nothing, WebSocketHandler](credentials, host)(OkHttpFutureBackend())
+  def sdk(credentials: ApiCredentials, host: TravelTimeHost = TravelTimeHost.defaultHost): SDK[Future] =
+    TravelTimeSDK(credentials, host)(OkHttpFutureBackend())
 }
