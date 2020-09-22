@@ -4,7 +4,7 @@ val commonSettings = Seq(
   organization := "com.igeolise",
   bintrayOrganization := Some("igeolise"),
   name := "traveltime-platform-sdk",
-  version := "3.0.0",
+  version := "3.0.0-RC1",
   crossScalaVersions := Seq("2.13.3", "2.12.12"),
   scalacOptions ++= Seq(
     "-deprecation",
@@ -18,9 +18,8 @@ val commonSettings = Seq(
     "-Ywarn-dead-code"
   ),
   libraryDependencies ++= Seq(
-    "com.softwaremill.sttp.client" %%% "core"       % "2.0.8",
-    "com.typesafe.play"            %%% "play-json"  % "2.7.4",
-    "com.beachape"                 %%% "enumeratum" % "1.5.13",
+    "com.softwaremill.sttp.client" %%% "core"       % "3.0.0-RC3",
+    "com.typesafe.play"            %%% "play-json"  % "2.9.1",
     "org.scalatest"                %%% "scalatest"  % "3.2.2" % Test,
   ),
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
@@ -31,7 +30,7 @@ lazy val sdk =
     .settings(commonSettings)
     .jvmSettings(
       libraryDependencies ++= Seq(
-        "com.softwaremill.sttp.client" %% "okhttp-backend" % "2.0.8"
+        "com.softwaremill.sttp.client" %% "okhttp-backend" % "3.0.0-RC3"
       )
     )
     .jsSettings(
