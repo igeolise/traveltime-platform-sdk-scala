@@ -1,4 +1,4 @@
-# TravelTime platform Scala SDK
+# TravelTime Scala SDK
 [ ![Download](https://api.bintray.com/packages/igeolise/maven/traveltime-platform-sdk/images/download.svg) ](https://bintray.com/igeolise/maven/traveltime-platform-sdk/_latestVersion)
 ![Artifact publish](https://github.com/igeolise/traveltime-platform-sdk-scala/workflows/Artifact%20publish/badge.svg?branch=master)
 
@@ -19,7 +19,7 @@ All of the [sttp backends](https://sttp.softwaremill.com/en/latest/backends/summ
 ### Usage
 ##### Few backend examples
 
-In the examples we are going to send [TimeMap endpoint](http://docs.traveltimeplatform.com/reference/time-map/) request and calclulate the amount of returned iscochrone shells.
+In the examples we are going to send [TimeMap endpoint](http://docs.traveltimeplatform.com/reference/time-map/) request and calculate the amount of returned iscochrone shells.
 
 We instantiate `TimeMapRequest` that we are going to use in our examples.
 
