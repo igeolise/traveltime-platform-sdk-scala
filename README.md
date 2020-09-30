@@ -10,7 +10,7 @@ Add the following to your `build.sbt`:
 
 ```scala
 resolvers += Resolver.bintrayRepo("traveltime", "maven")
-libraryDependencies += "com.igeolise" %%% "traveltime-sdk" % "{latest-version}"
+libraryDependencies += "com.traveltime" %%% "traveltime-sdk" % "{latest-version}"
 ```
 
 ### `sttp` backends support
