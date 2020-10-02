@@ -35,7 +35,7 @@ case class TravelTimeSDK[F[_], +P](
     }
 
   /**
-   * Sends a provided request and wraps result into an inner Either which has [[TravelTimeSdkError]]
+   * Sends a provided request and wraps result into an inner Either which has TravelTimeSdkError
    * as it's error channel.
    */
   def send_[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[Either[TravelTimeSdkError, A]] =
