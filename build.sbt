@@ -4,7 +4,7 @@ val commonSettings = Seq(
   organization := "com.traveltime",
   bintrayOrganization := Some("traveltime"),
   name := "traveltime-sdk",
-  version := "3.0.0-RC1",
+  version := "3.0.0",
   crossScalaVersions := Seq("2.13.3", "2.12.12"),
   scalacOptions ++= Seq(
     "-deprecation",
