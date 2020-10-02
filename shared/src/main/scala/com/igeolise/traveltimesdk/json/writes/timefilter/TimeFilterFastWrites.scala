@@ -2,7 +2,7 @@ package com.igeolise.traveltimesdk.json.writes.timefilter
 
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest._
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterFastProperty
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Property, TimeFilterFastProperty}
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.TimeFilterFastTransportation
 import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
@@ -22,7 +22,7 @@ object TimeFilterFastWrites {
     (__ \ "transportation").write[TimeFilterFastTransportation] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "arrival_time_period").write[ArrivalTimePeriod] and
-    (__ \ "properties").write[Seq[TimeFilterFastProperty]]
+    (__ \ "properties").write[Seq[Property]]
   )(unlift(OneToMany.unapply))
 
   implicit val manyToOneWrites: Writes[ManyToOne] = (
@@ -32,7 +32,7 @@ object TimeFilterFastWrites {
     (__ \ "transportation").write[TimeFilterFastTransportation] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "arrival_time_period").write[ArrivalTimePeriod] and
-    (__ \ "properties").write[Seq[TimeFilterFastProperty]]
+    (__ \ "properties").write[Seq[Property]]
   )(unlift(ManyToOne.unapply))
 
   implicit val timeFilterFastArrivalSearchWrites: Writes[ArrivalSearch] = (

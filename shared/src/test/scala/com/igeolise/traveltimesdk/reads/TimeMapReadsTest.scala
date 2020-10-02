@@ -5,7 +5,7 @@ import com.igeolise.traveltimesdk.dto.responses.TimeMapResponse
 import com.igeolise.traveltimesdk.dto.responses.TimeMapResponse._
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.{Agency, TimeMapResponseProperties}
+import com.igeolise.traveltimesdk.dto.requests.common.TimeMapProps.{Agency, TimeMapResponseProperties}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.funspec.AnyFunSpec
 import play.api.libs.json.{JsSuccess, Json}

@@ -1,11 +1,11 @@
 package com.igeolise.traveltimesdk.dto.responses
 
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformResponse
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeMapProps.TimeMapResponseProperties
+import com.igeolise.traveltimesdk.TravelTimeSDK.TravelTimeResponse
+import com.igeolise.traveltimesdk.dto.requests.common.TimeMapProps.TimeMapResponseProperties
 import com.igeolise.traveltimesdk.dto.responses.TimeMapBoxesResponse.SingleSearchResult
 import play.api.libs.json.JsValue
 
-case class TimeMapBoxesResponse(results: Seq[SingleSearchResult], raw: JsValue) extends TravelTimePlatformResponse
+case class TimeMapBoxesResponse(results: Seq[SingleSearchResult], raw: JsValue) extends TravelTimeResponse
 
 object TimeMapBoxesResponse {
   case class SingleSearchResult(

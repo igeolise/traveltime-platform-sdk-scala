@@ -2,7 +2,7 @@ package com.igeolise.traveltimesdk.writes
 
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Fares, TravelTime}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Fares, TravelTime}
 import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation._
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest

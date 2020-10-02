@@ -1,13 +1,13 @@
 package com.igeolise.traveltimesdk.dto.responses
 
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformResponse
+import com.igeolise.traveltimesdk.TravelTimeSDK.TravelTimeResponse
 import com.igeolise.traveltimesdk.dto.responses.RoutesResponse.SingleSearchResult
 import com.igeolise.traveltimesdk.dto.responses.common.{Fares, Route}
 import play.api.libs.json.JsValue
 
 import scala.concurrent.duration.FiniteDuration
 
-case class RoutesResponse(results: Seq[SingleSearchResult], raw: JsValue) extends TravelTimePlatformResponse
+case class RoutesResponse(results: Seq[SingleSearchResult], raw: JsValue) extends TravelTimeResponse
 
 object RoutesResponse {
   case class SingleSearchResult(

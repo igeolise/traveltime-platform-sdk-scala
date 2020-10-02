@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 
 import com.igeolise.traveltimesdk.dto.common.Coords
 import com.igeolise.traveltimesdk.dto.common.ZoneSearches.{ArrivalSearch, DepartureSearch}
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{PropertyType, TimeFilterZonesProperty}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Property, TimeFilterZonesProperty}
 import com.igeolise.traveltimesdk.dto.requests.common._
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.{FullRangeParams, RangeParams}
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation._
@@ -16,9 +16,8 @@ import scala.concurrent.duration.FiniteDuration
 
 object CommonWrites {
 
-  implicit val timeMapPropertiesWrites: Writes[Seq[PropertyType]] = new Writes[Seq[PropertyType]] {
-    override def writes(props: Seq[PropertyType]): JsValue = Json.arr(props.map(_.propertyType)).value.head
-  }
+  implicit val timeMapPropertiesWrites: Writes[Seq[Property]] =
+    (props: Seq[Property]) => Json.arr(props.map(_.propertyType)).value.head
 
   implicit class extractTime(self: Option[FiniteDuration]) {
     def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
@@ -121,7 +120,7 @@ object CommonWrites {
     (__ \ "arrival_time").write[ZonedDateTime] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
-    (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
+    (__ \ "properties").write[Seq[Property]] and
     (__ \ "range").writeNullable[FullRangeParams]
   )(unlift(ArrivalSearch.unapply))
 
@@ -132,7 +131,7 @@ object CommonWrites {
     (__ \ "departure_time").write[ZonedDateTime] and
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "reachable_postcodes_threshold").write[Double] and
-    (__ \ "properties").write[Seq[TimeFilterZonesProperty]] and
+    (__ \ "properties").write[Seq[Property]] and
     (__ \ "range").writeNullable[FullRangeParams]
   )(unlift(DepartureSearch.unapply))
 }

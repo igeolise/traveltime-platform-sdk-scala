@@ -2,11 +2,11 @@ package com.igeolise.traveltimesdk.dto.responses
 
 import java.time.ZonedDateTime
 
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformResponse
+import com.igeolise.traveltimesdk.TravelTimeSDK.TravelTimeResponse
 import com.igeolise.traveltimesdk.dto.responses.MapInfoResponse.Map
 import play.api.libs.json.JsValue
 
-case class MapInfoResponse(maps: Seq[Map], raw: JsValue) extends TravelTimePlatformResponse
+case class MapInfoResponse(maps: Seq[Map], raw: JsValue) extends TravelTimeResponse
 
 object MapInfoResponse {
   case class Map(

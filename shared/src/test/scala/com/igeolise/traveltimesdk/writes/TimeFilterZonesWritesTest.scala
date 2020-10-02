@@ -4,7 +4,7 @@ import java.time.ZonedDateTime
 
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.{Coords, ZoneSearches}
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Coverage, TravelTimeAll, TravelTimeReachable}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Coverage, TravelTimeAll, TravelTimeReachable}
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransportationParams
 import com.igeolise.traveltimesdk.dto.requests.timefilter.{TimeFilterDistrictsRequest, TimeFilterSectorsRequest}

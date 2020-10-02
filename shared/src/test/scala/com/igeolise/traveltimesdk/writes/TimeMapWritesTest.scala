@@ -7,7 +7,7 @@ import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest.{ArrivalSearch, Si
 import com.igeolise.traveltimesdk.dto.requests.TimeMapRequest
 import com.igeolise.traveltimesdk.TestUtils
 import com.igeolise.traveltimesdk.dto.common.Coords
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.PropertyType.{Agencies, IsOnlyWalking}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Agencies, IsOnlyWalking}
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.RangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{PublicTransport, PublicTransportationParams}
 import org.scalatest.funspec.AnyFunSpec

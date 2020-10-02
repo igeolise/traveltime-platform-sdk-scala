@@ -1,40 +1,126 @@
 package com.igeolise.traveltimesdk
 
-import cats.Monad
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.{SttpRequest, TravelTimePlatformRequest, TravelTimePlatformResponse}
-import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
-import com.softwaremill.sttp.{SttpBackend, Uri, _}
-import com.igeolise.traveltimesdk.TravelTimeSDK.DEFAULT_HOST
+import com.igeolise.traveltimesdk.TravelTimeSDK.{TravelTimeRequest, TravelTimeResponse}
+import com.igeolise.traveltimesdk.dto.common.BCP47
+import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError.{ExceptionError, JsonParseError, ValidationError}
+import com.igeolise.traveltimesdk.dto.responses._
+import com.igeolise.traveltimesdk.json.reads.ErrorReads._
+import play.api.libs.json._
+import sttp.client.{Empty, Request, RequestT, Response, SttpBackend, basicRequest}
+import sttp.model.{Header, MediaType, Uri}
+import sttp.monad.MonadError
+import sttp.monad.syntax._
 
-import scala.concurrent.Future
+import scala.concurrent.duration.DurationInt
 import scala.language.higherKinds
-import cats.instances.future._
+import scala.util.Try
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
-case class TravelTimeSDK[R[_] : Monad, S](
+case class TravelTimeSDK[F[_], +P](
   credentials: ApiCredentials,
-  backend: SttpBackend[R, S],
-  host: Uri = DEFAULT_HOST
+  host: TravelTimeHost
+)(
+  implicit val backend: SttpBackend[F, P]
 ) {
 
-  def send[A <: TravelTimePlatformResponse](
-    request: TravelTimePlatformRequest[A]
-  ): R[Either[TravelTimeSdkError, A]] = {
-    val baseRequest = request.sttpRequest(host).headers(credentials.toMap)
-    val req = SttpRequest[R, S](backend, baseRequest)
-    request.send(req)
-  }
+  implicit lazy val monadInstance: MonadError[F] = backend.responseMonad
 
-  def close(): Unit = backend.close()
+  /**
+   * Sends a provided request. On failure puts an exception to error channel.
+   */
+  def send[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[A] =
+    send_(request).flatMap {
+      case Right(value)                => monadInstance.unit(value)
+      case Left(error: ExceptionError) => monadInstance.error(new RuntimeException(error.message, error.cause))
+      case Left(error)                 => monadInstance.error(new RuntimeException(error.message))
+    }
+
+  /**
+   * Sends a provided request and wraps result into an inner Either which has [[TravelTimeSdkError]]
+   * as it's error channel.
+   */
+  def send_[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[Either[TravelTimeSdkError, A]] =
+    request
+      .sttpRequest(host)
+      .headers(credentials.toHeaders:_*)
+      .send(backend)
+      .map(request.transform)
 }
 
 object TravelTimeSDK {
 
-  final val DEFAULT_HOST = uri"api.traveltimeapp.com"
+  type SDK[F[_]] = TravelTimeSDK[F, Any]
 
-  def defaultSdk(
-    credentials: ApiCredentials, backend: SttpBackend[Future, Nothing], host: Uri = DEFAULT_HOST
-  ): TravelTimeSDK[Future, Nothing] =
-    TravelTimeSDK[Future, Nothing](credentials, backend, host)
+  /**
+  * `FailureBody` is used if the status code is non-2xx and `SuccessBody` otherwise.
+  */
+  sealed trait ResponseBody { val content: String }
+  case class SuccessBody(content: String) extends ResponseBody
+  case class FailureBody(content: String) extends ResponseBody
+
+  type TransformFn[Result] = Response[ResponseBody] => Either[TravelTimeSdkError, Result]
+
+  trait TravelTimeRequest[Result <: TravelTimeResponse] {
+    val transform: TransformFn[Result]
+    def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S]
+  }
+
+  trait TravelTimeResponse
+
+  def createPostRequest(requestBody: JsValue, uri: Uri): Request[ResponseBody, Any] =
+    requestBase
+      .body(requestBody.toString)
+      .post(uri)
+
+  def createGetRequest(uri: Uri): Request[ResponseBody, Any] =
+    requestBase.get(uri)
+
+  def requestBase: RequestT[Empty, ResponseBody, Any] =
+    basicRequest
+      .readTimeout(5.minutes)
+      .contentType(MediaType.ApplicationJson)
+      .mapResponse(_.fold(FailureBody, SuccessBody))
+
+  def addLanguageToResponse(
+    validationFn: JsValue => JsResult[GeoJsonResponse[GeocodingResponseProperties]]
+  ): Response[ResponseBody] => Either[TravelTimeSdkError, GeocodingResponse] =
+    response =>
+      handleJsonResponse(response.body, validationFn)
+        .map( properties => GeocodingResponse(
+          GeocodingLanguageResponse(findContentLanguageHeader(response.headers)), properties
+        ))
+
+  def handleJsonResponse[Result](
+    body: ResponseBody,
+    validateFn: JsValue => JsResult[Result]
+  ): Either[TravelTimeSdkError, Result] =
+    body match {
+      case FailureBody(errorBody) => Left(handleErrorResponse(errorBody))
+      case SuccessBody(successBody) => parse(successBody, validateFn)
+    }
+
+  def handleErrorResponse(errString: String): TravelTimeSdkError =
+    Try(Json.parse(errString).validate[TravelTimeSdkError.ErrorResponseDetails])
+      .toEither
+      .left
+      .map(JsonParseError)
+      .map {
+        case JsSuccess(value, _) => TravelTimeSdkError.ErrorResponse(value)
+        case a: JsError          => ValidationError(a)
+      }
+      .fold(identity, identity)
+
+  def parse[Result](content: String, validateFn: JsValue => JsResult[Result]): Either[TravelTimeSdkError, Result] =
+    Try(validateFn(Json.parse(content)))
+      .toEither
+      .left
+      .map(JsonParseError)
+      .flatMap {
+        case s: JsSuccess[Result] => Right(s.get)
+        case e: JsError           => Left(ValidationError(e))
+      }
+
+  def findContentLanguageHeader(headers: Seq[Header]): BCP47 =
+    headers
+      .find(_.name == "Content-Language")
+      .fold(BCP47("en"))(header => BCP47(header.value))
 }

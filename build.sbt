@@ -1,11 +1,11 @@
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
 val commonSettings = Seq(
-  organization := "com.igeolise",
-  bintrayOrganization := Some("igeolise"),
-  name := "traveltime-platform-sdk",
-  version := "2.3.2",
-  crossScalaVersions := Seq("2.13.1", "2.12.10", "2.11.12"),
+  organization := "com.traveltime",
+  bintrayOrganization := Some("traveltime"),
+  name := "traveltime-sdk",
+  version := "3.0.0",
+  crossScalaVersions := Seq("2.13.3", "2.12.12"),
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "utf-8",
@@ -18,11 +18,9 @@ val commonSettings = Seq(
     "-Ywarn-dead-code"
   ),
   libraryDependencies ++= Seq(
-    "org.typelevel"         %%% "cats-core"  % "2.0.0",
-    "com.softwaremill.sttp" %%% "core"       % "1.7.2",
-    "com.typesafe.play"     %%% "play-json"  % "2.7.4",
-    "com.beachape"          %%% "enumeratum" % "1.5.13",
-    "org.scalatest"         %%% "scalatest"  % "3.2.0-M2" % Test,
+    "com.softwaremill.sttp.client" %%% "core"       % "3.0.0-RC3",
+    "com.typesafe.play"            %%% "play-json"  % "2.9.1",
+    "org.scalatest"                %%% "scalatest"  % "3.2.2" % Test,
   ),
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
@@ -32,14 +30,15 @@ lazy val sdk =
     .settings(commonSettings)
     .jvmSettings(
       libraryDependencies ++= Seq(
-        "com.softwaremill.sttp" %% "okhttp-backend" % "1.7.2"
+        "com.softwaremill.sttp.client" %% "okhttp-backend" % "3.0.0-RC3"
       )
     )
     .jsSettings(
       libraryDependencies ++= Seq(
-        "io.github.cquiroz" %%% "scala-java-time" % "2.0.0-RC3",
-        "io.github.cquiroz" %%% "scala-java-time-tzdb" % "2.0.0-RC3_2019a"
-      )
+        "io.github.cquiroz" %%% "scala-java-time" % "2.0.0",
+        "io.github.cquiroz" %%% "scala-java-time-tzdb" % "2.0.0"
+      ),
+      test in Test := {}
     )
 
 lazy val sdkJS = sdk.js

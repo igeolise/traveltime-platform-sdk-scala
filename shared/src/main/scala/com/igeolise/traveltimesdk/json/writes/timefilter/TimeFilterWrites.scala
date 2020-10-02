@@ -1,20 +1,21 @@
 package com.igeolise.traveltimesdk.json.writes.timefilter
 
+import java.time.ZonedDateTime
+
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Property, TimeFilterRequestProperty}
+import com.igeolise.traveltimesdk.dto.requests.common.Location
+import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest.{ArrivalSearch, DepartureSearch}
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterRequestProperty
-import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
-import com.igeolise.traveltimesdk.dto.requests.common.{Location, Transportation}
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, __}
+import play.api.libs.json.Writes.iterableWrites2
 
 import scala.concurrent.duration.FiniteDuration
-import java.time.ZonedDateTime
 
-import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
-
-object TimeFilterWrites{
+object TimeFilterWrites {
 
   implicit val timeFilterArrivalSearchWrites: Writes[ArrivalSearch] = (
     (__ \ "id").write[String] and
@@ -24,7 +25,7 @@ object TimeFilterWrites{
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "arrival_time").write[ZonedDateTime] and
     (__ \ "range").writeNullable[FullRangeParams] and
-    (__ \ "properties").write[Seq[TimeFilterRequestProperty]]
+    (__ \ "properties").write[Seq[Property]]
   )(unlift(ArrivalSearch.unapply))
 
   implicit val timeFilterDepartureSearchWrites: Writes[DepartureSearch] = (
@@ -35,7 +36,7 @@ object TimeFilterWrites{
     (__ \ "travel_time").write[FiniteDuration](finiteDurationToSecondsWrites) and
     (__ \ "departure_time").write[ZonedDateTime] and
     (__ \ "range").writeNullable[FullRangeParams] and
-    (__ \ "properties").write[Seq[TimeFilterRequestProperty]]
+    (__ \ "properties").write[Seq[Property]]
   )(unlift(DepartureSearch.unapply))
 
   implicit val timeFilterWrites: Writes[TimeFilterRequest] = (

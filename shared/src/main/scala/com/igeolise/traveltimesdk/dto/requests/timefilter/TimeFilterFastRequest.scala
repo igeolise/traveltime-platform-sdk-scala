@@ -1,55 +1,35 @@
 package com.igeolise.traveltimesdk.dto.requests.timefilter
 
-import cats.Monad
-import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterFastReads._
-import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterFastWrites._
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils
-import com.igeolise.traveltimesdk.dto.requests.RequestUtils.TravelTimePlatformRequest
-import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest.ArrivalSearch
+import com.igeolise.traveltimesdk.TravelTimeSDK.{ResponseBody, TransformFn, TravelTimeRequest}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.TimeFilterFastProperty
 import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.TimeFilterFastTransportation
-import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError
+import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest.ArrivalSearch
 import com.igeolise.traveltimesdk.dto.responses.timefilter.TimeFilterFastResponse
-import com.softwaremill.sttp._
+import com.igeolise.traveltimesdk.json.reads.timefilter.TimeFilterFastReads._
+import com.igeolise.traveltimesdk.json.writes.timefilter.TimeFilterFastWrites._
+import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
 import play.api.libs.json.Json
+import sttp.client.Request
 
 import scala.concurrent.duration.FiniteDuration
 
 case class TimeFilterFastRequest(
   locations: Seq[Location],
   arrivalSearches: ArrivalSearch
-) extends TravelTimePlatformRequest[TimeFilterFastResponse] {
-  val endpoint = TimeFilterFastRequest.endpoint
+) extends TravelTimeRequest[TimeFilterFastResponse] {
 
-  override def send[R[_] : Monad, S](
-    sttpRequest: RequestUtils.SttpRequest[R, S]
-  ): R[Either[TravelTimeSdkError, TimeFilterFastResponse]] =
-    RequestUtils.send(
-      sttpRequest,
-      _.validate[TimeFilterFastResponse]
-    )
+  final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] =
+    TravelTimeSDK.createPostRequest(Json.toJson(this), host.uri.path("v4", "time-filter", "fast"))
 
-
-  override def sttpRequest(host: Uri): Request[String, Nothing] =
-    RequestUtils.makePostRequest(
-      Json.toJson(this),
-      endpoint,
-      host
-    ).headers(HeaderNames.Accept -> MediaTypes.Json)
+  final val transform: TransformFn[TimeFilterFastResponse] =
+    response => TravelTimeSDK.handleJsonResponse(response.body, _.validate[TimeFilterFastResponse])
 }
 
 object TimeFilterFastRequest {
-  val endpoint = "v4/time-filter/fast"
 
-  sealed trait SearchType
-
-  sealed trait ArrivalTimePeriod {
-    val periodType: String
-  }
-  case object WeekdayMorning extends ArrivalTimePeriod {
-    override val periodType: String = "weekday_morning"
-  }
+  sealed abstract class ArrivalTimePeriod(val periodType: String)
+  case object WeekdayMorning extends ArrivalTimePeriod("weekday_morning")
 
   case class ArrivalSearch(
     manyToOne: Seq[ManyToOne],
@@ -64,7 +44,7 @@ object TimeFilterFastRequest {
     travelTime: FiniteDuration,
     arrivalTimePeriod: ArrivalTimePeriod,
     properties: Seq[TimeFilterFastProperty]
-  ) extends SearchType
+  )
 
   case class OneToMany(
     id: String,
@@ -74,5 +54,5 @@ object TimeFilterFastRequest {
     travelTime: FiniteDuration,
     arrivalTimePeriod: ArrivalTimePeriod,
     properties: Seq[TimeFilterFastProperty]
-  ) extends SearchType
+  )
 }

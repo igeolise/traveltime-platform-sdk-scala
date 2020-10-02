@@ -1,9 +1,7 @@
 package com.igeolise.traveltimesdk
 
-case class ApiCredentials(appId: String, apiKey: String){
-  def toMap: Map[String, String] =
-    Map(
-      "X-Application-Id" -> appId,
-      "X-Api-Key" -> apiKey
-    )
+import sttp.model.Header
+
+case class ApiCredentials(appId: String, apiKey: String) {
+  def toHeaders: Seq[Header] = Seq(new Header("X-Application-Id", appId), new Header("X-Api-Key", apiKey))
 }
