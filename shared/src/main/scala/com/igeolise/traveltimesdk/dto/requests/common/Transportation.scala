@@ -59,7 +59,11 @@ object Transportation {
     override val transportType = "public_transport"
   }
 
-  case class Driving(parameters: DrivingParams) extends TimeFilterFastTransportation with CommonTransportation {
+  case object TimeFilterFastDriving extends TimeFilterFastTransportation {
+    override val transportType = "driving"
+  }
+
+  case class Driving(parameters: DrivingParams) extends CommonTransportation {
     override val transportType = "driving"
   }
 
