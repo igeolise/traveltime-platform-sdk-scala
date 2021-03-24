@@ -49,7 +49,7 @@ class TimeFilterFastWritesTest extends AnyFunSpec with Matchers {
         "Hyde Park",
         "ZSL London Zoo"
       ),
-      Driving,
+      Driving(DrivingParams()),
       30.minutes,
       WeekdayMorning,
       Seq(

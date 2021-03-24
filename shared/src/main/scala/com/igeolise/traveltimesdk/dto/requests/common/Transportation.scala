@@ -37,6 +37,10 @@ object Transportation {
     walkingTime: Option[FiniteDuration]            = None
   )
 
+  case class DrivingParams(
+    disableBorderCrossing: Option[Boolean] = None
+  )
+
   case class Bus(parameters: PublicTransportationParams) extends PublicTransportation {
     override val transportType = "bus"
   }
@@ -55,7 +59,7 @@ object Transportation {
     override val transportType = "public_transport"
   }
 
-  case object Driving extends TimeFilterFastTransportation with CommonTransportation {
+  case class Driving(parameters: DrivingParams) extends TimeFilterFastTransportation with CommonTransportation {
     override val transportType = "driving"
   }
 

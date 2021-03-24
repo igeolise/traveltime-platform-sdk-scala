@@ -56,6 +56,14 @@ object CommonWrites {
     )
   )
 
+  implicit val drivingWrites: Writes[Transportation.Driving] = (
+    (__ \ "type").write[String] and
+    (__ \ "disable_border_crossing").writeNullable[Boolean]
+    ) ((m: Transportation.Driving) => (
+    m.transportType,
+    m.parameters.disableBorderCrossing
+  ))
+
   implicit val drivingTrainWrites: Writes[Transportation.DrivingTrain] = (
     (__ \ "type").write[String] and
     (__ \ "pt_change_delay").writeNullable[Int] and
@@ -97,6 +105,7 @@ object CommonWrites {
     case c: PublicTransportation   => publicTransportWrites.writes(c)
     case c: CyclingPublicTransport => cyclingPublicTransportWrites.writes(c)
     case c: DrivingTrain           => drivingTrainWrites.writes(c)
+    case c: Driving                => drivingWrites.writes(c)
     case c: CommonTransportation   => parameterlessTransportationJson(c)
   }
 
