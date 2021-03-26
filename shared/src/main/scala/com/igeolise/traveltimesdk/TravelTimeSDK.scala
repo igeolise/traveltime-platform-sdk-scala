@@ -6,20 +6,20 @@ import com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError.{ExceptionErr
 import com.igeolise.traveltimesdk.dto.responses._
 import com.igeolise.traveltimesdk.json.reads.ErrorReads._
 import play.api.libs.json._
+import sttp.client.monad.MonadError
+import sttp.client.monad.syntax._
 import sttp.client.{Empty, Request, RequestT, Response, SttpBackend, basicRequest}
 import sttp.model.{Header, MediaType, Uri}
-import sttp.monad.MonadError
-import sttp.monad.syntax._
 
 import scala.concurrent.duration.DurationInt
 import scala.language.higherKinds
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
-case class TravelTimeSDK[F[_], +P](
+case class TravelTimeSDK[F[_], S, WS[_]](
   credentials: ApiCredentials,
   host: TravelTimeHost
 )(
-  implicit val backend: SttpBackend[F, P]
+  implicit val backend: SttpBackend[F, S, WS]
 ) {
 
   implicit lazy val monadInstance: MonadError[F] = backend.responseMonad
@@ -35,20 +35,18 @@ case class TravelTimeSDK[F[_], +P](
     }
 
   /**
-   * Sends a provided request and wraps result into an inner Either which has TravelTimeSdkError
+   * Sends a provided request and wraps result into an inner Either which has [[com.igeolise.traveltimesdk.dto.responses.TravelTimeSdkError]]
    * as it's error channel.
    */
   def send_[A <: TravelTimeResponse, Result](request: TravelTimeRequest[A]): F[Either[TravelTimeSdkError, A]] =
     request
       .sttpRequest(host)
       .headers(credentials.toHeaders:_*)
-      .send(backend)
+      .send()
       .map(request.transform)
 }
 
 object TravelTimeSDK {
-
-  type SDK[F[_]] = TravelTimeSDK[F, Any]
 
   /**
   * `FailureBody` is used if the status code is non-2xx and `SuccessBody` otherwise.
@@ -66,15 +64,15 @@ object TravelTimeSDK {
 
   trait TravelTimeResponse
 
-  def createPostRequest(requestBody: JsValue, uri: Uri): Request[ResponseBody, Any] =
+  def createPostRequest(requestBody: JsValue, uri: Uri): Request[ResponseBody, Nothing] =
     requestBase
       .body(requestBody.toString)
       .post(uri)
 
-  def createGetRequest(uri: Uri): Request[ResponseBody, Any] =
+  def createGetRequest(uri: Uri): Request[ResponseBody, Nothing] =
     requestBase.get(uri)
 
-  def requestBase: RequestT[Empty, ResponseBody, Any] =
+  def requestBase: RequestT[Empty, ResponseBody, Nothing] =
     basicRequest
       .readTimeout(5.minutes)
       .contentType(MediaType.ApplicationJson)
@@ -85,6 +83,7 @@ object TravelTimeSDK {
   ): Response[ResponseBody] => Either[TravelTimeSdkError, GeocodingResponse] =
     response =>
       handleJsonResponse(response.body, validationFn)
+        .right
         .map( properties => GeocodingResponse(
           GeocodingLanguageResponse(findContentLanguageHeader(response.headers)), properties
         ))
@@ -94,33 +93,27 @@ object TravelTimeSDK {
     validateFn: JsValue => JsResult[Result]
   ): Either[TravelTimeSdkError, Result] =
     body match {
-      case FailureBody(errorBody) => Left(handleErrorResponse(errorBody))
+      case FailureBody(errorBody)   => Left(handleErrorResponse(errorBody))
       case SuccessBody(successBody) => parse(successBody, validateFn)
     }
 
   def handleErrorResponse(errString: String): TravelTimeSdkError =
-    Try(Json.parse(errString).validate[TravelTimeSdkError.ErrorResponseDetails])
-      .toEither
-      .left
-      .map(JsonParseError)
-      .map {
-        case JsSuccess(value, _) => TravelTimeSdkError.ErrorResponse(value)
-        case a: JsError          => ValidationError(a)
-      }
-      .fold(identity, identity)
+    Try(Json.parse(errString).validate[TravelTimeSdkError.ErrorResponseDetails]) match {
+      case Failure(exception)           => JsonParseError(exception)
+      case Success(JsSuccess(value, _)) => TravelTimeSdkError.ErrorResponse(value)
+      case Success(a : JsError)         => ValidationError(a)
+    }
 
   def parse[Result](content: String, validateFn: JsValue => JsResult[Result]): Either[TravelTimeSdkError, Result] =
-    Try(validateFn(Json.parse(content)))
-      .toEither
-      .left
-      .map(JsonParseError)
-      .flatMap {
-        case s: JsSuccess[Result] => Right(s.get)
-        case e: JsError           => Left(ValidationError(e))
-      }
+    Try(validateFn(Json.parse(content))) match {
+      case Failure(exception)           => Left(JsonParseError(exception))
+      case Success(JsSuccess(value, _)) => Right(value)
+      case Success(e: JsError)          => Left(ValidationError(e))
+    }
 
   def findContentLanguageHeader(headers: Seq[Header]): BCP47 =
-    headers
-      .find(_.name == "Content-Language")
-      .fold(BCP47("en"))(header => BCP47(header.value))
+    headers.find(_.name == "Content-Language") match {
+      case Some(header) => BCP47(header.value)
+      case None         => BCP47("en")
+    }
 }

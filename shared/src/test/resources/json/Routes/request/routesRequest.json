@@ -31,7 +31,8 @@
         "ZSL London Zoo"
       ],
       "transportation": {
-        "type": "driving"
+        "type": "driving",
+        "disable_border_crossing": true
       },
       "departure_time": "2018-10-02T08:00:00Z",
       "properties": ["travel_time", "distance", "route"]

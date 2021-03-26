@@ -16,8 +16,9 @@ import scala.concurrent.duration.FiniteDuration
 
 object CommonWrites {
 
-  implicit val timeMapPropertiesWrites: Writes[Seq[Property]] =
-    (props: Seq[Property]) => Json.arr(props.map(_.propertyType)).value.head
+  implicit val timeMapPropertiesWrites: Writes[Seq[Property]] = new Writes[Seq[Property]] {
+    override def writes(props: Seq[Property]): JsValue = Json.arr(props.map(_.propertyType)).value.head
+  }
 
   implicit class extractTime(self: Option[FiniteDuration]) {
     def toSeconds: Option[Int] = self.map(time => time.toSeconds.toInt)
@@ -55,6 +56,14 @@ object CommonWrites {
       m.parameters.ptChangeDelay.toSeconds
     )
   )
+
+  implicit val drivingWrites: Writes[Transportation.Driving] = (
+    (__ \ "type").write[String] and
+    (__ \ "disable_border_crossing").writeNullable[Boolean]
+    ) ((m: Transportation.Driving) => (
+    m.transportType,
+    m.parameters.disableBorderCrossing
+  ))
 
   implicit val drivingTrainWrites: Writes[Transportation.DrivingTrain] = (
     (__ \ "type").write[String] and
@@ -97,6 +106,7 @@ object CommonWrites {
     case c: PublicTransportation   => publicTransportWrites.writes(c)
     case c: CyclingPublicTransport => cyclingPublicTransportWrites.writes(c)
     case c: DrivingTrain           => drivingTrainWrites.writes(c)
+    case c: Driving                => drivingWrites.writes(c)
     case c: CommonTransportation   => parameterlessTransportationJson(c)
   }
 

@@ -17,6 +17,7 @@ object TravelTimeHost {
   def apply(scheme: Scheme, host: Host, maybePort: Option[Port] = None): Either[UriValidationError, TravelTimeHost] =
     maybePort
       .fold(Uri.safeApply(scheme.v, host.v))(port => Uri.safeApply(scheme.v, host.v, port.v))
+      .right
       .map(new TravelTimeHost(_))
       .left
       .map(UriValidationError)

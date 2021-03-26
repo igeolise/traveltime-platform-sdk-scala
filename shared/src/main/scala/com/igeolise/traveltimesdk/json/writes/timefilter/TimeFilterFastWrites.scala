@@ -2,7 +2,7 @@ package com.igeolise.traveltimesdk.json.writes.timefilter
 
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest
 import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterFastRequest._
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Property, TimeFilterFastProperty}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.Property
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.TimeFilterFastTransportation
 import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._

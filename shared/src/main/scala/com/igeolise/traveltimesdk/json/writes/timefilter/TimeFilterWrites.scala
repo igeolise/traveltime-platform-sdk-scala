@@ -2,7 +2,7 @@ package com.igeolise.traveltimesdk.json.writes.timefilter
 
 import java.time.ZonedDateTime
 
-import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.{Property, TimeFilterRequestProperty}
+import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties.Property
 import com.igeolise.traveltimesdk.dto.requests.common.Location
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
 import com.igeolise.traveltimesdk.dto.requests.common.Transportation.CommonTransportation
@@ -11,7 +11,6 @@ import com.igeolise.traveltimesdk.dto.requests.timefilter.TimeFilterRequest.{Arr
 import com.igeolise.traveltimesdk.json.writes.CommonWrites._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, __}
-import play.api.libs.json.Writes.iterableWrites2
 
 import scala.concurrent.duration.FiniteDuration
 

@@ -8,7 +8,7 @@ import com.igeolise.traveltimesdk.dto.requests.RoutesRequest
 import com.igeolise.traveltimesdk.dto.requests.RoutesRequest.{ArrivalSearch, DepartureSearch}
 import com.igeolise.traveltimesdk.dto.requests.common.CommonProperties._
 import com.igeolise.traveltimesdk.dto.requests.common.RangeParams.FullRangeParams
-import com.igeolise.traveltimesdk.dto.requests.common.Transportation.PublicTransportationParams
+import com.igeolise.traveltimesdk.dto.requests.common.Transportation.{DrivingParams, PublicTransportationParams}
 import com.igeolise.traveltimesdk.dto.requests.common.{Location, Transportation}
 import com.igeolise.traveltimesdk.json.writes.RoutesWrites._
 import org.scalatest.matchers.should.Matchers
@@ -31,7 +31,7 @@ class RoutesWritesTest extends AnyFunSpec with Matchers {
       "departure search example",
       "London center",
       Seq("Hyde Park", "ZSL London Zoo"),
-      Transportation.Driving,
+      Transportation.Driving(DrivingParams(Some(true))),
       time,
       Seq(TravelTime, Distance, Route),
       None

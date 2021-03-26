@@ -6,6 +6,7 @@ import com.igeolise.traveltimesdk.dto.requests.geocoding.QueryFragmentsUtils.que
 import com.igeolise.traveltimesdk.dto.responses.GeocodingResponse
 import com.igeolise.traveltimesdk.{TravelTimeHost, TravelTimeSDK}
 import sttp.client.Request
+import sttp.model.Uri
 
 /**
   * Match a query string to geographic coordinates.
@@ -28,6 +29,11 @@ case class GeocodingAutocompleteRequest(
   countryCode: Option[String] = None,
   acceptLanguage: Option[BCP47] = None
 ) extends TravelTimeRequest[GeocodingResponse] with GeocodingRequestWithLanguage {
+
+  def queryUri(host: Uri): Uri =
+    host
+      .path("v4", "geocoding", "autocomplete")
+      .params(queryFragments(query, focusCoords, countryCode): _*)
 
   final def sttpRequest[S](host: TravelTimeHost): Request[ResponseBody, S] =
     TravelTimeSDK.createGetRequest(
