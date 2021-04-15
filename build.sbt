@@ -1,5 +1,16 @@
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
+inThisBuild(List(
+  organization := "com.traveltime",
+  homepage := Some(url("https://github.com/traveltime-dev/traveltime-sdk-scala")),
+  licenses := List("MIT License" -> url("https://github.com/traveltime-dev/traveltime-sdk-scala/blob/master/LICENSE.txt")),
+  developers := List(
+    Developer("donatas", "Donatas Laurinavičius", "donatas@traveltime.com", url("https://traveltime.com")),
+    Developer("jonas", "Jonas Krutulis", "jonas@traveltime.com", url("https://traveltime.com")),
+    Developer("michal", "Michal Rus", "michal.rus@traveltime.com", url("https://traveltime.com")),
+  )
+))
+
 val commonSettings = Seq(
   organization := "com.traveltime",
   bintrayOrganization := Some("traveltime"),
