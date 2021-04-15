@@ -8,10 +8,11 @@ inThisBuild(List(
     Developer("donatas", "Donatas Laurinavičius", "donatas@traveltime.com", url("https://traveltime.com")),
     Developer("jonas", "Jonas Krutulis", "jonas@traveltime.com", url("https://traveltime.com")),
     Developer("michal", "Michal Rus", "michal.rus@traveltime.com", url("https://traveltime.com")),
-  ),
-  sonatypeCredentialHost := "s01.oss.sonatype.org",
-  sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
+  )
 ))
+
+sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
 val commonSettings = Seq(
   organization := "com.traveltime",
