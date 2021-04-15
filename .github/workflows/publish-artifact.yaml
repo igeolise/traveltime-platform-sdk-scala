@@ -27,7 +27,7 @@ jobs:
       run: sbt +sdkJVM/test
 
     - name: Publish
-      run: sbt ci-release +sdkJVM/publish +sdkJS/publish
+      run: sbt ci-release
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
