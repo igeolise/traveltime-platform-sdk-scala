@@ -9,7 +9,6 @@ This open-source library allows you to access [TravelTime API](http://docs.trave
 Add the following to your `build.sbt`:
 
 ```scala
-resolvers += Resolver.bintrayRepo("traveltime", "maven")
 libraryDependencies += "com.traveltime" %%% "traveltime-sdk" % "{latest-version}"
 ```
 
