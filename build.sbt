@@ -1,5 +1,8 @@
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
 
+sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
+
 inThisBuild(List(
   organization := "com.traveltime",
   homepage := Some(url("https://github.com/traveltime-dev/traveltime-sdk-scala")),
@@ -10,9 +13,6 @@ inThisBuild(List(
     Developer("michal", "Michal Rus", "michal.rus@traveltime.com", url("https://traveltime.com")),
   )
 ))
-
-sonatypeCredentialHost := "s01.oss.sonatype.org"
-sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
 val commonSettings = Seq(
   organization := "com.traveltime",
@@ -38,7 +38,7 @@ val commonSettings = Seq(
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
 
-lazy val sdk =
+lazy val root =
   crossProject(JSPlatform, JVMPlatform).in(file("."))
     .settings(commonSettings)
     .jvmSettings(
@@ -50,16 +50,5 @@ lazy val sdk =
       libraryDependencies ++= Seq(
         "io.github.cquiroz" %%% "scala-java-time" % "2.0.0",
         "io.github.cquiroz" %%% "scala-java-time-tzdb" % "2.0.0"
-      ),
-      test in Test := {}
+      )
     )
-
-lazy val sdkJS = sdk.js
-lazy val sdkJVM = sdk.jvm
-
-lazy val root = (project in file("."))
-  .aggregate(
-    sdkJS,
-    sdkJVM
-  )
-  .settings(commonSettings)
