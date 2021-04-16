@@ -12,7 +12,9 @@ on:
       
 jobs:
   build:
-
+    strategy:
+      matrix:
+        scala: [2.13.3, 2.12.12]
     runs-on: ubuntu-latest
 
     steps:
