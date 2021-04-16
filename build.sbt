@@ -12,7 +12,6 @@ inThisBuild(List(
 ))
 
 ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
-ThisBuild / sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
 val commonSettings = Seq(
   organization := "com.traveltime",
