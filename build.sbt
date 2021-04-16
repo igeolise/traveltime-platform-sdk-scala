@@ -3,6 +3,8 @@ import sbtcrossproject.CrossPlugin.autoImport.crossProject
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
+publishTo := sonatypePublishToBundle.value
+
 inThisBuild(List(
   organization := "com.traveltime",
   homepage := Some(url("https://github.com/traveltime-dev/traveltime-sdk-scala")),

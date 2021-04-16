@@ -12,9 +12,6 @@ on:
       
 jobs:
   build:
-    strategy:
-      matrix:
-        scala: [2.13.3, 2.12.12]
     runs-on: ubuntu-latest
 
     steps:
@@ -26,10 +23,10 @@ jobs:
         java-version: 1.8
 
     - name: Run tests
-      run: sbt ++${{ matrix.scala }} rootJVM/test
+      run: sbt rootJVM/test
 
     - name: Publish
-      run: sbt ++${{ matrix.scala }} ci-release
+      run: sbt ci-release
       env:
         PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
         PGP_SECRET: ${{ secrets.PGP_SECRET }}
