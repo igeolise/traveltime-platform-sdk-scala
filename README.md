@@ -1,6 +1,6 @@
 # TravelTime Scala SDK
 [ ![Download](https://api.bintray.com/packages/traveltime/maven/traveltime-sdk/images/download.svg) ](https://bintray.com/traveltime/maven/traveltime-sdk/_latestVersion)
-![Artifact publish]([![Artifact publish](https://github.com/traveltime-dev/traveltime-sdk-scala/actions/workflows/publish-artifact.yaml/badge.svg?branch=master)](https://github.com/traveltime-dev/traveltime-sdk-scala/actions/workflows/publish-artifact.yaml))
+[![Artifact publish](https://github.com/traveltime-dev/traveltime-sdk-scala/actions/workflows/publish-artifact.yaml/badge.svg?branch=master)](https://github.com/traveltime-dev/traveltime-sdk-scala/actions/workflows/publish-artifact.yaml)
 
 This open-source library allows you to access [TravelTime API](http://docs.traveltime.com/overview/introduction) endpoints. TravelTime SDK is published for Scala 2.12.X, 2.13.X and ScalaJS 1.
 
