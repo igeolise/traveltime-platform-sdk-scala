@@ -3,7 +3,7 @@ import sbtcrossproject.CrossPlugin.autoImport.crossProject
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
-publishTo := sonatypePublishToBundle.value
+publishTo := sonatypePublishTo.value
 
 inThisBuild(List(
   organization := "com.traveltime",
