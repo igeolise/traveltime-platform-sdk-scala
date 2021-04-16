@@ -38,7 +38,7 @@ val commonSettings = Seq(
   licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
 
-lazy val core =
+lazy val sdk =
   crossProject(JSPlatform, JVMPlatform).in(file("."))
     .settings(commonSettings)
     .jvmSettings(
@@ -53,3 +53,13 @@ lazy val core =
       ),
       test in Test := {}
     )
+
+lazy val sdkJS = sdk.js
+lazy val sdkJVM = sdk.jvm
+
+lazy val root = (project in file("."))
+  .aggregate(
+    sdkJS,
+    sdkJVM
+  )
+  .settings(commonSettings)
