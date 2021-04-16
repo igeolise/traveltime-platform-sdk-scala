@@ -3,8 +3,6 @@ import sbtcrossproject.CrossPlugin.autoImport.crossProject
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
-publishTo := sonatypePublishTo.value
-
 inThisBuild(List(
   organization := "com.traveltime",
   homepage := Some(url("https://github.com/traveltime-dev/traveltime-sdk-scala")),
@@ -19,7 +17,6 @@ inThisBuild(List(
 val commonSettings = Seq(
   organization := "com.traveltime",
   name := "traveltime-sdk",
-  version := "4.0.0",
   crossScalaVersions := Seq("2.13.3", "2.12.12"),
   scalacOptions ++= Seq(
     "-deprecation",
