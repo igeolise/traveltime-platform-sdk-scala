@@ -39,7 +39,7 @@ val commonSettings = Seq(
   sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 )
 
-lazy val root =
+lazy val sdk =
   crossProject(JSPlatform, JVMPlatform).in(file("."))
     .settings(commonSettings)
     .jvmSettings(
