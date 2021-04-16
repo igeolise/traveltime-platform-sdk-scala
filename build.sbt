@@ -1,5 +1,4 @@
 import sbtcrossproject.CrossPlugin.autoImport.crossProject
-import xerial.sbt.Sonatype.autoImport.sonatypeRepository
 
 inThisBuild(List(
   organization := "com.traveltime",
@@ -11,6 +10,9 @@ inThisBuild(List(
     Developer("michal", "Michal Rus", "michal.rus@traveltime.com", url("https://traveltime.com")),
   )
 ))
+
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+ThisBuild / sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 
 val commonSettings = Seq(
   organization := "com.traveltime",
@@ -32,9 +34,7 @@ val commonSettings = Seq(
     "com.typesafe.play"            %%% "play-json"  % "2.9.1",
     "org.scalatest"                %%% "scalatest"  % "3.2.2" % Test,
   ),
-  licenses += ("MIT", url("http://opensource.org/licenses/MIT")),
-  sonatypeCredentialHost := "s01.oss.sonatype.org",
-  sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
+  licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 )
 
 lazy val root =
